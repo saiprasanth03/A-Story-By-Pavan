@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const About = () => {
   const [content, setContent] = useState(null);
@@ -73,14 +74,16 @@ const About = () => {
               transition={{ duration: 1, delay: 0.4 }}
               className="space-y-6 flex flex-col items-center"
             >
-              <p className="text-gray-400 font-sans text-sm md:text-base tracking-wide leading-relaxed font-light flex items-center justify-center gap-2">
-                <a href="https://www.astitvacreations.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 underline underline-offset-4 decoration-white/50 transition-colors inline-flex items-center gap-2">
-                  Imazen studio is the sub brand of the Astitva creations
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                </a>
-              </p>
+              {siteConfig.parentCompany.enabled && (
+                <p className="text-gray-400 font-sans text-sm md:text-base tracking-wide leading-relaxed font-light flex items-center justify-center gap-2">
+                  <a href={siteConfig.parentCompany.url} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 underline underline-offset-4 decoration-white/50 transition-colors inline-flex items-center gap-2">
+                    {siteConfig.brand.name} is the sub brand of {siteConfig.parentCompany.name}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                  </a>
+                </p>
+              )}
               <p className="text-white font-sans text-sm md:text-base tracking-wide leading-relaxed font-light">
-                {content?.description || "At Imazen Studios, we believe every fleeting moment holds a cinematic masterpiece. We specialize in transforming maternity, newborn, and family portraits into breathtaking visual stories. Our approach blends high-fashion editorial aesthetics with raw, authentic emotion."}
+                {content?.description || `At ${siteConfig.brand.name}, we believe every fleeting moment holds a cinematic masterpiece. We specialize in transforming portraits into breathtaking visual stories. Our approach blends high-fashion editorial aesthetics with raw, authentic emotion.`}
               </p>
               
               {content?.features && content.features.length > 0 && (

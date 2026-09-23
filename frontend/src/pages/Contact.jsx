@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { siteConfig } from '../config/site.config';
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Contact = () => {
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
           <h1 className="font-oswald font-bold text-5xl md:text-6xl text-white uppercase tracking-widest mb-4">Contact Us</h1>
-          <p className="font-sans text-gray-400 text-sm tracking-[0.2em] uppercase">Get in touch with Imazen Studios</p>
+          <p className="font-sans text-gray-400 text-sm tracking-[0.2em] uppercase">Get in touch with {siteConfig.brand.name}</p>
         </motion.div>
 
         <motion.div 

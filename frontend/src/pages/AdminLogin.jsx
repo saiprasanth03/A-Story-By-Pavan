@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { siteConfig } from '../config/site.config';
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -64,7 +64,7 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#111] border border-white/10 rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-oswald text-white uppercase tracking-widest mb-2">Imazen OS</h1>
+          <h1 className="text-3xl font-oswald text-white uppercase tracking-widest mb-2">{siteConfig.brand.shortName}</h1>
           <p className="text-gray-500 font-sans text-xs uppercase tracking-widest">Admin Portal Access</p>
         </div>
 

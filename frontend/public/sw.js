@@ -1,4 +1,4 @@
-const CACHE_NAME = 'imazen-pwa-v1';
+const CACHE_NAME = 'studio-pwa-v1';
 
 const STATIC_ASSETS = [
   '/',

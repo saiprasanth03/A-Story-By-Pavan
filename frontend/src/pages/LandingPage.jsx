@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { siteConfig } from '../config/site.config';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Navigation, Pagination, EffectFade, Keyboard } from 'swiper/modules';
 import Footer from '../components/Footer';
@@ -156,12 +157,12 @@ const ReferenceLandingPage = () => {
             className="fixed inset-0 z-[10000] bg-[#050505] flex flex-col items-center justify-center"
           >
             <div className="relative w-40 sm:w-64 h-20 sm:h-24">
-              <img src="/images/logo.png" alt="Imazen Studios Logo" className="absolute inset-0 w-full h-full object-contain opacity-20" />
+              <img src="/images/logo.png" alt={`${siteConfig.brand.name} Logo`} className="absolute inset-0 w-full h-full object-contain opacity-20" />
               <div 
                 className="absolute top-0 left-0 h-full overflow-hidden" 
                 style={{ animation: 'fillLogo 2s infinite ease-in-out' }}
               >
-                <img src="/images/logo.png" alt="Imazen Studios Logo" className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
+                <img src="/images/logo.png" alt={`${siteConfig.brand.name} Logo`} className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
               </div>
             </div>
             <style>{`
@@ -283,7 +284,7 @@ const ReferenceLandingPage = () => {
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center pt-20">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut" }} className="flex flex-col items-center">
             <h2 className="text-xs sm:text-sm font-oswald uppercase tracking-[0.3em] text-gray-400 mb-2 drop-shadow-md">
-              {pageData?.heroSubheading || 'Imazen Studios'}
+              {pageData?.heroSubheading || siteConfig.brand.name}
             </h2>
             <h1 className="text-5xl sm:text-6xl lg:text-8xl font-oswald uppercase tracking-tight leading-[1.1] mb-2 text-white drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
               <span style={{ whiteSpace: 'pre-line' }}>{pageData?.heroHeading || 'Beautiful Baby\nPhotography'}</span>

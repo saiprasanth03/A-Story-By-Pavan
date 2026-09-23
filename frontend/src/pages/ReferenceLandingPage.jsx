@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Navigation, Pagination, EffectFade, Keyboard } from 'swiper/modules';
 import 'swiper/css';
+import { siteConfig } from '../config/site.config';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
@@ -118,7 +119,7 @@ const ReferenceLandingPage = () => {
       {/* HEADER */}
       <header className="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <Link to="/">
-          <img src="/images/logo.png" alt="Imazen Studios" className="h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" fetchpriority="high" />
+          <img src="/images/logo.png" alt={siteConfig.brand.name} className="h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" fetchpriority="high" />
         </Link>
         <button 
           onClick={() => setIsModalOpen(true)}
@@ -155,7 +156,7 @@ const ReferenceLandingPage = () => {
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center pt-20">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut" }} className="flex flex-col items-center">
             <h2 className="text-xs sm:text-sm font-oswald uppercase tracking-[0.3em] text-gray-400 mb-2 drop-shadow-md">
-              Imazen Studios
+              {siteConfig.brand.name}
             </h2>
             <h1 className="text-5xl sm:text-7xl md:text-8xl font-oswald uppercase tracking-tight leading-[1.1] mb-2 text-white drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
               Beautiful Baby<br/>Photography

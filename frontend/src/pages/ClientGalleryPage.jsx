@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -267,7 +268,7 @@ const ClientGalleryPage = () => {
       <div className="relative z-10 px-3 sm:px-6 py-8 md:py-16 max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 md:mb-10">
-          <img src="/images/logo.png" alt="Imazen Studios" className="h-8 md:h-10 mx-auto mb-4 md:mb-6 opacity-90" />
+          <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-8 md:h-10 mx-auto mb-4 md:mb-6 opacity-90" />
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-oswald font-bold uppercase tracking-widest text-white mb-2 md:mb-3">
             Client Photo Gallery
           </h1>
@@ -663,7 +664,7 @@ const ClientGalleryPage = () => {
 
         {/* Footer */}
         <div className="text-center mt-12 md:mt-16 text-gray-600 text-[10px] uppercase tracking-widest">
-          © {new Date().getFullYear()} Imazen Studios · All Rights Reserved
+          © {new Date().getFullYear()} {siteConfig.brand.name} · All Rights Reserved
         </div>
       </div>
     </div>

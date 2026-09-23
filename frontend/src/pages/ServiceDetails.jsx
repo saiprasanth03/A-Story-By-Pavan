@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { siteConfig } from '../config/site.config';
 
 const ServiceDetails = () => {
   const { slug } = useParams();
@@ -53,8 +54,8 @@ const ServiceDetails = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pt-32 pb-20 px-6">
       <Helmet>
-        <title>{service.name} | Imazen Studios</title>
-        <meta name="description" content={service.description || `Explore our ${service.name} services at Imazen Studios.`} />
+        <title>{service.name} | {siteConfig.brand.name}</title>
+        <meta name="description" content={service.description || `Explore our ${service.name} services at ${siteConfig.brand.name}.`} />
       </Helmet>
 
       <div className="max-w-[90rem] mx-auto">

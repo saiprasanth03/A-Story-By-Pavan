@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const WhatWeOffer = () => {
   const [mainServices, setMainServices] = useState([]);
@@ -36,14 +37,15 @@ const WhatWeOffer = () => {
 
   const displayServices = [
     ...mainServices,
-    {
+    // Wedding card — only shown when parentCompany is enabled (it links externally)
+    ...(siteConfig.parentCompany.enabled ? [{
       _id: 'wedding-service',
       name: 'Wedding',
       description: 'Capture your special day with our premium wedding cinematography and photography.',
       slug: 'wedding',
       imageUrl: '/images/wedding.jpg',
-      externalLink: 'http://www.astitvacreations.com'
-    }
+      externalLink: siteConfig.parentCompany.url
+    }] : [])
   ];
 
   const handleCardClick = (svc) => {

@@ -1,7 +1,7 @@
 {
-  "name": "Imazen Studios",
-  "short_name": "Imazen Studios",
-  "description": "Capture your most beautiful memories with Imazen Studios. We specialize in premium Maternity, Newborn, Baby, and Family cinematic photography.",
+  "name": "Your Business Name",
+  "short_name": "Your Brand",
+  "description": "Your business description goes here.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

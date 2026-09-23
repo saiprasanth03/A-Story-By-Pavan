@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { siteConfig } from '../config/site.config';
 
 const LocationPage = () => {
   const { city } = useParams();
@@ -11,7 +12,7 @@ const LocationPage = () => {
   return (
     <>
       <Helmet>
-        <title>Best Baby Shoot & Maternity Studio in {cityName} | Imazen Studios</title>
+        <title>Photography Studio in {cityName} | {siteConfig.brand.name}</title>
         <meta name="description" content={`Top-rated newborn photography, maternity shoot, and baby studio in ${cityName}. We offer premium themes and packages for your baby milestones.`} />
         <meta name="keywords" content={`Baby shoot in ${cityName}, Maternity shoot studio in ${cityName}, Newborn photography ${cityName}, Birthday shoot studio ${cityName}, Best baby studio in ${cityName}`} />
       </Helmet>
@@ -23,7 +24,7 @@ const LocationPage = () => {
         <div className="w-20 h-[1px] bg-primary mx-auto mb-8"></div>
         
         <p className="text-white font-sans font-light leading-relaxed mb-8">
-          Welcome to Imazen Studios, serving {cityName} with the most luxurious and cinematic photography experience. 
+          Welcome to {siteConfig.brand.name}, serving {cityName} with the most luxurious and cinematic photography experience.
           Whether you are looking for a Maternity Shoot, Newborn Photography, or a Baby Milestone package in {cityName}, 
           our fully air-conditioned, baby-friendly premium studio is the perfect destination for you and your family.
         </p>

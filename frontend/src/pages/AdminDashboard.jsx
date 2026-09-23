@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 import DragDropImageUploader from '../components/DragDropImageUploader';
 import DragDropVideoUploader from '../components/DragDropVideoUploader';
 import CalendarView from '../components/admin/CalendarView';
@@ -248,7 +249,7 @@ const AdminDashboard = () => {
   
   // Studio Page State
   const [studioData, setStudioData] = useState({
-    name: 'Imazen Studios',
+    name: siteConfig.brand.name,
     description: '',
     heroImageDesktop: '',
     heroImageMobile: '',
@@ -1422,7 +1423,7 @@ const AdminDashboard = () => {
       <div className={`fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 w-72 bg-black/80 md:bg-black/40 backdrop-blur-2xl border-r border-white/5 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.5)]`}>
         <div className="p-8 border-b border-white/5 flex justify-between items-center">
           <h2 className="text-2xl font-oswald font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 tracking-widest uppercase">
-            Imazen OS
+            {siteConfig.brand.shortName}
           </h2>
         </div>
         <nav className="flex-1 p-6 space-y-3 overflow-y-auto custom-scrollbar">
@@ -1452,7 +1453,7 @@ const AdminDashboard = () => {
         {/* Mobile Header Toggle */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-white/5 bg-black/40 backdrop-blur-md z-20">
           <h2 className="text-lg font-oswald font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 tracking-widest uppercase">
-            Imazen OS
+            {siteConfig.brand.shortName}
           </h2>
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white p-2 focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

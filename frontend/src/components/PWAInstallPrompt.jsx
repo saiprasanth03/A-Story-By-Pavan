@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { siteConfig } from '../config/site.config';
 
 const PWAInstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(window.deferredPWAInstallPrompt || null);
@@ -120,12 +121,12 @@ const PWAInstallPrompt = () => {
             <div className="flex items-center gap-3">
               <img 
                 src="/icons/pwa-192x192.png" 
-                alt="Imazen Studios Logo" 
+                alt={`${siteConfig.brand.name} Logo`}
                 className="w-12 h-12 rounded-xl object-cover border border-white/10 shrink-0" 
               />
               <div className="flex-1 min-w-0">
                 <h4 className="font-oswald text-sm font-semibold tracking-wider uppercase text-white truncate">
-                  Install Imazen Studios
+                  Install {siteConfig.brand.name}
                 </h4>
                 <p className="font-sans text-[11px] text-gray-300 leading-tight">
                   Quick access & smooth app experience
@@ -192,12 +193,12 @@ const PWAInstallPrompt = () => {
 
               <img 
                 src="/icons/pwa-192x192.png" 
-                alt="Imazen Studios" 
+                alt={siteConfig.brand.name}
                 className="w-16 h-16 rounded-2xl mx-auto mb-4 border border-white/10" 
               />
 
               <h3 className="font-oswald text-lg font-bold tracking-wider uppercase mb-2">
-                Install Imazen Studios
+                Install {siteConfig.brand.name}
               </h3>
               
               <p className="font-sans text-xs text-gray-300 mb-6 leading-relaxed">
