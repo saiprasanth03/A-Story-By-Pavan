@@ -4,8 +4,8 @@ import axios from 'axios';
 import { siteConfig } from '../config/site.config';
 
 const WhatsAppButton = () => {
-  const [whatsappNumber, setWhatsappNumber] = useState(siteConfig.contact.whatsapp || siteConfig.contact.phone);
-  const [contactNumber, setContactNumber] = useState(siteConfig.contact.phone);
+  const [whatsappNumber, setWhatsappNumber] = useState(siteConfig.contact.whatsapp);
+  const [contactNumber, setContactNumber] = useState(siteConfig.contact.whatsapp);
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/settings`)

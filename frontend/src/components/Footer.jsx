@@ -6,7 +6,7 @@ import { siteConfig } from '../config/site.config';
 const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
   const [contact, setContact] = useState({
     email: siteConfig.contact.email,
-    phone: siteConfig.contact.formattedPhone,
+    phone: siteConfig.contact.phone,
     footerStudioAddress: siteConfig.contact.address,
     footerSocials: siteConfig.socials
   });
@@ -17,7 +17,7 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
         if (res.data) {
           setContact({
             email: res.data.contactEmail || siteConfig.contact.email,
-            phone: res.data.whatsappNumber || siteConfig.contact.formattedPhone,
+            phone: res.data.whatsappNumber || siteConfig.contact.phone,
             footerStudioAddress: res.data.footerStudioAddress || siteConfig.contact.address,
             footerSocials: (res.data.footerSocials && res.data.footerSocials.length > 0) ? res.data.footerSocials : siteConfig.socials,
             footerLocations: res.data.footerLocations || siteConfig.contact.locations
@@ -28,7 +28,7 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
   }, []);
 
   return (
-    <footer className="bg-[#050505] text-white relative overflow-hidden pt-32 pb-12 border-t border-white/5 bg-cover bg-center" style={{ backgroundImage: `url('${siteConfig.logoBackgroundUrl}')` }}>
+    <footer className="bg-[#050505] text-white relative overflow-hidden pt-32 pb-12 border-t border-white/5 bg-cover bg-center" style={{ backgroundImage: `url('${siteConfig.brand.logoBackgroundUrl}')` }}>
       
       <div className="absolute inset-0 bg-black/80 pointer-events-none"></div>
 
@@ -40,19 +40,19 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
           <div className="flex flex-col items-center md:items-start">
             <h3 className="font-oswald text-2xl uppercase tracking-[0.3em] mb-6">Studio</h3>
             <a 
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.footerStudioAddress || "123 Cinematic Way\nAesthetic District\nNew York, NY 10012")}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.footerStudioAddress || siteConfig.contact.address)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-sans text-gray-400 tracking-widest leading-relaxed whitespace-pre-line text-center md:text-left hover:text-white transition-colors"
             >
-              {contact.footerStudioAddress || "123 Cinematic Way\nAesthetic District\nNew York, NY 10012"}
+              {contact.footerStudioAddress || siteConfig.contact.address}
             </a>
           </div>
 
           <div className="flex flex-col items-center">
             <h3 className="font-oswald text-2xl uppercase tracking-[0.3em] mb-6">Locations</h3>
             <div className="flex flex-col gap-3">
-              {(contact.footerLocations || ['Srikakulam', 'Vizag', 'Vizianagaram']).map(city => (
+              {(contact.footerLocations || siteConfig.contact.locations).map(city => (
                 <Link key={city} to={`/location/${city.toLowerCase()}`} className="text-xs font-sans text-gray-400 tracking-[0.2em] uppercase hover:text-white transition-colors">
                   {city}
                 </Link>
@@ -80,7 +80,7 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
         {/* Footer Bottom */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
           <p className="text-[10px] font-sans text-gray-600 uppercase tracking-[0.3em] mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteConfig.brand.name}. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-[10px] font-sans text-gray-600 uppercase tracking-[0.3em] hover:text-white transition-colors">Privacy Policy</a>

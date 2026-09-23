@@ -22,7 +22,7 @@ const Wedding = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden selection:bg-emerald-500/30">
       <Helmet>
-        <title>{settings?.weddingHeroHeading || 'Wedding'} | {siteConfig.name}</title>
+        <title>{settings?.weddingHeroHeading || 'Wedding'} | {siteConfig.brand.name}</title>
         <meta name="description" content={settings?.weddingHeroDescription || 'Premium Wedding Photography'} />
       </Helmet>
 
@@ -50,7 +50,7 @@ const Wedding = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl lg:text-8xl font-light uppercase tracking-widest text-white mb-8 drop-shadow-2xl">
-            {settings?.weddingHeroHeading || `${siteConfig.name} Weddings`}
+            {settings?.weddingHeroHeading || `${siteConfig.brand.name} Weddings`}
           </h1>
           
           <p className="text-lg md:text-xl text-white/80 font-light max-w-2xl leading-relaxed mb-12 italic whitespace-pre-wrap">

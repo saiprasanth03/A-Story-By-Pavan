@@ -54,7 +54,7 @@ const Navbar = () => {
             transition={{ duration: 0.8 }}
             className="z-[60] flex items-center"
           >
-            <img src={siteConfig.logoUrl} alt={siteConfig.name} className="h-10 md:h-14 w-auto object-contain" />
+            <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-10 md:h-14 w-auto object-contain" />
           </motion.a>
 
           {/* DESKTOP LINKS */}

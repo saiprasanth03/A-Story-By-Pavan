@@ -192,12 +192,12 @@ function App() {
       {showLoader && (
         <div className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center opacity-100">
           <div className="relative w-40 sm:w-64 h-20 sm:h-24">
-            <img src={siteConfig.logoUrl} alt={`${siteConfig.name} Logo`} className="absolute inset-0 w-full h-full object-contain opacity-20" />
+            <img src={siteConfig.brand.logoUrl} alt={`${siteConfig.brand.name} Logo`} className="absolute inset-0 w-full h-full object-contain opacity-20" />
             <div 
               className="absolute top-0 left-0 h-full overflow-hidden" 
               style={{ animation: 'fillLogo 2.5s ease-in-out forwards' }}
             >
-              <img src={siteConfig.logoUrl} alt={`${siteConfig.name} Logo`} className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
+              <img src={siteConfig.brand.logoUrl} alt={`${siteConfig.brand.name} Logo`} className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
             </div>
           </div>
           <style>{`
