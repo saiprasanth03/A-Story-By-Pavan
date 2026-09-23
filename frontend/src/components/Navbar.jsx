@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,7 +54,7 @@ const Navbar = () => {
             transition={{ duration: 0.8 }}
             className="z-[60] flex items-center"
           >
-            <img src="/images/logo.png" alt="Imazen Studios" className="h-10 md:h-14 w-auto object-contain" />
+            <img src={siteConfig.logoUrl} alt={siteConfig.name} className="h-10 md:h-14 w-auto object-contain" />
           </motion.a>
 
           {/* DESKTOP LINKS */}

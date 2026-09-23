@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
   const [contact, setContact] = useState({
-    email: 'hello@imazenstudios.com',
-    phone: '+1 (555) 019-2834',
-    footerStudioAddress: '123 Cinematic Way\nAesthetic District\nNew York, NY 10012',
-    footerSocials: [
-      { platform: 'Instagram', link: '#' },
-      { platform: 'Facebook', link: '#' },
-      { platform: 'Pinterest', link: '#' }
-    ]
+    email: siteConfig.contact.email,
+    phone: siteConfig.contact.formattedPhone,
+    footerStudioAddress: siteConfig.contact.address,
+    footerSocials: siteConfig.socials
   });
 
   useEffect(() => {
@@ -19,15 +16,11 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
       .then(res => {
         if (res.data) {
           setContact({
-            email: res.data.contactEmail || 'hello@imazenstudios.com',
-            phone: res.data.whatsappNumber || '+1 (555) 019-2834',
-            footerStudioAddress: res.data.footerStudioAddress || '123 Cinematic Way\nAesthetic District\nNew York, NY 10012',
-            footerSocials: (res.data.footerSocials && res.data.footerSocials.length > 0) ? res.data.footerSocials : [
-              { platform: 'Instagram', link: '#' },
-              { platform: 'Facebook', link: '#' },
-              { platform: 'Pinterest', link: '#' }
-            ],
-            footerLocations: res.data.footerLocations || ['Srikakulam', 'Vizag', 'Vizianagaram']
+            email: res.data.contactEmail || siteConfig.contact.email,
+            phone: res.data.whatsappNumber || siteConfig.contact.formattedPhone,
+            footerStudioAddress: res.data.footerStudioAddress || siteConfig.contact.address,
+            footerSocials: (res.data.footerSocials && res.data.footerSocials.length > 0) ? res.data.footerSocials : siteConfig.socials,
+            footerLocations: res.data.footerLocations || siteConfig.contact.locations
           });
         }
       })
@@ -35,7 +28,7 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
   }, []);
 
   return (
-    <footer className="bg-[#050505] text-white relative overflow-hidden pt-32 pb-12 border-t border-white/5 bg-cover bg-center" style={{ backgroundImage: "url('/images/logo2.png')" }}>
+    <footer className="bg-[#050505] text-white relative overflow-hidden pt-32 pb-12 border-t border-white/5 bg-cover bg-center" style={{ backgroundImage: `url('${siteConfig.logoBackgroundUrl}')` }}>
       
       <div className="absolute inset-0 bg-black/80 pointer-events-none"></div>
 
@@ -87,7 +80,7 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
         {/* Footer Bottom */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
           <p className="text-[10px] font-sans text-gray-600 uppercase tracking-[0.3em] mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Imazen Studios. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-[10px] font-sans text-gray-600 uppercase tracking-[0.3em] hover:text-white transition-colors">Privacy Policy</a>

@@ -11,6 +11,7 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 
 import Home from './pages/Home';
 import LandingPage from './pages/LandingPage';
+import { siteConfig } from './config/site.config';
 
 // Lazy load pages for code splitting and faster load times
 const Packages = lazy(() => import('./pages/Packages'));
@@ -191,12 +192,12 @@ function App() {
       {showLoader && (
         <div className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center opacity-100">
           <div className="relative w-40 sm:w-64 h-20 sm:h-24">
-            <img src="/images/logo.png" alt="Imazen Studios Logo" className="absolute inset-0 w-full h-full object-contain opacity-20" />
+            <img src={siteConfig.logoUrl} alt={`${siteConfig.name} Logo`} className="absolute inset-0 w-full h-full object-contain opacity-20" />
             <div 
               className="absolute top-0 left-0 h-full overflow-hidden" 
               style={{ animation: 'fillLogo 2.5s ease-in-out forwards' }}
             >
-              <img src="/images/logo.png" alt="Imazen Studios Logo" className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
+              <img src={siteConfig.logoUrl} alt={`${siteConfig.name} Logo`} className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
             </div>
           </div>
           <style>{`
