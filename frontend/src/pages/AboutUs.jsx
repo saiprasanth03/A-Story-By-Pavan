@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import About from '../components/About';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { siteConfig } from '../config/site.config';
 
 const AboutUs = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -52,7 +53,7 @@ const AboutUs = () => {
           </h1>
           <div className="w-16 h-[1px] bg-white mx-auto mb-8"></div>
           <p className="text-gray-300 font-sans font-light text-sm md:text-base leading-relaxed max-w-2xl mx-auto tracking-wide">
-            {aboutContent?.description || "Imazen Studios was founded with a single mission: to capture life's most precious and fleeting moments with cinematic elegance and unparalleled luxury."}
+            {aboutContent?.description || `${siteConfig.brand.name} was founded with a single mission: to capture life's most precious and fleeting moments with cinematic elegance and unparalleled luxury.`}
           </p>
         </motion.div>
       </div>

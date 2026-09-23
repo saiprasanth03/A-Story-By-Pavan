@@ -1754,11 +1754,11 @@ const AdminDashboard = () => {
                         </div>
                         <div>
                           <label className="block text-xs uppercase text-gray-500 mb-2">Contact Email</label>
-                          <input type="email" className={glassInput} placeholder="e.g. hello@imazenstudios.in" value={settings.contactEmail || ''} onChange={e => setSettings({...settings, contactEmail: e.target.value})} />
+                          <input type="email" className={glassInput} placeholder="e.g. hello@example.com" value={settings.contactEmail || ''} onChange={e => setSettings({...settings, contactEmail: e.target.value})} />
                         </div>
                         <div>
                           <label className="block text-xs uppercase text-gray-500 mb-2">Team Notification Emails (comma separated)</label>
-                          <textarea className={glassInput} rows="2" placeholder="e.g. member1@imazen.in, member2@imazen.in" value={settings.teamEmails ? settings.teamEmails.join(', ') : ''} onChange={e => setSettings({...settings, teamEmails: e.target.value.split(',').map(em => em.trim()).filter(em => em)})}>
+                          <textarea className={glassInput} rows="2" placeholder="e.g. member1@example.com, member2@example.com" value={settings.teamEmails ? settings.teamEmails.join(', ') : ''} onChange={e => setSettings({...settings, teamEmails: e.target.value.split(',').map(em => em.trim()).filter(em => em)})}>
                           </textarea>
                           <p className="text-[11px] text-gray-500 mt-1 uppercase tracking-widest">These emails will receive new booking notifications.</p>
                         </div>
@@ -1771,7 +1771,7 @@ const AdminDashboard = () => {
                       <form onSubmit={handleSaveWeddingSettings} className="space-y-4 max-w-2xl">
                         <div>
                           <label className="block text-xs uppercase text-gray-500 mb-2">Heading</label>
-                          <input type="text" className={glassInput} placeholder="e.g. Imazen Weddings" value={settings.weddingHeroHeading || ''} onChange={e => setSettings({...settings, weddingHeroHeading: e.target.value})} />
+                          <input type="text" className={glassInput} placeholder="e.g. Your Studio Weddings" value={settings.weddingHeroHeading || ''} onChange={e => setSettings({...settings, weddingHeroHeading: e.target.value})} />
                         </div>
                         <div>
                           <label className="block text-xs uppercase text-gray-500 mb-2">Subheading</label>
@@ -1788,11 +1788,11 @@ const AdminDashboard = () => {
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <label className="block text-xs uppercase text-gray-500 mb-2">Button Text</label>
-                            <input type="text" className={glassInput} placeholder="e.g. Visit Astitva Creations" value={settings.weddingHeroButtonText || ''} onChange={e => setSettings({...settings, weddingHeroButtonText: e.target.value})} />
+                            <input type="text" className={glassInput} placeholder="e.g. Visit Our Partners" value={settings.weddingHeroButtonText || ''} onChange={e => setSettings({...settings, weddingHeroButtonText: e.target.value})} />
                           </div>
                           <div>
                             <label className="block text-xs uppercase text-gray-500 mb-2">Button Link</label>
-                            <input type="text" className={glassInput} placeholder="e.g. https://astitvacreations.com" value={settings.weddingHeroButtonLink || ''} onChange={e => setSettings({...settings, weddingHeroButtonLink: e.target.value})} />
+                            <input type="text" className={glassInput} placeholder="e.g. https://example.com" value={settings.weddingHeroButtonLink || ''} onChange={e => setSettings({...settings, weddingHeroButtonLink: e.target.value})} />
                           </div>
                         </div>
                         <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Wedding Settings'}</button>
@@ -2150,7 +2150,7 @@ const AdminDashboard = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
                                 <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Subheading</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="e.g. Imazen Studios" value={editingLandingPage.heroSubheading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroSubheading: e.target.value})} />
+                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="e.g. Your Studio Name" value={editingLandingPage.heroSubheading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroSubheading: e.target.value})} />
                               </div>
                               <div>
                                 <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Heading</label>
@@ -2464,10 +2464,10 @@ const AdminDashboard = () => {
                           </div>
                         </div>
 
-{/* WHY CHOOSE IMAZEN */}
+{/* WHY CHOOSE US */}
                         <div className="border-t border-white/5 pt-6 mt-6">
                           <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Why Choose Imazen? (Features)</h3>
+                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Why Choose Us? (Features)</h3>
                             <button type="button" onClick={() => {
                               const newFeatures = [...(editingLandingPage.features || []), { title: '', description: '' }];
                               setEditingLandingPage({...editingLandingPage, features: newFeatures});
@@ -2475,7 +2475,7 @@ const AdminDashboard = () => {
                           </div>
                           <div className="mb-4">
                               <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.whyChooseHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, whyChooseHeading: e.target.value})} placeholder="e.g. Why Choose Imazen?" />
+                              <input type="text" className={glassInput} value={editingLandingPage.whyChooseHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, whyChooseHeading: e.target.value})} placeholder="e.g. Why Choose Us?" />
                           </div>
                           <div className="mb-4">
                             <label className="block text-[9px] text-gray-500 mb-1 uppercase">Text Alignment</label>
@@ -5289,7 +5289,7 @@ const AdminDashboard = () => {
                           className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
                           value={editingAdminUser.email || ''} 
                           onChange={e => setEditingAdminUser({...editingAdminUser, email: e.target.value})} 
-                          placeholder="admin@imazen.in"
+                          placeholder="admin@example.com"
                         />
                       </div>
                       <div>

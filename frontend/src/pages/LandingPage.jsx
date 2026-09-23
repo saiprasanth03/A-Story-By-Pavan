@@ -244,7 +244,7 @@ const ReferenceLandingPage = () => {
       {/* HEADER */}
       <header className="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src={pageData?.logoUrl || "/images/logo.png"} alt="{pageData?.heroSubheading || 'Imazen Studios'}" className="h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" fetchpriority="high" />
+          <img src={pageData?.logoUrl || "/images/logo.png"} alt={pageData?.heroSubheading || siteConfig.brand.name} className="h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" fetchpriority="high" />
         </button>
         <button 
           onClick={() => setIsModalOpen(true)}
