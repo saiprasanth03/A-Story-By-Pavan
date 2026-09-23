@@ -64,7 +64,7 @@ const Layout = ({ children }) => {
       </main>
       
       {!isAdmin && <Footer />}
-      {!isAdmin && <WhatsAppButton />}
+      {!isAdmin && siteConfig.features.whatsapp && <WhatsAppButton />}
       {!isAdmin && <ScrollToTopButton />}
 
     </div>
@@ -234,19 +234,19 @@ function App() {
                 <Route path="/" element={<Layout><Home /></Layout>} />
                 <Route path="/about" element={<Layout><AboutUs /></Layout>} />
                 <Route path="/packages" element={<Layout><Packages /></Layout>} />
-                <Route path="/portfolio" element={<Layout><ServicePortfolio /></Layout>} />
-                <Route path="/services/:slug" element={<Layout><ServiceDetails /></Layout>} />
-                <Route path="/themes" element={<Layout><Themes /></Layout>} />
-                <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
-                <Route path="/book" element={<Layout><Book /></Layout>} />
-                <Route path="/contact" element={<Layout><Contact /></Layout>} />
+                {siteConfig.features.services && <Route path="/portfolio" element={<Layout><ServicePortfolio /></Layout>} />}
+                {siteConfig.features.services && <Route path="/services/:slug" element={<Layout><ServiceDetails /></Layout>} />}
+                {siteConfig.features.themes && <Route path="/themes" element={<Layout><Themes /></Layout>} />}
+                {siteConfig.features.gallery && <Route path="/gallery" element={<Layout><Gallery /></Layout>} />}
+                {siteConfig.features.booking && <Route path="/book" element={<Layout><Book /></Layout>} />}
+                {siteConfig.features.contact && <Route path="/contact" element={<Layout><Contact /></Layout>} />}
                 <Route path="/thank-you" element={<Layout><ThankYou /></Layout>} />
                 <Route path="/location/:city" element={<Layout><LocationPage /></Layout>} />
-                <Route path="/studio" element={<Layout><Studio /></Layout>} />
-                <Route path="/testimonials" element={<Layout><TestimonialsPage /></Layout>} />
+                {siteConfig.features.studio && <Route path="/studio" element={<Layout><Studio /></Layout>} />}
+                {siteConfig.features.testimonials && <Route path="/testimonials" element={<Layout><TestimonialsPage /></Layout>} />}
                 <Route path="/reference" element={<ReferenceLandingPage />} />
                 <Route path="/wedding" element={<Layout><Wedding /></Layout>} />
-                <Route path="/my-gallery" element={<ClientGalleryPage />} />
+                {siteConfig.features.clientGallery && <Route path="/my-gallery" element={<ClientGalleryPage />} />}
                 <Route path="/:slug" element={<LandingPage />} />
 
                 {/* Catch-all for 404 Not Found */}

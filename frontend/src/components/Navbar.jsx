@@ -60,12 +60,14 @@ const Navbar = () => {
           {/* DESKTOP LINKS */}
           <div className="hidden lg:flex items-center space-x-8">
             {/* Portfolio */}
+            {siteConfig.features.gallery && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0 }}>
               <Link to="/gallery" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block">
                 Portfolio
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </motion.div>
+            )}
 
             {/* Packages with Dropdown */}
             <motion.div 
@@ -121,20 +123,24 @@ const Navbar = () => {
             </motion.div>
 
             {/* Themes */}
+            {siteConfig.features.themes && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.15 }}>
               <Link to="/themes" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block">
                 Themes
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </motion.div>
+            )}
 
             {/* Studio */}
+            {siteConfig.features.studio && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18 }}>
               <Link to="/studio" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block">
                 Studio
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </motion.div>
+            )}
 
             {/* About */}
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
@@ -145,25 +151,30 @@ const Navbar = () => {
             </motion.div>
 
             {/* Testimonials */}
+            {siteConfig.features.testimonials && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25 }}>
               <Link to="/testimonials" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block">
                 Testimonials
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </motion.div>
+            )}
 
             {/* Contact */}
+            {siteConfig.features.contact && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}>
               <Link to="/contact" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block">
                 Contact
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </motion.div>
+            )}
 
 
           </div>
 
           {/* BOOK BUTTON */}
+          {siteConfig.features.booking && (
           <div className="hidden md:flex items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -178,6 +189,7 @@ const Navbar = () => {
               </Link>
             </motion.div>
           </div>
+          )}
 
           {/* MOBILE MENU ICON */}
           <div className="lg:hidden flex items-center z-[60]">
@@ -205,14 +217,15 @@ const Navbar = () => {
           >
             <div className="flex flex-col items-center gap-8 w-full px-6">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Home</Link>
-              <Link to="/gallery" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Portfolio</Link>
+              {siteConfig.features.gallery && <Link to="/gallery" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Portfolio</Link>}
               <Link to="/packages" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Packages</Link>
-              <Link to="/themes" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Themes</Link>
-              <Link to="/studio" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Studio</Link>
+              {siteConfig.features.themes && <Link to="/themes" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Themes</Link>}
+              {siteConfig.features.studio && <Link to="/studio" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Studio</Link>}
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">About</Link>
-              <Link to="/testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Testimonials</Link>
-              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Contact</Link>
+              {siteConfig.features.testimonials && <Link to="/testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Testimonials</Link>}
+              {siteConfig.features.contact && <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Contact</Link>}
 
+              {siteConfig.features.booking && (
               <Link 
                 to="/book"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -220,6 +233,7 @@ const Navbar = () => {
               >
                 Book Session
               </Link>
+              )}
             </div>
           </motion.div>
         )}
