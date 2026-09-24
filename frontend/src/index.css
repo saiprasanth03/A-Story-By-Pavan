@@ -46,6 +46,13 @@
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
     color: transparent;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Fix iOS Parallax issue */

@@ -53,11 +53,11 @@ const EventImageOrEmoji = ({ ev, sel }) => {
         alt={ev.label}
         onError={() => setImgErr(true)}
         style={{ filter: 'brightness(0) invert(1)' }}
-        className={`w-10 h-10 object-contain mb-2.5 transition-all group-hover:scale-110 ${sel ? 'opacity-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'opacity-70 group-hover:opacity-100'}`}
+        className={`w-9 h-9 sm:w-11 sm:h-11 object-contain mb-2 sm:mb-2.5 transition-all group-hover:scale-105 ${sel ? 'opacity-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'opacity-80 group-hover:opacity-100'}`}
       />
     );
   }
-  return <span className="text-2xl mb-2.5 leading-none">{ev.emoji}</span>;
+  return <span className="text-2xl sm:text-3xl mb-2 sm:mb-2.5 leading-none">{ev.emoji}</span>;
 };
 
 /**
@@ -72,12 +72,12 @@ const CoverageImageOrIcon = ({ svc, sel }) => {
         alt={svc.label}
         onError={() => setImgErr(true)}
         style={{ filter: 'brightness(0) invert(1)' }}
-        className={`w-10 h-10 object-contain mb-2.5 transition-all group-hover:scale-110 ${sel ? 'opacity-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'opacity-70 group-hover:opacity-100'}`}
+        className={`w-9 h-9 sm:w-11 sm:h-11 object-contain mb-2 sm:mb-2.5 transition-all group-hover:scale-105 ${sel ? 'opacity-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'opacity-80 group-hover:opacity-100'}`}
       />
     );
   }
   const IconComponent = svc.Icon;
-  return <IconComponent size={24} className={`mb-2.5 ${sel ? 'text-white' : 'text-gray-400'}`} />;
+  return <IconComponent size={24} className={`mb-2 sm:mb-2.5 ${sel ? 'text-white' : 'text-gray-400'}`} />;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,7 +85,10 @@ const CoverageImageOrIcon = ({ svc, sel }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const StepIndicator = ({ current, maxReached, steps, onSelectStep }) => (
-  <div className="flex items-center justify-between max-w-2xl mx-auto mb-10 px-2 overflow-x-auto no-scrollbar">
+  <div
+    className="flex items-center justify-between max-w-2xl mx-auto mb-10 px-2 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden"
+    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+  >
     {steps.map((item, displayIdx) => {
       const stepIndex = item.key;
       const done       = stepIndex < current;
@@ -132,6 +135,11 @@ const GetQuote = () => {
   const [mainStep,       setMainStep]       = useState(0);
   const [eventStep,      setEventStep]      = useState(0); // sub-index within Coverage
   const [maxReachedStep, setMaxReachedStep] = useState(0);
+
+  // Scroll to top on step change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [mainStep, eventStep]);
 
   // Wizard state
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -428,7 +436,7 @@ const GetQuote = () => {
                     <p className="text-gray-400 text-xs tracking-wider uppercase mb-6 font-sans">
                       Choose all celebrations you wish to cover
                     </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                       {EVENT_TYPES.map(ev => {
                         const sel = selectedEvents.includes(ev.id);
                         return (
@@ -439,14 +447,14 @@ const GetQuote = () => {
                               prev.includes(ev.id) ? prev.filter(x => x !== ev.id) : [...prev, ev.id]
                             )}
                             className={`
-                              group flex flex-col items-center justify-center p-4 border transition-all duration-300 cursor-pointer rounded-xl
+                              group flex flex-col items-center justify-center p-3.5 sm:p-5 border transition-all duration-300 cursor-pointer rounded-xl
                               ${sel ? 'border-white bg-white/15 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' : 'border-white/10 bg-[#141414] text-gray-400 hover:border-white/30 hover:bg-[#1a1a1a] hover:text-white'}
                             `}
-                            style={{ minHeight: 105 }}
+                            style={{ minHeight: 145 }}
                           >
                             <EventImageOrEmoji ev={ev} sel={sel} />
-                            <span className={`text-[10px] tracking-widest uppercase text-center leading-snug font-sans font-medium
-                              ${sel ? 'text-white font-bold' : 'text-gray-400'}`}>
+                            <span className={`font-cinzel text-[10px] sm:text-xs tracking-wider uppercase text-center leading-tight font-semibold
+                              ${sel ? 'text-white font-bold' : 'text-gray-300'}`}>
                               {ev.label}
                             </span>
                           </button>
@@ -482,7 +490,7 @@ const GetQuote = () => {
                         EVENT {eventStep + 1} OF {selectedEvents.length}: <span className="text-gray-300">{ev?.label}</span>
                       </p>
 
-                      <div className="border border-white/15 bg-[#141414] p-5 sm:p-6 rounded-xl">
+                      <div className="border border-white/15 bg-[#141414] p-4 sm:p-6 rounded-xl">
                         {/* Event label + duration selector */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                           <h3 className="font-cinzel text-white text-sm tracking-wider uppercase">{ev?.label} Duration</h3>
@@ -498,7 +506,7 @@ const GetQuote = () => {
                         </div>
 
                         {/* Services grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                           {COVERAGE_SERVICES.map(svc => {
                             const qty       = getServiceQty(evId, svc.id);
                             const sel       = qty > 0;
@@ -511,17 +519,17 @@ const GetQuote = () => {
                                 onMouseLeave={() => setHoveredSvc(null)}
                                 onClick={() => { if (qty === 0) updateServiceQty(evId, svc.id, 1); }}
                                 className={`
-                                  group relative p-5 border transition-all duration-300 cursor-pointer rounded-xl flex flex-col justify-between overflow-hidden
+                                  group relative p-3.5 sm:p-4 border transition-all duration-300 cursor-pointer rounded-xl flex flex-col justify-between overflow-hidden
                                   ${sel ? 'border-white bg-white/15 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' : 'border-white/10 bg-[#1a1a1a] text-gray-400 hover:border-white/40 hover:bg-[#202020] hover:text-white'}
                                 `}
-                                style={{ minHeight: 185 }}
+                                style={{ minHeight: 150 }}
                               >
                                 {/* HOVERED STATE: Detailed description & Stepper Overlay */}
                                 {isHovered ? (
                                   <div className="flex flex-col justify-between h-full w-full animate-fade-in">
                                     {/* Top Bar: Price tag + Stepper controls */}
-                                    <div className="flex items-center justify-between gap-2 mb-2">
-                                      <span className="text-[11px] font-bold text-white bg-black/70 border border-white/30 px-2.5 py-1 rounded-md">
+                                    <div className="flex items-center justify-between gap-1 mb-1">
+                                      <span className="text-[10px] font-bold text-white bg-black/80 border border-white/30 px-2 py-0.5 rounded">
                                         {fmt(svc.price * (qty > 0 ? qty : 1))}
                                       </span>
 
@@ -529,52 +537,52 @@ const GetQuote = () => {
                                         <button
                                           type="button"
                                           onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, 1); }}
-                                          className="w-7 h-7 rounded-lg border border-white/30 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition"
+                                          className="w-6 h-6 rounded border border-white/30 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition"
                                         >
-                                          <Plus size={14} />
+                                          <Plus size={12} />
                                         </button>
                                       ) : (
-                                        <div className="flex items-center gap-1.5 bg-black/80 border border-white/30 rounded-lg p-0.5" onClick={(e) => e.stopPropagation()}>
+                                        <div className="flex items-center gap-1 bg-black/80 border border-white/30 rounded p-0.5" onClick={(e) => e.stopPropagation()}>
                                           <button
                                             type="button"
                                             onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, qty - 1); }}
-                                            className="w-6 h-6 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
+                                            className="w-5 h-5 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
                                           >
-                                            <Minus size={11} />
+                                            <Minus size={10} />
                                           </button>
-                                          <span className="text-xs font-bold text-white w-4 text-center">{qty}</span>
+                                          <span className="text-[11px] font-bold text-white w-3 text-center">{qty}</span>
                                           <button
                                             type="button"
                                             onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, qty + 1); }}
-                                            className="w-6 h-6 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
+                                            className="w-5 h-5 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
                                           >
-                                            <Plus size={11} />
+                                            <Plus size={10} />
                                           </button>
                                         </div>
                                       )}
                                     </div>
 
                                     {/* Middle: Title */}
-                                    <h4 className="font-cinzel text-white text-xs font-bold tracking-wider uppercase my-1">
+                                    <h4 className="font-cinzel text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase my-0.5 leading-tight">
                                       {svc.label}
                                     </h4>
 
                                     {/* Bottom: Detailed Description Text */}
-                                    <p className="text-gray-300 text-[10px] leading-relaxed font-sans line-clamp-4">
+                                    <p className="text-gray-300 text-[9px] sm:text-[10px] leading-tight font-sans line-clamp-3">
                                       {svc.desc}
                                     </p>
                                   </div>
                                 ) : (
                                   /* UNHOVERED STATE: Clean Icon + Label + Qty Badge when Selected */
-                                  <div className="relative flex flex-col items-center justify-center h-full w-full py-2">
+                                  <div className="relative flex flex-col items-center justify-center h-full w-full py-1">
                                     <CoverageImageOrIcon svc={svc} sel={sel} />
-                                    <span className={`text-[11px] tracking-widest uppercase text-center leading-snug font-sans font-medium mt-2 ${sel ? 'text-white font-bold' : 'text-gray-300'}`}>
+                                    <span className={`font-cinzel text-[10px] sm:text-xs tracking-wider uppercase text-center leading-tight font-semibold ${sel ? 'text-white font-bold' : 'text-gray-300'}`}>
                                       {svc.label}
                                     </span>
 
                                     {/* Pinned Bottom-Right Qty Badge (Matching Image 2 Reference) */}
                                     {sel && (
-                                      <span className="absolute bottom-0 right-0 text-[10px] font-mono text-white bg-black/90 border border-white/40 px-2 py-0.5 rounded shadow-sm font-semibold">
+                                      <span className="absolute bottom-0 right-0 text-[9px] font-mono text-white bg-black/90 border border-white/40 px-1.5 py-0.5 rounded shadow-sm font-semibold">
                                         Qty: {qty}
                                       </span>
                                     )}
