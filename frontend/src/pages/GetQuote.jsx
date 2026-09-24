@@ -457,7 +457,7 @@ const GetQuote = () => {
                 )}
 
                 {/* ════════════════════════════════════════════════════════════
-                    STEP 2 — CONFIGURE COVERAGE (with Quantity Stepper & Description Overlay)
+                    STEP 2 — CONFIGURE COVERAGE (Hover overlay mode + Unhovered Qty Badge)
                 ════════════════════════════════════════════════════════════ */}
                 {mainStep === 1 && selectedEvents.length > 0 && (() => {
                   const evId = selectedEvents[eventStep];
@@ -516,8 +516,8 @@ const GetQuote = () => {
                                 `}
                                 style={{ minHeight: 185 }}
                               >
-                                {/* Active or Hover Overlay Mode */}
-                                {(isHovered || sel) ? (
+                                {/* HOVERED STATE: Detailed description & Stepper Overlay */}
+                                {isHovered ? (
                                   <div className="flex flex-col justify-between h-full w-full animate-fade-in">
                                     {/* Top Bar: Price tag + Stepper controls */}
                                     <div className="flex items-center justify-between gap-2 mb-2">
@@ -565,12 +565,19 @@ const GetQuote = () => {
                                     </p>
                                   </div>
                                 ) : (
-                                  /* Normal Icon View */
-                                  <div className="flex flex-col items-center justify-center h-full w-full py-2">
+                                  /* UNHOVERED STATE: Clean Icon + Label + Qty Badge when Selected */
+                                  <div className="relative flex flex-col items-center justify-center h-full w-full py-2">
                                     <CoverageImageOrIcon svc={svc} sel={sel} />
-                                    <span className="text-[11px] tracking-widest uppercase text-center leading-snug font-sans font-medium text-gray-300 mt-2">
+                                    <span className={`text-[11px] tracking-widest uppercase text-center leading-snug font-sans font-medium mt-2 ${sel ? 'text-white font-bold' : 'text-gray-300'}`}>
                                       {svc.label}
                                     </span>
+
+                                    {/* Pinned Bottom-Right Qty Badge (Matching Image 2 Reference) */}
+                                    {sel && (
+                                      <span className="absolute bottom-0 right-0 text-[10px] font-mono text-white bg-black/90 border border-white/40 px-2 py-0.5 rounded shadow-sm font-semibold">
+                                        Qty: {qty}
+                                      </span>
+                                    )}
                                   </div>
                                 )}
                               </div>
