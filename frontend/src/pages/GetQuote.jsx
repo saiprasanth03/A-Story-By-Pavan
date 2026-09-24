@@ -135,7 +135,7 @@ const GetQuote = () => {
 
   // Wizard state
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const [coverage,       setCoverage]       = useState({}); // { evId: { duration, services[] } }
+  const [coverage,       setCoverage]       = useState({}); // { evId: { duration, services: [], serviceQtys: {} } }
   const [prewedPkg,      setPrewedPkg]      = useState(null);
   const [postProd,       setPostProd]        = useState('standard');
   const [albumTier,      setAlbumTier]      = useState(null);
@@ -162,14 +162,54 @@ const GetQuote = () => {
     setMaxReachedStep(prev => Math.max(prev, mainStep));
   }, [mainStep]);
 
+  // Coverage Quantity Helpers
+  const getServiceQty = (evId, svcId) => {
+    const cfg = coverage[evId] || {};
+    if (cfg.serviceQtys && cfg.serviceQtys[svcId] !== undefined) {
+      return cfg.serviceQtys[svcId];
+    }
+    return (cfg.services || []).includes(svcId) ? 1 : 0;
+  };
+
+  const updateServiceQty = (evId, svcId, newQty) => {
+    const qty = Math.max(0, newQty);
+    setCoverage(prev => {
+      const cur = prev[evId] || { duration: 'half-day', services: [], serviceQtys: {} };
+      const curQtys = { ...(cur.serviceQtys || {}) };
+      if (qty > 0) {
+        curQtys[svcId] = qty;
+      } else {
+        delete curQtys[svcId];
+      }
+      const svcs = Object.keys(curQtys);
+      return {
+        ...prev,
+        [evId]: {
+          ...cur,
+          services: svcs,
+          serviceQtys: curQtys,
+        }
+      };
+    });
+  };
+
   // ── Total calculation ──────────────────────────────────────────────────────
   const total = useMemo(() => {
     let t = 0;
     selectedEvents.forEach(evId => {
-      (coverage[evId]?.services || []).forEach(svcId => {
-        const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
-        if (svc) t += svc.price;
-      });
+      const cfg = coverage[evId] || {};
+      const qtys = cfg.serviceQtys || {};
+      if (Object.keys(qtys).length > 0) {
+        Object.entries(qtys).forEach(([svcId, q]) => {
+          const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
+          if (svc && q > 0) t += q * svc.price;
+        });
+      } else {
+        (cfg.services || []).forEach(svcId => {
+          const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
+          if (svc) t += svc.price;
+        });
+      }
     });
     if (hasPrewedding && prewedPkg) t += prewedPkg.price;
     if (postProd === 'documentary') t += 25000;
@@ -192,10 +232,26 @@ const GetQuote = () => {
       const ev  = EVENT_TYPES.find(e => e.id === evId);
       const cfg = coverage[evId] || {};
       const dur = DURATIONS.find(d => d.id === (cfg.duration || 'half-day'));
-      (cfg.services || []).forEach(svcId => {
-        const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
-        if (svc) items.push({ label: `${ev?.label} (${dur?.label})`, sub: svc.label, price: svc.price });
-      });
+      const qtys = cfg.serviceQtys || {};
+      if (Object.keys(qtys).length > 0) {
+        Object.entries(qtys).forEach(([svcId, q]) => {
+          if (q > 0) {
+            const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
+            if (svc) {
+              items.push({
+                label: `${ev?.label} (${dur?.label})`,
+                sub: `${svc.label}${q > 1 ? ` (×${q})` : ''}`,
+                price: q * svc.price,
+              });
+            }
+          }
+        });
+      } else {
+        (cfg.services || []).forEach(svcId => {
+          const svc = COVERAGE_SERVICES.find(s => s.id === svcId);
+          if (svc) items.push({ label: `${ev?.label} (${dur?.label})`, sub: svc.label, price: svc.price });
+        });
+      }
     });
     if (hasPrewedding && prewedPkg) items.push({ label: prewedPkg.name, price: prewedPkg.price });
     if (postProd === 'documentary') items.push({ label: 'Film Post-Production: Documentary Style Wedding Film', price: 25000 });
@@ -236,20 +292,9 @@ const GetQuote = () => {
     return true;
   };
 
-  // ── Coverage helpers ───────────────────────────────────────────────────────
-  const toggleService = (evId, svcId) => {
-    setCoverage(prev => {
-      const cur  = prev[evId] || { duration: 'half-day', services: [] };
-      const svcs = cur.services.includes(svcId)
-        ? cur.services.filter(x => x !== svcId)
-        : [...cur.services, svcId];
-      return { ...prev, [evId]: { ...cur, services: svcs } };
-    });
-  };
-
   const setDuration = (evId, dur) => {
     setCoverage(prev => {
-      const cur = prev[evId] || { duration: 'half-day', services: [] };
+      const cur = prev[evId] || { duration: 'half-day', services: [], serviceQtys: {} };
       return { ...prev, [evId]: { ...cur, duration: dur } };
     });
   };
@@ -264,13 +309,26 @@ const GetQuote = () => {
         events: selectedEvents.map(evId => {
           const ev  = EVENT_TYPES.find(e => e.id === evId);
           const cfg = coverage[evId] || {};
+          const qtys = cfg.serviceQtys || {};
+          const serviceList = [];
+          if (Object.keys(qtys).length > 0) {
+            Object.entries(qtys).forEach(([sid, q]) => {
+              if (q > 0) {
+                const s = COVERAGE_SERVICES.find(x => x.id === sid);
+                serviceList.push({ name: `${s?.label || sid}${q > 1 ? ` (×${q})` : ''}`, quantity: q, unitPrice: s?.price || 0, price: (s?.price || 0) * q });
+              }
+            });
+          } else {
+            (cfg.services || []).forEach(sid => {
+              const s = COVERAGE_SERVICES.find(x => x.id === sid);
+              serviceList.push({ name: s?.label || sid, quantity: 1, unitPrice: s?.price || 0, price: s?.price || 0 });
+            });
+          }
+
           return {
             eventType: ev?.label || evId,
             shootingDays: cfg.duration === '2-days' ? 2 : cfg.duration === '3-plus' ? 3 : 1,
-            services: (cfg.services || []).map(sid => {
-              const s = COVERAGE_SERVICES.find(x => x.id === sid);
-              return { name: s?.label || sid, price: s?.price || 0 };
-            }),
+            services: serviceList,
           };
         }),
         selectedPackage: (hasPrewedding && prewedPkg) ? { name: prewedPkg.name, price: prewedPkg.price } : null,
@@ -399,12 +457,12 @@ const GetQuote = () => {
                 )}
 
                 {/* ════════════════════════════════════════════════════════════
-                    STEP 2 — CONFIGURE COVERAGE (per-event sub-navigation + HOVER OVERLAY)
+                    STEP 2 — CONFIGURE COVERAGE (with Quantity Stepper & Description Overlay)
                 ════════════════════════════════════════════════════════════ */}
                 {mainStep === 1 && selectedEvents.length > 0 && (() => {
                   const evId = selectedEvents[eventStep];
                   const ev   = EVENT_TYPES.find(e => e.id === evId);
-                  const cfg  = coverage[evId] || { duration: 'half-day', services: [] };
+                  const cfg  = coverage[evId] || { duration: 'half-day', services: [], serviceQtys: {} };
                   return (
                     <div>
                       <div className="flex items-center justify-between mb-1">
@@ -442,7 +500,8 @@ const GetQuote = () => {
                         {/* Services grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                           {COVERAGE_SERVICES.map(svc => {
-                            const sel       = (cfg.services || []).includes(svc.id);
+                            const qty       = getServiceQty(evId, svc.id);
+                            const sel       = qty > 0;
                             const isHovered = hoveredSvc === svc.id;
 
                             return (
@@ -450,25 +509,49 @@ const GetQuote = () => {
                                 key={svc.id}
                                 onMouseEnter={() => setHoveredSvc(svc.id)}
                                 onMouseLeave={() => setHoveredSvc(null)}
-                                onClick={() => toggleService(evId, svc.id)}
+                                onClick={() => { if (qty === 0) updateServiceQty(evId, svc.id, 1); }}
                                 className={`
                                   group relative p-5 border transition-all duration-300 cursor-pointer rounded-xl flex flex-col justify-between overflow-hidden
                                   ${sel ? 'border-white bg-white/15 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' : 'border-white/10 bg-[#1a1a1a] text-gray-400 hover:border-white/40 hover:bg-[#202020] hover:text-white'}
                                 `}
-                                style={{ minHeight: 180 }}
+                                style={{ minHeight: 185 }}
                               >
-                                {/* Active or Hover Overlay Mode (Matching Image 2 Reference) */}
+                                {/* Active or Hover Overlay Mode */}
                                 {(isHovered || sel) ? (
                                   <div className="flex flex-col justify-between h-full w-full animate-fade-in">
-                                    {/* Top Bar: Price tag + Control button */}
+                                    {/* Top Bar: Price tag + Stepper controls */}
                                     <div className="flex items-center justify-between gap-2 mb-2">
-                                      <span className="text-[11px] font-bold text-white bg-black/60 border border-white/30 px-2.5 py-1 rounded-md">
-                                        {fmt(svc.price)}
+                                      <span className="text-[11px] font-bold text-white bg-black/70 border border-white/30 px-2.5 py-1 rounded-md">
+                                        {fmt(svc.price * (qty > 0 ? qty : 1))}
                                       </span>
-                                      <div className={`w-6 h-6 rounded-md border flex items-center justify-center transition
-                                        ${sel ? 'bg-white border-white text-black' : 'border-white/40 bg-black/40 text-white'}`}>
-                                        {sel ? <Check size={14} strokeWidth={3} /> : <Plus size={14} />}
-                                      </div>
+
+                                      {qty === 0 ? (
+                                        <button
+                                          type="button"
+                                          onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, 1); }}
+                                          className="w-7 h-7 rounded-lg border border-white/30 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition"
+                                        >
+                                          <Plus size={14} />
+                                        </button>
+                                      ) : (
+                                        <div className="flex items-center gap-1.5 bg-black/80 border border-white/30 rounded-lg p-0.5" onClick={(e) => e.stopPropagation()}>
+                                          <button
+                                            type="button"
+                                            onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, qty - 1); }}
+                                            className="w-6 h-6 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
+                                          >
+                                            <Minus size={11} />
+                                          </button>
+                                          <span className="text-xs font-bold text-white w-4 text-center">{qty}</span>
+                                          <button
+                                            type="button"
+                                            onClick={(e) => { e.stopPropagation(); updateServiceQty(evId, svc.id, qty + 1); }}
+                                            className="w-6 h-6 rounded bg-[#252525] border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition"
+                                          >
+                                            <Plus size={11} />
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
 
                                     {/* Middle: Title */}
