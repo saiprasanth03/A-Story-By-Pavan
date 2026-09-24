@@ -7,6 +7,7 @@ const logoPath = path.join(__dirnamePath, '../../frontend/public/images/logo.png
 
 import Lead from '../models/Lead.js';
 import Booking from '../models/Booking.js';
+import Settings from '../models/Settings.js';
 import { getMailer } from '../mailer.js';
 
 const router = express.Router();
@@ -31,24 +32,29 @@ router.post('/', async (req, res) => {
       try {
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
           const mailer = getTransporter();
+          const settings = await Settings.findOne().catch(() => null) || {};
+          const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+          const logoHtml = settings.logoUrl
+            ? `<img src="${settings.logoUrl}" alt="${businessName}" style="max-width: 150px; height: auto;" />`
+            : `<h2 style="color: #ffffff; margin: 0; letter-spacing: 2px;">${businessName}</h2>`;
           
           // 1. Email to Client
           await mailer.sendMail({
-            from: `"Imazen Studios" <${process.env.EMAIL_USER}>`,
+            from: `"${businessName}" <${process.env.EMAIL_USER}>`,
             to: lead.email,
-            subject: "Thank you for your interest in Imazen Studios!",
+            subject: `Thank you for your interest in ${businessName}!`,
             html: `
               <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                  <img src="https://imazenstudios.com/images/logo.png" alt="Imazen Studios" style="max-width: 150px; height: auto;" />
+                  ${logoHtml}
                 </div>
                 <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${lead.name}!</h2>
                 <p>We have successfully received your inquiry ${lead.interestedIn ? `for <strong>${lead.interestedIn}</strong>` : ''}${lead.eventDate ? ` for the date: <strong>${new Date(lead.eventDate).toLocaleDateString()}</strong>` : ''}.</p>
-                <p>Our team at Imazen Studios is reviewing your details and will get back to you shortly to discuss your vision.</p>
+                <p>Our team at ${businessName} is reviewing your details and will get back to you shortly to discuss your vision.</p>
                 <br/>
                 <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
                 <p style="font-size: 12px; color: #999;">
-                  Imazen Studios<br/>
+                  ${businessName}<br/>
                   This is an automated message.
                 </p>
               </div>
@@ -57,13 +63,13 @@ router.post('/', async (req, res) => {
 
           // 2. Email to Admin Team
           await mailer.sendMail({
-            from: `"Imazen Website" <${process.env.EMAIL_USER}>`,
+            from: `"${businessName} Website" <${process.env.EMAIL_USER}>`,
             to: process.env.EMAIL_USER, // Sending to the admin email
             subject: `New Lead: ${lead.name} via ${lead.landingPageSource}`,
             html: `
               <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                  <img src="https://imazenstudios.com/images/logo.png" alt="Imazen Studios" style="max-width: 150px; height: auto;" />
+                  ${logoHtml}
                 </div>
                 <h2 style="color: #d4af37; text-transform: uppercase;">New Landing Page Lead</h2>
                 <p><strong>Name:</strong> ${lead.name}</p>

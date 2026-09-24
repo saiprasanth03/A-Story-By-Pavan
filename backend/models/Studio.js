@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const studioSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: 'Imazen Studios'
+    default: 'Creative Studio'
   },
   description: {
     type: String,

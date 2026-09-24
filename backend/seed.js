@@ -7,7 +7,7 @@ dotenv.config();
 
 const seedData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/imazen-studios');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/studio-template');
     console.log('Connected to MongoDB for seeding');
 
     // Clear existing data
@@ -19,14 +19,14 @@ const seedData = async () => {
       {
         section: 'Hero',
         title: 'Timeless & Cinematic Memories.',
-        subtitle: 'Largest Baby & Maternity Photography Studio in Srikakulam',
-        description: 'Capturing Beautiful Memories for Babies, Mothers & Families',
+        subtitle: 'Premium Photography & Creative Studio',
+        description: 'Capturing Beautiful Memories for Babies, Families & Creators',
       },
       {
         section: 'About',
         title: 'Premium Studio Experience',
-        description: 'Imazen Studios is the largest premium photography studio in Srikakulam, offering baby-friendly environments, comfortable spaces for mothers, and a highly professional team focused on emotional storytelling.',
-        features: ['30+ Creative Baby Themes', '10+ Maternity Themes', 'Fully Air-Conditioned Studio', 'Baby-Friendly Environment']
+        description: 'Our studio is a premier photography space offering versatile creative setups, comfortable spaces, and a highly professional team focused on emotional storytelling.',
+        features: ['30+ Creative Themes', 'Premium Equipment', 'Fully Air-Conditioned Studio', 'Comfortable Environment']
       },
       {
         section: 'Offerings',

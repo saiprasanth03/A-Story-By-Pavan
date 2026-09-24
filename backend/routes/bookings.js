@@ -288,14 +288,20 @@ router.post('/', async (req, res) => {
         const transporter = getMailer(authUser, authPass);
 
         const settings = await Settings.findOne() || {};
+        const businessName = settings.businessName || process.env.APP_NAME || 'Studio OS';
+        const contactEmail = settings.contactEmail || process.env.EMAIL_USER || 'contact@example.com';
+        const logoHtml = settings.logoUrl 
+          ? `<img src="${settings.logoUrl}" alt="${businessName}" style="max-width: 150px; height: auto;" />`
+          : `<h2 style="color: #ffffff; margin: 0; letter-spacing: 2px;">${businessName}</h2>`;
+
         const teamEmails = settings.teamEmails && settings.teamEmails.length > 0 
           ? settings.teamEmails 
-          : [settings.contactEmail || 'hello@imazenstudios.in'];
+          : [contactEmail];
 
         const emailHtml = `
           <div style="background-color: #000000; padding: 40px 30px; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; border-radius: 8px;">
             <div style="text-align: center; margin-bottom: 20px;">
-              <img src="https://imazenstudios.com/images/logo.png" alt="Imazen Studios" style="max-width: 150px; height: auto;" />
+              ${logoHtml}
             </div>
             <h2 style="color: #ffffff;">New Booking Request</h2>
             <p style="color: #ffffff;"><strong>Name:</strong> ${name}</p>
@@ -314,7 +320,7 @@ router.post('/', async (req, res) => {
         const clientEmailHtml = `
           <div style="background-color: #000000; padding: 40px 30px; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; border-radius: 8px;">
             <div style="text-align: center; margin-bottom: 40px;">
-              <img src="https://imazenstudios.com/images/logo.png" alt="Imazen Studios" style="max-width: 200px; height: auto;" />
+              ${logoHtml}
             </div>
             <p style="font-size: 15px; line-height: 1.6; margin-bottom: 25px; color: #e5e5e5;">
               Hi ${name},
@@ -346,22 +352,22 @@ router.post('/', async (req, res) => {
               Our team will review your request and be in touch shortly to confirm your slot.
             </p>
             <div style="margin-top: 50px; font-size: 11px; color: #737373; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-              <p>Imazen Studios</p>
+              <p>${businessName}</p>
               <p>Follow the link to opt out of future emails: <a href="#" style="color: #a3a3a3;">Click here to unsubscribe</a></p>
             </div>
           </div>
         `;
 
         transporter.sendMail({
-          from: `"Imazen Studios" <${authUser}>`,
+          from: `"${businessName}" <${authUser}>`,
           to: email,
-          subject: 'Your Imazen Studios Booking Request',
+          subject: `Your ${businessName} Booking Request`,
           html: clientEmailHtml
         }).catch(e => console.error('Client email failed:', e));
 
         // Send to Team
         transporter.sendMail({
-          from: `"Imazen Studios System" <${authUser}>`,
+          from: `"${businessName} System" <${authUser}>`,
           to: teamEmails.join(', '),
           subject: `New Booking: ${shootType} on ${date}`,
           html: emailHtml
@@ -459,10 +465,12 @@ router.put('/:id/details', async (req, res) => {
     if (booking.assignedTeamMember && String(existingBooking?.assignedTeamMember) !== String(booking.assignedTeamMember)) {
       const teamMember = await TeamMember.findById(booking.assignedTeamMember);
       if (teamMember && teamMember.email) {
+        const settings = await Settings.findOne().catch(() => null) || {};
+        const appName = settings.businessName || process.env.APP_NAME || 'Studio OS';
         await sendEmail({
           to: teamMember.email,
           subject: `You have been assigned to a Booking: ${booking.shootType || booking.package || 'Shoot'}`,
-          text: `Hi ${teamMember.name},\n\nYou have been assigned to a booking scheduled for ${booking.date} (${booking.slot || booking.slots?.join(', ')}).\n\nClient: ${booking.name || 'N/A'}\nPhone: ${booking.phone}\nStatus: ${booking.status}\n\nThanks,\nImazen OS`
+          text: `Hi ${teamMember.name},\n\nYou have been assigned to a booking scheduled for ${booking.date} (${booking.slot || booking.slots?.join(', ')}).\n\nClient: ${booking.name || 'N/A'}\nPhone: ${booking.phone}\nStatus: ${booking.status}\n\nThanks,\n${appName}`
         }).catch(err => console.error("Failed to send assignment email:", err));
       }
     }

@@ -7,6 +7,7 @@ const logoPath = path.join(__dirnamePath, '../../frontend/public/images/logo.png
 
 import Inquiry from '../models/Inquiry.js';
 import Booking from '../models/Booking.js';
+import Settings from '../models/Settings.js';
 import { getMailer } from '../mailer.js';
 
 const router = express.Router();
@@ -29,18 +30,24 @@ router.post('/', async (req, res) => {
     // Send thank you email
     try {
       if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        const settings = await Settings.findOne().catch(() => null) || {};
+        const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+        const logoHtml = settings.logoUrl
+          ? `<img src="${settings.logoUrl}" alt="${businessName}" style="max-width: 150px; height: auto;" />`
+          : `<h2 style="color: #ffffff; margin: 0; letter-spacing: 2px;">${businessName}</h2>`;
+
         await getTransporter().sendMail({
-          from: `"Imazen Studios" <${process.env.EMAIL_USER}>`,
+          from: `"${businessName}" <${process.env.EMAIL_USER}>`,
           to: inquiry.email,
-          subject: "Thank you for contacting Imazen Studios!",
+          subject: `Thank you for contacting ${businessName}!`,
           html: `
             <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
               <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://imazenstudios.com/images/logo.png" alt="Imazen Studios" style="max-width: 150px; height: auto;" />
+                ${logoHtml}
               </div>
               <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${inquiry.name}!</h2>
               <p>We have successfully received your inquiry regarding <strong>"${inquiry.subject}"</strong>.</p>
-              <p>Our team at Imazen Studios is currently reviewing your message and will get back to you shortly.</p>
+              <p>Our team at ${businessName} is currently reviewing your message and will get back to you shortly.</p>
               <br/>
               <p><strong>Your Message:</strong></p>
               <blockquote style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffffff; font-style: italic; color: #ffffff;">
@@ -49,7 +56,7 @@ router.post('/', async (req, res) => {
               <br/>
               <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
               <p style="font-size: 12px; color: #999;">
-                Imazen Studios<br/>
+                ${businessName}<br/>
                 This is an automated message.
               </p>
             </div>

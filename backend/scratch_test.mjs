@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import { google } from 'googleapis';
 
+dotenv.config();
+
 async function test() {
-  await mongoose.connect('mongodb+srv://imazenstudios_db_user:3iZ1x8HY8mfdnEBz@cluster0.n6q9lgi.mongodb.net/?appName=Cluster0');
+  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/studio-template');
   const ClientGallery = mongoose.model('ClientGallery', new mongoose.Schema({ clientEmail: String, eventName: String, folderLink: String, images: Array }, { strict: false }));
   
   const galleries = await ClientGallery.find({ clientEmail: 'tiru@gmail.com' });

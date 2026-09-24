@@ -65,7 +65,7 @@ app.use('/api/business', businessRoutes);
 app.use('/api/client-gallery', clientGalleryRoutes);
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/imazen-studios')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/studio-template')
   .then(() => {
     console.log('Connected to MongoDB');
 

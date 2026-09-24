@@ -84,10 +84,11 @@ router.post('/forgot-password', async (req, res) => {
       process.env.EMAIL_PASS || 'password'
     );
 
+    const appName = process.env.APP_NAME || 'Studio OS';
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'no-reply@imazenstudios.com',
+      from: `"${appName}" <${process.env.EMAIL_USER || 'no-reply@example.com'}>`,
       to: email,
-      subject: 'Imazen Studios - Password Reset OTP',
+      subject: `${appName} - Password Reset OTP`,
       text: `Your OTP for password reset is: ${otp}. It is valid for 15 minutes.`
     };
 

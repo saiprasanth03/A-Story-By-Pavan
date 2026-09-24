@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// The old database connection string
-const OLD_URI = "mongodb+srv://astitvacreations1008_db_user:zO1XiZjVJQnNlzHx@cluster0.i8iok0j.mongodb.net/?appName=Cluster0";
+// The old database connection string from environment
+const OLD_URI = process.env.OLD_MONGODB_URI || "mongodb://localhost:27017/old-db";
 // The new database connection string from your updated .env
-const NEW_URI = process.env.MONGODB_URI;
+const NEW_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/studio-template";
 
 if (!NEW_URI || NEW_URI === OLD_URI) {
   console.error("Please make sure your new MONGODB_URI is correctly set in the .env file and is different from the old one.");

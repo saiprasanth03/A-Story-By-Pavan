@@ -1,9 +1,9 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
-// REPLACE THESE WITH YOUR ACTUAL URIs
-const SOURCE_URI = "mongodb+srv://twilightstudios08_db_user:XwpZmzTXDUzlkaGQ@cluster0.y9xmdyr.mongodb.net/?appName=Cluster0";
-const DESTINATION_URI = "mongodb+srv://imazenstudios_db_user:3iZ1x8HY8mfdnEBz@cluster0.n6q9lgi.mongodb.net/?appName=Cluster0";
+// Reads from environment variables
+const SOURCE_URI = process.env.SOURCE_URI || "mongodb://localhost:27017/source-db";
+const DESTINATION_URI = process.env.DESTINATION_URI || "mongodb://localhost:27017/studio-template";
 
 async function migrate() {
   const sourceClient = new MongoClient(SOURCE_URI);

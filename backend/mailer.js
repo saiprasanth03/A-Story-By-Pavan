@@ -6,11 +6,9 @@ export const getMailer = (user, pass) => {
 
   return {
     sendMail: async (options) => {
-      // Enforce the verified domain as the sender. 
-      // If the domain is imazenstudios.com, the from MUST end in @imazenstudios.com
-      const fromEmail = 'info@imazenstudios.com';
-      const fromName = 'Imazen Studios';
-      const formattedFrom = `${fromName} <${fromEmail}>`;
+      const fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'no-reply@example.com';
+      const fromName = process.env.APP_NAME || 'Studio';
+      const formattedFrom = options.from || `${fromName} <${fromEmail}>`;
 
       // Handle multiple recipients (Nodemailer uses comma separated string, Resend prefers array)
       let toArray = [];
@@ -30,7 +28,7 @@ export const getMailer = (user, pass) => {
         from: formattedFrom,
         to: toArray,
         subject: options.subject,
-        reply_to: 'imazenstudios@gmail.com',
+        reply_to: options.replyTo || options.reply_to || fromEmail,
       };
 
       if (options.text) resendOptions.text = options.text;

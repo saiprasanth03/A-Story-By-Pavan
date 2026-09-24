@@ -27,7 +27,7 @@ async function uploadToNewCloudinary(oldUrl) {
   console.log(`Uploading: ${oldUrl}`);
   try {
     const result = await cloudinary.uploader.upload(oldUrl, {
-      folder: 'imazen_studios'
+      folder: process.env.CLOUDINARY_FOLDER || 'studio_uploads'
     });
     return result.secure_url;
   } catch (error) {

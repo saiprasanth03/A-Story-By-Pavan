@@ -223,12 +223,13 @@ router.post('/test-email', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Email credentials (EMAIL_USER / EMAIL_PASS) are not configured on the server.' });
     }
 
+    const appName = process.env.APP_NAME || 'Studio OS';
     const transporter = getMailer();
 
     const info = await transporter.sendMail({
-      from: `"Imazen Test" <${process.env.EMAIL_USER}>`,
+      from: `"${appName} Test" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Imazen Studios - Email Configuration Test",
+      subject: `${appName} - Email Configuration Test`,
       text: "If you are receiving this email, your Nodemailer configuration is working perfectly!"
     });
 

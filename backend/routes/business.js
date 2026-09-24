@@ -5,6 +5,7 @@ import PropRental from '../models/PropRental.js';
 import Event from '../models/Event.js';
 import RentalItem from '../models/RentalItem.js';
 import TeamMember from '../models/TeamMember.js';
+import Settings from '../models/Settings.js';
 import { sendEmail } from '../mailer.js';
 import { generateEventPdf } from '../pdfGenerator.js';
 
@@ -291,10 +292,16 @@ router.get('/events/:id/send-pdf', async (req, res) => {
     const pdfBuffer = await generateEventPdf(event, discount);
     const pdfBase64 = pdfBuffer.toString('base64');
     
+    // Fetch settings for dynamic business branding
+    const settings = await Settings.findOne().catch(() => null) || {};
+    const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+    const contactEmail = settings.contactEmail || process.env.EMAIL_USER;
+    const safeFilename = `${businessName.replace(/[^a-zA-Z0-9]/g, '')}_${event.phone || 'Event'}.pdf`;
+
     // Define recipients
     const toEmails = [];
     if (event.email) toEmails.push(event.email);
-    toEmails.push('imazenstudios@gmail.com');
+    if (contactEmail && !toEmails.includes(contactEmail)) toEmails.push(contactEmail);
     
     if (toEmails.length === 0) {
       return res.status(400).json({ error: 'No email address found for client.' });
@@ -303,10 +310,10 @@ router.get('/events/:id/send-pdf', async (req, res) => {
     await sendEmail({
       to: toEmails,
       subject: `Event Summary: ${event.name}`,
-      text: `Hi ${event.clientName || 'Client'},\n\nPlease find attached the summary for the event "${event.name}".\n\nThanks,\nImazen Studios`,
+      text: `Hi ${event.clientName || 'Client'},\n\nPlease find attached the summary for the event "${event.name}".\n\nThanks,\n${businessName}`,
       attachments: [
         {
-          filename: `ImazenStudios_${event.phone || 'Event'}.pdf`,
+          filename: safeFilename,
           content: pdfBase64
         }
       ]
@@ -324,11 +331,15 @@ router.get('/events/:id/download-pdf', async (req, res) => {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ error: 'Event not found' });
     
+    const settings = await Settings.findOne().catch(() => null) || {};
+    const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+    const safeFilename = `${businessName.replace(/[^a-zA-Z0-9]/g, '')}_${event.phone || 'Event'}.pdf`;
+
     const discount = event.discount || 0;
     const pdfBuffer = await generateEventPdf(event, discount);
     
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=ImazenStudios_${event.phone || 'Event'}.pdf`);
+    res.setHeader('Content-Disposition', `attachment; filename=${safeFilename}`);
     res.send(pdfBuffer);
   } catch (error) {
     console.error('Download PDF Error:', error);

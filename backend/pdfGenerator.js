@@ -59,8 +59,11 @@ export const generateEventPdf = (event, discount = 0) => {
       Settings.findOne().then(settings => {
         settings = settings || {};
           
-          const phoneText = settings.whatsappNumber || '(123) 456-7890';
-          const emailText = settings.contactEmail || 'imazenstudios@gmail.com';
+          const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+          const headingBusinessName = businessName.toUpperCase();
+          const phoneText = settings.whatsappNumber || settings.contactNumber || '(123) 456-7890';
+          const emailText = settings.contactEmail || process.env.EMAIL_USER || 'contact@example.com';
+          const websiteText = settings.websiteUrl || process.env.SITE_URL || 'www.example.com';
 
           // --- PAGE 1: Cover Page ---
           drawBackground();
@@ -68,7 +71,7 @@ export const generateEventPdf = (event, discount = 0) => {
           if (hasLogo) {
             doc.image(logoPath, (doc.page.width - 350) / 2, (doc.page.height - 150) / 2, { width: 350 });
           } else {
-            doc.font(mainHeadingFont).fontSize(40).fillColor(whiteColor).text('IMAZEN STUDIOS', 0, (doc.page.height - 40) / 2, { align: 'center' });
+            doc.font(mainHeadingFont).fontSize(40).fillColor(whiteColor).text(headingBusinessName, 0, (doc.page.height - 40) / 2, { align: 'center' });
           }
 
           // --- PAGE 2: Content ---
@@ -79,7 +82,7 @@ export const generateEventPdf = (event, discount = 0) => {
           if (hasLogo) {
             doc.image(logoPath, 50, 40, { width: 150 });
           } else {
-            doc.font(mainHeadingFont).fontSize(24).fillColor(whiteColor).text('IMAZEN STUDIOS', 50, 50);
+            doc.font(mainHeadingFont).fontSize(24).fillColor(whiteColor).text(headingBusinessName, 50, 50);
           }
 
           // Quote on the right
@@ -343,7 +346,7 @@ export const generateEventPdf = (event, discount = 0) => {
           
           doc.y += 28;
           
-          doc.font(bodyFont).fontSize(11).fillColor(whiteColor).text(`With gratitude,\nTeam ImaZen studios`, 50, doc.y, { align: 'right', width: doc.page.width - 100 });
+          doc.font(bodyFont).fontSize(11).fillColor(whiteColor).text(`With gratitude,\nTeam ${businessName}`, 50, doc.y, { align: 'right', width: doc.page.width - 100 });
 
 
           // --- FINAL PAGE: Contact Details (Like 3rd image) ---
@@ -354,7 +357,7 @@ export const generateEventPdf = (event, discount = 0) => {
           if (hasLogo) {
             doc.image(logoPath, (doc.page.width - 250) / 2, contactLogoY, { width: 250 });
           } else {
-            doc.font(mainHeadingFont).fontSize(30).fillColor(whiteColor).text('IMAZEN STUDIOS', 0, contactLogoY + 100, { align: 'center' });
+            doc.font(mainHeadingFont).fontSize(30).fillColor(whiteColor).text(headingBusinessName, 0, contactLogoY + 100, { align: 'center' });
           }
 
           // Contact Info below the logo
@@ -365,7 +368,7 @@ export const generateEventPdf = (event, discount = 0) => {
              .text(`Phone : ${phoneText}`, { align: 'center' })
              .text(`Email: ${emailText}`, { align: 'center' })
              .moveDown(0.5)
-             .text('www.imazenstudios.com', { align: 'center' });
+             .text(websiteText, { align: 'center' });
 
           // --- Footer for all pages ---
           const pages = doc.bufferedPageRange();

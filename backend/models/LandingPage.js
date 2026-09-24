@@ -22,7 +22,7 @@ const landingPageSchema = new mongoose.Schema({
   heroTextAlign: { type: String, default: 'center' },
 
   // Global Hero Text
-  heroSubheading: { type: String, default: 'Imazen Studios' },
+  heroSubheading: { type: String, default: 'Studio & Creative Services' },
   heroHeading: { type: String, default: 'Beautiful Baby\nPhotography' },
   heroQuote: { type: String, default: '"Your Baby\'s Smile, Captured Forever as Art."' },
   heroDescription: { type: String, default: 'Professional baby shoots with stunning themes and complete safety.' },

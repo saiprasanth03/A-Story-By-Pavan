@@ -1,6 +1,7 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://imazenstudios08_db_user:XwpZmzTXDUzlkaGQ@cluster0.y9xmdyr.mongodb.net/?appName=Cluster0';
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/studio-template';
 
 mongoose.connect(uri).then(async () => {
   const LandingPage = mongoose.model('LandingPage', new mongoose.Schema({}, { strict: false }));

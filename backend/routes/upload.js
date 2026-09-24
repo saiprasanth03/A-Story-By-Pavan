@@ -17,7 +17,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'imazen_studios',
+    folder: process.env.CLOUDINARY_FOLDER || 'studio_uploads',
     allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'mov', 'webm'],
     resource_type: 'auto'
   }

@@ -26,7 +26,7 @@ async function uploadToNewCloudinary(oldUrl) {
   try {
     // Cloudinary can upload directly from a public URL
     const result = await cloudinary.uploader.upload(oldUrl, {
-      folder: 'imazen_studios'
+      folder: process.env.CLOUDINARY_FOLDER || 'studio_uploads'
     });
     return result.secure_url;
   } catch (error) {

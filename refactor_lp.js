@@ -53,7 +53,7 @@ ${setupCode}`
 // Map global hero text
 content = content.replace(
   /Imazen Studios/g,
-  `{pageData?.heroSubheading || 'Imazen Studios'}`
+  `{pageData?.heroSubheading || 'Studio'}`
 );
 
 content = content.replace(
