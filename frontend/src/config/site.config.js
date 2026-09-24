@@ -90,6 +90,7 @@ export const siteConfig = {
     leads:         false,
     rentals:       false,
     events:        false,
+    getQuote:      true,    // "Get a Quote" multi-step wizard
   },
 
   // ─── SEO Defaults ───────────────────────────────────────────────────────────

@@ -173,9 +173,9 @@ const Navbar = () => {
 
           </div>
 
-          {/* BOOK BUTTON */}
-          {siteConfig.features.booking && (
-          <div className="hidden md:flex items-center">
+          {/* BOOK BUTTON + GET QUOTE */}
+          <div className="hidden md:flex items-center gap-3">
+            {siteConfig.features.booking && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -188,8 +188,22 @@ const Navbar = () => {
                 Book Session
               </Link>
             </motion.div>
+            )}
+            {siteConfig.features.getQuote && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <Link 
+                to="/get-quote"
+                className="px-6 py-3 bg-[#C9A227] text-black font-sans text-xs uppercase tracking-[0.3em] hover:bg-[#e0b82a] transition-all duration-300 block font-bold"
+              >
+                Get Quote
+              </Link>
+            </motion.div>
+            )}
           </div>
-          )}
 
           {/* MOBILE MENU ICON */}
           <div className="lg:hidden flex items-center z-[60]">
@@ -232,6 +246,15 @@ const Navbar = () => {
                 className="mt-8 px-8 py-4 border border-white text-white font-sans text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all"
               >
                 Book Session
+              </Link>
+              )}
+              {siteConfig.features.getQuote && (
+              <Link 
+                to="/get-quote"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-8 py-4 bg-[#C9A227] text-black font-sans text-xs font-bold uppercase tracking-[0.3em] hover:bg-[#e0b82a] transition-all"
+              >
+                Get Quote
               </Link>
               )}
             </div>

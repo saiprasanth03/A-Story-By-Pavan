@@ -8,6 +8,7 @@ import DragDropVideoUploader from '../components/DragDropVideoUploader';
 import CalendarView from '../components/admin/CalendarView';
 import BusinessView from '../components/admin/BusinessView';
 import FollowUpsCalendar from '../components/admin/FollowUpsCalendar';
+import QuotesPanel from '../components/admin/QuotesPanel';
 import { packagesData } from '../data/packages';
 
 export const getTypeBadgeClass = (type) => {
@@ -37,7 +38,7 @@ const AdminDashboard = () => {
   const storedUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
   const userPermissions = storedUser.permissions || [];
   const isSuperAdmin = storedUser.isSuperAdmin === true || localStorage.getItem('adminBypass') === 'true';
-  const allTabs = ['dashboard', 'leads', 'inquiries', 'follow ups', 'studio bookings', 'props rentals', 'events', 'calendar', 'slots', 'business', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options'];
+  const allTabs = ['dashboard', 'leads', 'quotes', 'inquiries', 'follow ups', 'studio bookings', 'props rentals', 'events', 'calendar', 'slots', 'business', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options'];
   const allowedTabs = isSuperAdmin ? allTabs : allTabs.filter(tab => userPermissions.includes(tab));
   const initialTab = allowedTabs.includes('dashboard') ? 'dashboard' : (allowedTabs[0] || 'dashboard');
 
@@ -1506,6 +1507,11 @@ const AdminDashboard = () => {
 
                 {/* CMS TAB */}
                 
+          {activeTab === 'quotes' && (
+            <div className="space-y-8 animate-fade-in">
+              <QuotesPanel />
+            </div>
+          )}
           
           {activeTab === 'dashboard' && (
             <div className="space-y-8 animate-fade-in">

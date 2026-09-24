@@ -33,6 +33,7 @@ const ThankYou = lazy(() => import('./pages/ThankYou'));
 const ReferenceLandingPage = lazy(() => import('./pages/ReferenceLandingPage'));
 const Wedding = lazy(() => import('./pages/Wedding'));
 const ClientGalleryPage = lazy(() => import('./pages/ClientGalleryPage'));
+const GetQuote = lazy(() => import('./pages/GetQuote'));
 
 
 // Create a layout component to conditionally hide header/footer
@@ -247,6 +248,7 @@ function App() {
                 <Route path="/reference" element={<ReferenceLandingPage />} />
                 <Route path="/wedding" element={<Layout><Wedding /></Layout>} />
                 {siteConfig.features.clientGallery && <Route path="/my-gallery" element={<ClientGalleryPage />} />}
+                {siteConfig.features.getQuote && <Route path="/get-quote" element={<Layout><GetQuote /></Layout>} />}
                 <Route path="/:slug" element={<LandingPage />} />
 
                 {/* Catch-all for 404 Not Found */}

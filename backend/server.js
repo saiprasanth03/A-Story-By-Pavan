@@ -31,6 +31,7 @@ import subscriptionsRoutes from './routes/subscriptions.js';
 import leadsRoutes from './routes/leads.js';
 import businessRoutes from './routes/business.js';
 import clientGalleryRoutes from './routes/clientGalleryRoutes.js';
+import quotesRoutes from './routes/quotes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -65,6 +66,7 @@ app.use('/api/subscriptions', subscriptionsRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/business', businessRoutes);
 app.use('/api/client-gallery', clientGalleryRoutes);
+app.use('/api/quotes', quotesRoutes);
 
 // Database connection & Server Startup
 const startServer = async () => {
