@@ -20,7 +20,7 @@ export const EVENT_TYPES = [
   { id: 'groom-to-be',     label: 'GROOM-TO-BE',        emoji: '🤵', image: '/images/quote/groom-to-be.png' },
   { id: 'cocktail-party',  label: 'COCKTAIL PARTY',     emoji: '🥂', image: '/images/quote/cocktail-party.png' },
   { id: 'wedding',         label: 'WEDDING',            emoji: '💒', image: '/images/quote/wedding.png' },
-  { id: 'vratham',         label: 'VRATHAM',            emoji: '🙏', image: '/images/quote/hindu-wedding.png' },
+  { id: 'vratham',         label: 'VRATHAM',            emoji: '🙏', image: '/images/quote/avatar.png' },
   { id: 'reception',       label: 'RECEPTION',          emoji: '🎊', image: '/images/quote/reception.png' },
   { id: 'additional',      label: 'ADDITIONAL EVENT',   emoji: '➕', image: '/images/quote/additional-event.png' },
 ];
