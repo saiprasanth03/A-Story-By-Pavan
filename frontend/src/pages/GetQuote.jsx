@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import {
@@ -17,7 +17,17 @@ import {
 } from '../config/quote.config';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const STEP_LABELS = ['EVENTS','COVERAGE','PRE-WEDDING','POST-PROD','ALBUMS','ADD-ONS','CLIENT INFO','SUMMARY'];
+
+const ALL_STEP_LABELS = [
+  { key: 0, label: 'EVENTS' },
+  { key: 1, label: 'COVERAGE' },
+  { key: 2, label: 'PRE-WEDDING', requiresPrewed: true },
+  { key: 3, label: 'POST-PROD' },
+  { key: 4, label: 'ALBUMS' },
+  { key: 5, label: 'ADD-ONS' },
+  { key: 6, label: 'CLIENT INFO' },
+  { key: 7, label: 'SUMMARY' },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS & IMAGE RENDERERS
@@ -67,36 +77,45 @@ const CoverageImageOrIcon = ({ svc, sel }) => {
     );
   }
   const IconComponent = svc.Icon;
-  return <IconComponent size={22} className={`mb-2.5 ${sel ? 'text-white' : 'text-gray-400'}`} />;
+  return <IconComponent size={24} className={`mb-2.5 ${sel ? 'text-white' : 'text-gray-400'}`} />;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// STEP INDICATOR (Monochrome White & Black)
+// STEP INDICATOR (Clickable for Visited Steps)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const StepIndicator = ({ current }) => (
+const StepIndicator = ({ current, maxReached, steps, onSelectStep }) => (
   <div className="flex items-center justify-between max-w-2xl mx-auto mb-10 px-2 overflow-x-auto no-scrollbar">
-    {STEP_LABELS.map((label, i) => {
-      const done   = i < current;
-      const active = i === current;
+    {steps.map((item, displayIdx) => {
+      const stepIndex = item.key;
+      const done       = stepIndex < current;
+      const active     = stepIndex === current;
+      const clickable  = stepIndex <= maxReached;
+
       return (
-        <React.Fragment key={i}>
+        <React.Fragment key={stepIndex}>
           <div className="flex flex-col items-center shrink-0">
-            <div className={`
-              w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300
-              ${done ? 'bg-white border-white text-black shadow-[0_0_10px_rgba(255,255,255,0.5)]' :
-                active ? 'bg-white/20 border-white text-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' :
-                'bg-darkGray/60 border-white/10 text-gray-500'}
-            `}>
-              {done ? <Check size={12} strokeWidth={3} /> : i + 1}
-            </div>
+            <button
+              type="button"
+              disabled={!clickable}
+              onClick={() => clickable && onSelectStep(stepIndex)}
+              className={`
+                w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300
+                ${clickable ? 'cursor-pointer hover:scale-105' : 'cursor-not-allowed opacity-40'}
+                ${done ? 'bg-white border-white text-black shadow-[0_0_10px_rgba(255,255,255,0.5)]' :
+                  active ? 'bg-white/20 border-white text-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' :
+                  'bg-darkGray/60 border-white/10 text-gray-500'}
+              `}
+            >
+              {done ? <Check size={12} strokeWidth={3} /> : displayIdx + 1}
+            </button>
             <span className={`text-[8px] tracking-widest uppercase mt-2 font-sans transition-colors leading-tight text-center font-medium
               ${active ? 'text-white font-bold' : done ? 'text-gray-300' : 'text-gray-500'}
             `}>
-              {label}
+              {item.label}
             </span>
           </div>
-          {i < STEP_LABELS.length - 1 && (
+          {displayIdx < steps.length - 1 && (
             <div className={`h-[1px] flex-1 mx-1.5 transition-colors shrink-0 ${done ? 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.4)]' : 'bg-white/10'}`} style={{ minWidth: 14 }} />
           )}
         </React.Fragment>
@@ -110,8 +129,9 @@ const StepIndicator = ({ current }) => (
 // ─────────────────────────────────────────────────────────────────────────────
 
 const GetQuote = () => {
-  const [mainStep,   setMainStep]   = useState(0);
-  const [eventStep,  setEventStep]  = useState(0); // sub-index within Coverage
+  const [mainStep,       setMainStep]       = useState(0);
+  const [eventStep,      setEventStep]      = useState(0); // sub-index within Coverage
+  const [maxReachedStep, setMaxReachedStep] = useState(0);
 
   // Wizard state
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -127,6 +147,20 @@ const GetQuote = () => {
   const [submitting,     setSubmitting]     = useState(false);
   const [submitted,      setSubmitted]      = useState(false);
   const [error,          setError]          = useState('');
+  const [hoveredSvc,     setHoveredSvc]     = useState(null);
+
+  // Check if Pre-Wedding is selected in Step 1
+  const hasPrewedding = useMemo(() => selectedEvents.includes('pre-wedding'), [selectedEvents]);
+
+  // Compute visible steps list dynamically
+  const visibleSteps = useMemo(() => {
+    return ALL_STEP_LABELS.filter(s => !s.requiresPrewed || hasPrewedding);
+  }, [hasPrewedding]);
+
+  // Update maxReachedStep as user progresses
+  useEffect(() => {
+    setMaxReachedStep(prev => Math.max(prev, mainStep));
+  }, [mainStep]);
 
   // ── Total calculation ──────────────────────────────────────────────────────
   const total = useMemo(() => {
@@ -137,7 +171,7 @@ const GetQuote = () => {
         if (svc) t += svc.price;
       });
     });
-    if (prewedPkg)         t += prewedPkg.price;
+    if (hasPrewedding && prewedPkg) t += prewedPkg.price;
     if (postProd === 'documentary') t += 25000;
     if (albumTier)         t += albumTier.price + extraSheets * 500;
     ADDON_GROUPS.forEach(grp => grp.items.forEach(item => {
@@ -149,7 +183,7 @@ const GetQuote = () => {
       }
     }));
     return t;
-  }, [selectedEvents, coverage, prewedPkg, postProd, albumTier, extraSheets, addOnQtys, addOnSel]);
+  }, [selectedEvents, coverage, hasPrewedding, prewedPkg, postProd, albumTier, extraSheets, addOnQtys, addOnSel]);
 
   // ── Itemized receipt ───────────────────────────────────────────────────────
   const lineItems = useMemo(() => {
@@ -163,7 +197,7 @@ const GetQuote = () => {
         if (svc) items.push({ label: `${ev?.label} (${dur?.label})`, sub: svc.label, price: svc.price });
       });
     });
-    if (prewedPkg) items.push({ label: prewedPkg.name, price: prewedPkg.price });
+    if (hasPrewedding && prewedPkg) items.push({ label: prewedPkg.name, price: prewedPkg.price });
     if (postProd === 'documentary') items.push({ label: 'Film Post-Production: Documentary Style Wedding Film', price: 25000 });
     if (albumTier) {
       items.push({ label: albumTier.name.replace(/\n/g, ' '), price: albumTier.price });
@@ -178,19 +212,21 @@ const GetQuote = () => {
       }
     }));
     return items;
-  }, [selectedEvents, coverage, prewedPkg, postProd, albumTier, extraSheets, addOnQtys, addOnSel]);
+  }, [selectedEvents, coverage, hasPrewedding, prewedPkg, postProd, albumTier, extraSheets, addOnQtys, addOnSel]);
 
   // ── Navigation ─────────────────────────────────────────────────────────────
   const goBack = () => {
-    if (mainStep === 1 && eventStep > 0)                      { setEventStep(e => e - 1); return; }
-    if (mainStep === 1 && eventStep === 0)                    { setMainStep(0); return; }
+    if (mainStep === 1 && eventStep > 0) { setEventStep(e => e - 1); return; }
+    if (mainStep === 1 && eventStep === 0) { setMainStep(0); return; }
+    if (mainStep === 3 && !hasPrewedding) { setMainStep(1); return; } // skip Step 3 if no prewedding
     setMainStep(s => Math.max(0, s - 1));
   };
 
   const goNext = () => {
     if (mainStep === 1 && eventStep < selectedEvents.length - 1) { setEventStep(e => e + 1); return; }
-    if (mainStep === 1)                                           { setEventStep(0); setMainStep(2); return; }
-    if (mainStep < 7)                                            { setMainStep(s => s + 1); }
+    if (mainStep === 1 && !hasPrewedding) { setEventStep(0); setMainStep(3); return; } // skip Step 3 if no prewedding
+    if (mainStep === 1 && hasPrewedding)  { setEventStep(0); setMainStep(2); return; }
+    if (mainStep < 7) { setMainStep(s => s + 1); }
   };
 
   const canNext = () => {
@@ -237,7 +273,7 @@ const GetQuote = () => {
             }),
           };
         }),
-        selectedPackage: prewedPkg ? { name: prewedPkg.name, price: prewedPkg.price } : null,
+        selectedPackage: (hasPrewedding && prewedPkg) ? { name: prewedPkg.name, price: prewedPkg.price } : null,
         addOns: [
           ...(postProd === 'documentary' ? [{ name: 'Documentary Style Wedding Film', price: 25000 }] : []),
           ...ADDON_GROUPS.flatMap(g => g.items.filter(item =>
@@ -260,7 +296,7 @@ const GetQuote = () => {
   };
 
   const resetAll = () => {
-    setMainStep(0); setEventStep(0); setSelectedEvents([]); setCoverage({});
+    setMainStep(0); setEventStep(0); setMaxReachedStep(0); setSelectedEvents([]); setCoverage({});
     setPrewedPkg(null); setPostProd('standard'); setAlbumTier(null); setExtraSheets(0);
     setAddOnQtys({}); setAddOnSel({});
     setClient({ name:'', email:'', phone:'', date:'', location:'', notes:'' });
@@ -308,7 +344,12 @@ const GetQuote = () => {
         </div>
 
         {/* ── Step Indicator ──────────────────────────────────────────────────── */}
-        <StepIndicator current={mainStep} />
+        <StepIndicator
+          current={mainStep}
+          maxReached={maxReachedStep}
+          steps={visibleSteps}
+          onSelectStep={setMainStep}
+        />
 
         {/* ── Main Card Container ────────────────────────────────────────────── */}
         <div className="bg-[#0f0f0f] border border-white/15 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl">
@@ -358,7 +399,7 @@ const GetQuote = () => {
                 )}
 
                 {/* ════════════════════════════════════════════════════════════
-                    STEP 2 — CONFIGURE COVERAGE (per-event sub-navigation)
+                    STEP 2 — CONFIGURE COVERAGE (per-event sub-navigation + HOVER OVERLAY)
                 ════════════════════════════════════════════════════════════ */}
                 {mainStep === 1 && selectedEvents.length > 0 && (() => {
                   const evId = selectedEvents[eventStep];
@@ -399,26 +440,57 @@ const GetQuote = () => {
                         </div>
 
                         {/* Services grid */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                           {COVERAGE_SERVICES.map(svc => {
-                            const sel = (cfg.services || []).includes(svc.id);
+                            const sel       = (cfg.services || []).includes(svc.id);
+                            const isHovered = hoveredSvc === svc.id;
+
                             return (
-                              <button
+                              <div
                                 key={svc.id}
-                                type="button"
+                                onMouseEnter={() => setHoveredSvc(svc.id)}
+                                onMouseLeave={() => setHoveredSvc(null)}
                                 onClick={() => toggleService(evId, svc.id)}
                                 className={`
-                                  group flex flex-col items-center justify-center p-4 border transition-all duration-300 cursor-pointer rounded-xl
-                                  ${sel ? 'border-white bg-white/15 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' : 'border-white/10 bg-[#1a1a1a] text-gray-400 hover:border-white/30 hover:text-white'}
+                                  group relative p-5 border transition-all duration-300 cursor-pointer rounded-xl flex flex-col justify-between overflow-hidden
+                                  ${sel ? 'border-white bg-white/15 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' : 'border-white/10 bg-[#1a1a1a] text-gray-400 hover:border-white/40 hover:bg-[#202020] hover:text-white'}
                                 `}
-                                style={{ minHeight: 105 }}
+                                style={{ minHeight: 180 }}
                               >
-                                <CoverageImageOrIcon svc={svc} sel={sel} />
-                                <span className={`text-[9px] tracking-widest uppercase text-center leading-snug font-sans font-medium
-                                  ${sel ? 'text-white font-bold' : 'text-gray-400'}`}>
-                                  {svc.label}
-                                </span>
-                              </button>
+                                {/* Active or Hover Overlay Mode (Matching Image 2 Reference) */}
+                                {(isHovered || sel) ? (
+                                  <div className="flex flex-col justify-between h-full w-full animate-fade-in">
+                                    {/* Top Bar: Price tag + Control button */}
+                                    <div className="flex items-center justify-between gap-2 mb-2">
+                                      <span className="text-[11px] font-bold text-white bg-black/60 border border-white/30 px-2.5 py-1 rounded-md">
+                                        {fmt(svc.price)}
+                                      </span>
+                                      <div className={`w-6 h-6 rounded-md border flex items-center justify-center transition
+                                        ${sel ? 'bg-white border-white text-black' : 'border-white/40 bg-black/40 text-white'}`}>
+                                        {sel ? <Check size={14} strokeWidth={3} /> : <Plus size={14} />}
+                                      </div>
+                                    </div>
+
+                                    {/* Middle: Title */}
+                                    <h4 className="font-cinzel text-white text-xs font-bold tracking-wider uppercase my-1">
+                                      {svc.label}
+                                    </h4>
+
+                                    {/* Bottom: Detailed Description Text */}
+                                    <p className="text-gray-300 text-[10px] leading-relaxed font-sans line-clamp-4">
+                                      {svc.desc}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  /* Normal Icon View */
+                                  <div className="flex flex-col items-center justify-center h-full w-full py-2">
+                                    <CoverageImageOrIcon svc={svc} sel={sel} />
+                                    <span className="text-[11px] tracking-widest uppercase text-center leading-snug font-sans font-medium text-gray-300 mt-2">
+                                      {svc.label}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
                             );
                           })}
                         </div>
@@ -428,9 +500,9 @@ const GetQuote = () => {
                 })()}
 
                 {/* ════════════════════════════════════════════════════════════
-                    STEP 3 — PRE-WEDDING STYLE
+                    STEP 3 — PRE-WEDDING STYLE (Only shown if Pre-Wedding selected in Step 1)
                 ════════════════════════════════════════════════════════════ */}
-                {mainStep === 2 && (
+                {mainStep === 2 && hasPrewedding && (
                   <div>
                     <h2 className="font-cinzel text-white text-2xl mb-1 tracking-wide flex items-center gap-2">
                       <span className="text-gray-400">3.</span> Pre-Wedding Style

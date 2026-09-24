@@ -33,13 +33,62 @@ export const DURATIONS = [
 ];
 
 export const COVERAGE_SERVICES = [
-  { id: 'trad-photo',   label: 'TRADITIONAL PHOTOGRAPHY',  Icon: Camera,   image: '/images/quote/traditional-photography.png', price: 15000 },
-  { id: 'trad-video',   label: 'TRADITIONAL VIDEOGRAPHY',  Icon: Video,    image: '/images/quote/traditional-videography.png', price: 20000 },
-  { id: 'candid-photo', label: 'CANDID PHOTOGRAPHY',       Icon: Aperture, image: '/images/quote/candid-photography.png',      price: 12000 },
-  { id: 'cinematic',    label: 'CINEMATIC VIDEO',          Icon: Film,     image: '/images/quote/cinematic-video.png',        price: 20000 },
-  { id: 'drone',        label: 'DRONE',                    Icon: Zap,      image: '/images/quote/drone.png',                  price: 8000  },
-  { id: 'fpv-drone',    label: 'FPV DRONE',                Icon: Zap,      image: '/images/quote/fpv-drone.png',              price: 10000 },
-  { id: 'vr-360',       label: '360° VR COVERAGE',         Icon: Globe,    image: '/images/quote/360-vr-coverage.png',         price: 12000 },
+  {
+    id: 'trad-photo',
+    label: 'TRADITIONAL PHOTOGRAPHY',
+    Icon: Camera,
+    image: '/images/quote/traditional-photography.png',
+    price: 15000,
+    desc: 'Classic event photography focused on capturing important moments, rituals, family portraits, and guest memories in a clear and timeless style.',
+  },
+  {
+    id: 'trad-video',
+    label: 'TRADITIONAL VIDEOGRAPHY',
+    Icon: Video,
+    image: '/images/quote/traditional-videography.png',
+    price: 20000,
+    desc: 'Complete event coverage that captures all rituals, ceremonies, and important moments in a clear and natural style.',
+  },
+  {
+    id: 'candid-photo',
+    label: 'CANDID PHOTOGRAPHY',
+    Icon: Aperture,
+    image: '/images/quote/candid-photography.png',
+    price: 12000,
+    desc: 'Natural and emotion-filled photography that captures real moments, genuine expressions, and beautiful memories without forced poses.',
+  },
+  {
+    id: 'cinematic',
+    label: 'CINEMATIC VIDEO',
+    Icon: Film,
+    image: '/images/quote/cinematic-video.png',
+    price: 20000,
+    desc: 'A movie-like filming style that captures emotions, moments, and celebrations with creative visuals, smooth camera movements, and cinematic storytelling.',
+  },
+  {
+    id: 'drone',
+    label: 'DRONE',
+    Icon: Zap,
+    image: '/images/quote/drone.png',
+    price: 8000,
+    desc: 'Aerial cinematic shots that capture the venue, crowd, decorations, and event atmosphere from unique and visually stunning perspectives.',
+  },
+  {
+    id: 'fpv-drone',
+    label: 'FPV DRONE',
+    Icon: Zap,
+    image: '/images/quote/fpv-drone.png',
+    price: 10000,
+    desc: 'Dynamic and immersive drone shots captured with high-speed cinematic movements, creating a unique flying perspective and energetic visual experience.',
+  },
+  {
+    id: 'vr-360',
+    label: '360° VR COVERAGE',
+    Icon: Globe,
+    image: '/images/quote/360-vr-coverage.png',
+    price: 12000,
+    desc: 'An immersive video experience that captures every angle of the event, allowing you to relive moments in a fully interactive and realistic view through a VR headset.',
+  },
 ];
 
 export const PREWEDDING_PACKAGES = [
