@@ -77,7 +77,8 @@ router.delete('/:id', async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     // Prevent deleting the root super admin
-    if (user.email === 'ssaiprasanth333@gmail.com') {
+    const rootAdminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    if (user.email === rootAdminEmail) {
       return res.status(400).json({ message: 'Cannot delete the root super admin' });
     }
 

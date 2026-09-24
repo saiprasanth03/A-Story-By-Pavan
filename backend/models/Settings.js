@@ -11,6 +11,10 @@ const settingsSchema = new mongoose.Schema({
     of: Number,
     default: { '0': 3, '1': 3, '2': 3, '3': 3, '4': 3, '5': 3, '6': 3 }
   },
+  businessName: { type: String, default: 'Studio' },
+  logoUrl: { type: String, default: '' },
+  faviconUrl: { type: String, default: '' },
+  websiteUrl: { type: String, default: '' },
   metaPixelId: { type: String, default: '' },
   googleAnalyticsId: { type: String, default: '' },
   contactEmail: { type: String, default: 'contact@example.com' },
