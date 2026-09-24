@@ -92,9 +92,17 @@ export const siteConfig = {
     events:        false,
   },
 
+  // ─── SEO Defaults ───────────────────────────────────────────────────────────
+  // Default metadata for the website.
+  seo: {
+    title: 'Your Studio | Premium Photography & Creative Space',
+    description: 'Capture your most beautiful memories with professional cinematic photography and creative storytelling.',
+    keywords: 'photography studio, portrait, wedding, maternity, creative studio',
+  },
+
   // ─── Theme ──────────────────────────────────────────────────────────────────
-  // Visual design tokens. Currently informational — used for documentation
-  // and as a reference when extending the template.
+  // Visual design tokens. Currently informational — used as a reference
+  // for theme colors and typography loaded in index.html and index.css.
   theme: {
     colors: {
       primary:    '#111111',
