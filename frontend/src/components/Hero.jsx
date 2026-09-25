@@ -113,13 +113,13 @@ const Hero = () => {
               )}
               
               {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/40"></div>
 
               {/* Content with Parallax */}
               <div className={`absolute inset-0 flex flex-col pointer-events-none ${i === 0 ? "items-center justify-center" : "items-center justify-end pb-24 md:pb-32"}`}>
                 <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pointer-events-auto">
                   <div 
-                    className="font-oswald text-[12px] md:text-sm text-gray-400 uppercase tracking-[0.5em] mb-4" 
+                    className="font-oswald text-xs md:text-sm text-[#C9A227] uppercase tracking-[0.5em] mb-4" 
                     data-swiper-parallax="-200"
                   >
                     {slide.text}
@@ -145,20 +145,20 @@ const Hero = () => {
           
           {/* Custom Navigation */}
           <div className="swiper-button-prev-custom absolute top-1/2 left-4 md:left-8 -translate-y-1/2 z-20 cursor-pointer opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-2 md:gap-4">
-            <div className="w-6 md:w-12 h-[1px] bg-white/50 group-hover:bg-white transition-colors"></div>
+            <div className="w-6 md:w-12 h-[1px] bg-[#C9A227] group-hover:bg-white transition-colors"></div>
             <span className="text-white font-oswald text-[8px] md:text-xs uppercase tracking-[0.3em] -rotate-90 origin-left">Prev</span>
           </div>
           
           <div className="swiper-button-next-custom absolute top-1/2 right-4 md:right-8 -translate-y-1/2 z-20 cursor-pointer opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-2 md:gap-4">
             <span className="text-white font-oswald text-[8px] md:text-xs uppercase tracking-[0.3em] rotate-90 origin-right">Next</span>
-            <div className="w-6 md:w-12 h-[1px] bg-white/50 group-hover:bg-white transition-colors"></div>
+            <div className="w-6 md:w-12 h-[1px] bg-[#C9A227] group-hover:bg-white transition-colors"></div>
           </div>
           
           {/* Scroll Indicator */}
-          <div className="hidden md:flex absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center animate-bounce">
+          <div className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex-col items-center animate-bounce">
             <div className="relative flex justify-center w-[1px]">
-              <span className="absolute bottom-full mb-4 text-[10px] text-white uppercase tracking-[0.3em] ml-[0.3em] font-sans">Scroll</span>
-              <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+              <span className="absolute bottom-full mb-3 text-[10px] text-[#C9A227] uppercase tracking-[0.3em] font-sans">Scroll</span>
+              <div className="w-[1px] h-10 bg-gradient-to-b from-[#C9A227] to-transparent"></div>
             </div>
           </div>
         </Swiper>

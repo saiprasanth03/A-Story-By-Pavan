@@ -39,8 +39,45 @@ const AdminDashboard = () => {
   const userPermissions = storedUser.permissions || [];
   const isSuperAdmin = storedUser.isSuperAdmin === true || localStorage.getItem('adminBypass') === 'true';
   const allTabs = ['dashboard', 'leads', 'quotes', 'inquiries', 'follow ups', 'studio bookings', 'props rentals', 'events', 'calendar', 'slots', 'business', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options'];
-  const allowedTabs = isSuperAdmin ? allTabs : allTabs.filter(tab => userPermissions.includes(tab));
-  const initialTab = allowedTabs.includes('dashboard') ? 'dashboard' : (allowedTabs[0] || 'dashboard');
+  
+  const featureTabMap = {
+    'gallery': siteConfig.features.gallery,
+    'services': siteConfig.features.services,
+    'themes': siteConfig.features.themes,
+    'studio': siteConfig.features.studio,
+    'testimonials': siteConfig.features.testimonials,
+    'client gallery': siteConfig.features.clientGallery,
+    'leads': siteConfig.features.leads,
+    'quotes': siteConfig.features.getQuote,
+    'props rentals': siteConfig.features.rentals,
+    'events': siteConfig.features.events,
+    'studio bookings': siteConfig.features.booking || siteConfig.features.studio,
+    'calendar': siteConfig.features.booking,
+    'slots': siteConfig.features.booking,
+    'inquiries': siteConfig.features.contact || siteConfig.features.getQuote,
+  };
+
+  const featureEnabledTabs = allTabs.filter(tab => featureTabMap[tab] !== false);
+  const allowedTabs = isSuperAdmin ? featureEnabledTabs : featureEnabledTabs.filter(tab => userPermissions.includes(tab));
+  
+  const getUrlTab = () => {
+    const rawPath = window.location.pathname.replace(/^\/admin\/?/, '').replaceAll('-', ' ').trim().toLowerCase();
+    const tabAliases = {
+      'bookings': 'studio bookings',
+      'rentals': 'props rentals',
+      'client-gallery': 'client gallery',
+      'landing-pages': 'landing pages',
+      'follow-ups': 'follow ups',
+      'developer-options': 'developer options'
+    };
+    const targetTab = tabAliases[rawPath] || rawPath;
+    if (targetTab && allowedTabs.includes(targetTab)) {
+      return targetTab;
+    }
+    return null;
+  };
+
+  const initialTab = getUrlTab() || (allowedTabs.includes('dashboard') ? 'dashboard' : (allowedTabs[0] || 'dashboard'));
 
   const [activeTab, setActiveTab] = useState(initialTab);
 
@@ -67,7 +104,6 @@ const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [inquiries, setInquiries] = useState([]);
 
-
   const [leads, setLeads] = useState([]);
   const [heroSlides, setHeroSlides] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
@@ -82,19 +118,33 @@ const AdminDashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGlobalSubmitting, setIsGlobalSubmitting] = useState(false);
 
+  // Edit States
+  const [editingContent, setEditingContent] = useState(null);
+  const [editingService, setEditingService] = useState(null);
+  const [editingSubService, setEditingSubService] = useState(null); // For nested subservices
+  const [selectedImageIndices, setSelectedImageIndices] = useState([]);
+  const [serviceSearch, setServiceSearch] = useState('');
+  const [mediaModalService, setMediaModalService] = useState(null);
+  const [mediaModalTab, setMediaModalTab] = useState('images');
+  const [mediaVideoUrl, setMediaVideoUrl] = useState('');
+  const [editingThemeCategory, setEditingThemeCategory] = useState(null);
+  const [editingTheme, setEditingTheme] = useState(null);
+  const [editingHero, setEditingHero] = useState(null);
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
+  const [editingLandingPage, setEditingLandingPage] = useState(null);
+  const [editingTeamMember, setEditingTeamMember] = useState(null);
+  const [editingPartner, setEditingPartner] = useState(null);
+  const [editingExpense, setEditingExpense] = useState(null);
+
   const filterByDate = (items) => {
     if (!dashboardStartDate && !dashboardEndDate) return items;
     return items.filter(item => {
       const itemDate = new Date(item.createdAt || item.date);
-      // Reset time to start of day for comparison
       itemDate.setHours(0,0,0,0);
-      
       let start = dashboardStartDate ? new Date(dashboardStartDate) : null;
       let end = dashboardEndDate ? new Date(dashboardEndDate) : null;
-      
       if (start) start.setHours(0,0,0,0);
       if (end) end.setHours(23,59,59,999);
-
       if (start && end) return itemDate >= start && itemDate <= end;
       if (start) return itemDate >= start;
       if (end) return itemDate <= end;
@@ -168,20 +218,6 @@ const AdminDashboard = () => {
       axios.interceptors.response.eject(resInterceptor);
     };
   }, []);
-  
-  // Edit States
-  const [editingContent, setEditingContent] = useState(null);
-  const [editingService, setEditingService] = useState(null);
-  const [editingSubService, setEditingSubService] = useState(null); // For nested subservices
-  const [selectedImageIndices, setSelectedImageIndices] = useState([]);
-  const [editingThemeCategory, setEditingThemeCategory] = useState(null);
-  const [editingTheme, setEditingTheme] = useState(null);
-  const [editingHero, setEditingHero] = useState(null);
-  const [editingTestimonial, setEditingTestimonial] = useState(null);
-  const [editingLandingPage, setEditingLandingPage] = useState(null);
-  const [editingTeamMember, setEditingTeamMember] = useState(null);
-  const [editingPartner, setEditingPartner] = useState(null);
-  const [editingExpense, setEditingExpense] = useState(null);
   
   // Gallery Upload State
   const [galleryCategory, setGalleryCategory] = useState('Maternity');
@@ -358,7 +394,20 @@ const AdminDashboard = () => {
         axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/business/partners`).catch(e => ({data: []})),
         axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/business/expenses`).catch(e => ({data: []}))
       ]);
-      setContent(contentRes.data);
+      const loadedContent = Array.isArray(contentRes.data) ? [...contentRes.data] : [];
+      if (!loadedContent.some(c => c.section === 'About')) {
+        loadedContent.unshift({
+          _id: 'about-default',
+          section: 'About',
+          title: 'Crafting Timeless Narratives',
+          description: `At ${siteConfig.brand.name}, we believe every fleeting moment holds a cinematic masterpiece. We specialize in transforming portraits into breathtaking visual stories. Our approach blends high-fashion editorial aesthetics with raw, authentic emotion.`,
+          imageUrl: '',
+          backgroundImageUrl: '',
+          features: []
+        });
+      }
+      setContent(loadedContent);
+
       setServices(servicesRes.data);
       setThemes(themesRes.data);
       setThemeCategories(themeCatsRes.data);
@@ -423,8 +472,10 @@ const AdminDashboard = () => {
 
   const handleSaveContent = async (e, sectionData) => {
     e.preventDefault();
+    const payload = { ...sectionData };
+    if (payload._id === 'about-default') delete payload._id;
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/content/${sectionData.section}`, sectionData);
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/content/${payload.section}`, payload);
       alert('Content saved successfully to the database!');
       fetchData();
     } catch (error) {
@@ -434,26 +485,37 @@ const AdminDashboard = () => {
     setEditingContent(null);
   };
 
+
   const handleSaveService = async (e, serviceData) => {
     e.preventDefault();
 
-    // Clean up empty feature lines so they aren't saved as blank dots
     const cleanedServiceData = JSON.parse(JSON.stringify(serviceData));
+    if (!cleanedServiceData.title && cleanedServiceData.name) {
+      cleanedServiceData.title = cleanedServiceData.name;
+    }
+    if (!cleanedServiceData.name && cleanedServiceData.title) {
+      cleanedServiceData.name = cleanedServiceData.title;
+    }
+    if (!cleanedServiceData.slug && (cleanedServiceData.title || cleanedServiceData.name)) {
+      const srcText = cleanedServiceData.title || cleanedServiceData.name;
+      cleanedServiceData.slug = srcText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
     if (cleanedServiceData.packages) {
       cleanedServiceData.packages = cleanedServiceData.packages.map(pkg => ({
         ...pkg,
         features: (pkg.features || []).filter(f => f.trim() !== '')
       }));
     }
-    if (cleanedServiceData.subServices) {
-      cleanedServiceData.subServices = cleanedServiceData.subServices.map(sub => ({
-        ...sub,
-        packages: (sub.packages || []).map(pkg => ({
-          ...pkg,
-          features: (pkg.features || []).filter(f => f.trim() !== '')
-        }))
-      }));
+
+    if (Array.isArray(cleanedServiceData.heroImages)) {
+      cleanedServiceData.heroImages = cleanedServiceData.heroImages.map(item => {
+        if (typeof item === 'string') return { url: item, position: '50% 50%' };
+        if (item && typeof item === 'object' && item.url) return { url: item.url, position: item.position || '50% 50%' };
+        return null;
+      }).filter(Boolean);
     }
+
 
     try {
       if (cleanedServiceData._id && !cleanedServiceData._id.includes('-')) {
@@ -462,10 +524,72 @@ const AdminDashboard = () => {
         await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services`, cleanedServiceData);
       }
       fetchData();
+      setEditingService(null);
     } catch (error) {
       console.error(error);
+      alert('Failed to save service: ' + (error.response?.data?.message || error.message));
     }
-    setEditingService(null);
+  };
+
+  const handleAddMediaImagesToService = async (urls) => {
+    if (!mediaModalService) return;
+    const newUrls = Array.isArray(urls) ? urls : [urls];
+    const currentImgs = mediaModalService.images && mediaModalService.images.length > 0 ? mediaModalService.images : (mediaModalService.portfolioImages || []);
+    const updatedImages = [...currentImgs, ...newUrls];
+    const payload = { ...mediaModalService, images: updatedImages, portfolioImages: updatedImages };
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services/${mediaModalService._id}`, payload);
+      setMediaModalService(res.data);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update service images');
+    }
+  };
+
+  const handleDeleteMediaImageFromService = async (idx) => {
+    if (!mediaModalService) return;
+    const currentImgs = [...(mediaModalService.images && mediaModalService.images.length > 0 ? mediaModalService.images : (mediaModalService.portfolioImages || []))];
+    currentImgs.splice(idx, 1);
+    const payload = { ...mediaModalService, images: currentImgs, portfolioImages: currentImgs };
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services/${mediaModalService._id}`, payload);
+      setMediaModalService(res.data);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleAddMediaVideoToService = async (e) => {
+    e.preventDefault();
+    if (!mediaModalService || !mediaVideoUrl.trim()) return;
+    const currentVids = mediaModalService.videos && mediaModalService.videos.length > 0 ? mediaModalService.videos : (mediaModalService.portfolioVideos || []);
+    const updatedVideos = [...currentVids, mediaVideoUrl.trim()];
+    const payload = { ...mediaModalService, videos: updatedVideos, portfolioVideos: updatedVideos };
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services/${mediaModalService._id}`, payload);
+      setMediaModalService(res.data);
+      setMediaVideoUrl('');
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to add video URL');
+    }
+  };
+
+  const handleDeleteMediaVideoFromService = async (idx) => {
+    if (!mediaModalService) return;
+    const currentVids = [...(mediaModalService.videos && mediaModalService.videos.length > 0 ? mediaModalService.videos : (mediaModalService.portfolioVideos || []))];
+    currentVids.splice(idx, 1);
+    const payload = { ...mediaModalService, videos: currentVids, portfolioVideos: currentVids };
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services/${mediaModalService._id}`, payload);
+      setMediaModalService(res.data);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleDeleteService = async (id) => {
@@ -1550,8 +1674,9 @@ const AdminDashboard = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Bookings */}
+                {siteConfig.features.booking && (
                 <div className={glassPanel + " p-6 flex flex-col relative group"}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Bookings</div>
@@ -1573,8 +1698,10 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">All scheduled shoots</div>
                 </div>
+                )}
 
                 {/* Total Leads */}
+                {siteConfig.features.leads && (
                 <div className={glassPanel + " p-6 flex flex-col relative group"}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Leads</div>
@@ -1596,8 +1723,10 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">Landing page inquiries</div>
                 </div>
+                )}
 
                 {/* Total Inquiries */}
+                {(siteConfig.features.contact || siteConfig.features.getQuote) && (
                 <div className={glassPanel + " p-6 flex flex-col relative group"}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Inquiries</div>
@@ -1619,6 +1748,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">General inquiries</div>
                 </div>
+                )}
 
                 {/* Pending */}
                 <div className={glassPanel + " p-6 flex flex-col relative group"}>
@@ -1771,39 +1901,6 @@ const AdminDashboard = () => {
                         <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Contact Info'}</button>
                       </form>
                     </div>
-                    {/* Wedding Page Settings */}
-                    <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300 border border-pink-500/20 bg-gradient-to-br from-pink-900/10 to-transparent`}>
-                      <h3 className="text-xl text-white font-oswald tracking-[0.2em] uppercase mb-4">Wedding Page Settings</h3>
-                      <form onSubmit={handleSaveWeddingSettings} className="space-y-4 max-w-2xl">
-                        <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Heading</label>
-                          <input type="text" className={glassInput} placeholder="e.g. Your Studio Weddings" value={settings.weddingHeroHeading || ''} onChange={e => setSettings({...settings, weddingHeroHeading: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Subheading</label>
-                          <input type="text" className={glassInput} placeholder="e.g. Premium Wedding Photography" value={settings.weddingHeroSubheading || ''} onChange={e => setSettings({...settings, weddingHeroSubheading: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Description</label>
-                          <textarea className={glassInput} rows="3" placeholder="Description..." value={settings.weddingHeroDescription || ''} onChange={e => setSettings({...settings, weddingHeroDescription: e.target.value})}></textarea>
-                        </div>
-                        <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Background Image</label>
-                          <DragDropImageUploader currentImage={settings.weddingHeroBackground || ''} aspect={16/9} onUploadSuccess={(url) => setSettings({...settings, weddingHeroBackground: url})} />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-xs uppercase text-gray-500 mb-2">Button Text</label>
-                            <input type="text" className={glassInput} placeholder="e.g. Visit Our Partners" value={settings.weddingHeroButtonText || ''} onChange={e => setSettings({...settings, weddingHeroButtonText: e.target.value})} />
-                          </div>
-                          <div>
-                            <label className="block text-xs uppercase text-gray-500 mb-2">Button Link</label>
-                            <input type="text" className={glassInput} placeholder="e.g. https://example.com" value={settings.weddingHeroButtonLink || ''} onChange={e => setSettings({...settings, weddingHeroButtonLink: e.target.value})} />
-                          </div>
-                        </div>
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Wedding Settings'}</button>
-                      </form>
-                    </div>
                     {/* Footer Settings */}
                     <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300 border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-transparent`}>
                       <h3 className="text-xl text-white font-oswald tracking-[0.2em] uppercase mb-4">Footer Settings</h3>
@@ -1896,18 +1993,10 @@ const AdminDashboard = () => {
                                <div><label className="block text-xs uppercase text-gray-500 mb-2">Title</label><input type="text" className={glassInput} value={editingContent.title || ''} onChange={e => setEditingContent({...editingContent, title: e.target.value})} /></div>
                              )}
                              {(c.section === 'About' || c.section === 'Offerings') && (
-                               <>
-                                 {c.section === 'About' && (
-                                   <div>
-                                     <label className="block text-xs uppercase text-gray-500 mb-2">Side Image</label>
-                                     <DragDropImageUploader currentImage={editingContent.imageUrl || 'https://images.unsplash.com/photo-1544126592-807ade215a0b?q=80&w=1400&auto=format&fit=crop'} aspect={4/5} onUploadSuccess={(url) => setEditingContent(prev => ({...prev, imageUrl: url}))} />
-                                   </div>
-                                 )}
-                                 <div className="mt-4">
-                                   <label className="block text-xs uppercase text-gray-500 mb-2">Background Image (Parallax)</label>
-                                   <DragDropImageUploader currentImage={editingContent.backgroundImageUrl || ''} aspect={16/9} onUploadSuccess={(url) => setEditingContent(prev => ({...prev, backgroundImageUrl: url}))} />
-                                 </div>
-                               </>
+                               <div className="mt-4">
+                                 <label className="block text-xs uppercase text-gray-500 mb-2">Background Image (Parallax)</label>
+                                 <DragDropImageUploader currentImage={editingContent.backgroundImageUrl || ''} aspect={16/9} onUploadSuccess={(url) => setEditingContent(prev => ({...prev, backgroundImageUrl: url}))} />
+                               </div>
                              )}
                              {c.description !== undefined && (
                                <div><label className="block text-xs uppercase text-gray-500 mb-2">Description</label><textarea className={`${glassInput} h-32`} value={editingContent.description || ''} onChange={e => setEditingContent({...editingContent, description: e.target.value})}></textarea></div>
@@ -1922,9 +2011,9 @@ const AdminDashboard = () => {
                           </form>
                         ) : (
                           <div className="text-gray-400 text-sm space-y-3 border-t border-white/5 pt-6">
-                            {(c.imageUrl || c.section === 'About') && (
+                            {(c.backgroundImageUrl || c.imageUrl) && (
                               <div className="mb-4">
-                                <img src={c.imageUrl || 'https://images.unsplash.com/photo-1544126592-807ade215a0b?q=80&w=1400&auto=format&fit=crop'} alt={c.section} className="h-32 object-cover rounded border border-white/10" />
+                                <img src={c.backgroundImageUrl || c.imageUrl} alt={c.section} className="h-32 object-cover rounded border border-white/10" />
                               </div>
                             )}
                             {c.title && <p><strong className="text-white font-sans uppercase tracking-wider text-xs mr-2">Title:</strong> {c.title}</p>}
@@ -2851,221 +2940,386 @@ const AdminDashboard = () => {
 
                 {/* SERVICES TAB */}
                 {activeTab === 'services' && (
-                  <div className="space-y-8">
-                    <div className="flex justify-between items-center bg-gradient-to-r from-blue-900/20 to-transparent p-6 rounded-2xl border border-blue-500/20">
+                  <div className="space-y-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                       <div>
-                        <h2 className="text-lg font-oswald text-white uppercase tracking-widest mb-1">Service Catalog</h2>
-                        <p className="text-xs text-blue-300/70 tracking-wide">Manage your main photography experiences and sub-services.</p>
+                        <h2 className="text-2xl font-serif text-white tracking-wide mb-1 font-normal">Services Categories</h2>
+                        <p className="text-xs text-gray-400 tracking-wide">Manage your core services, hero banners, images, and videos.</p>
                       </div>
-                      <button onClick={() => setEditingService({ name: '', slug: '', tagline: '', description: '', imageUrl: '', heroImage: '', mobileHeroImage: '', portfolioImages: [], portfolioVideos: [], packages: [], subServices: [] })} className="px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                        + New Service
+                      <button 
+                        onClick={() => setEditingService({ title: '', name: '', slug: '', description: '', heroDescription: '', tagline: '', coverImage: '', imageUrl: '', coverImagePosition: '50% 50%', heroImages: [], heroImage: '', images: [], portfolioImages: [], videos: [], portfolioVideos: [], packages: [] })} 
+                        className="bg-[#C9A227] hover:bg-[#b59121] text-black font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-sm flex items-center gap-2 transition-colors shrink-0"
+                      >
+                        <span className="text-base leading-none">+</span> ADD SERVICE
                       </button>
                     </div>
 
-                    {services.map(svc => (
-                      <div key={svc._id} className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300`}>
-                        <div className="flex justify-between items-start mb-4">
-                           <div>
-                             <h3 className="text-2xl text-white font-oswald tracking-[0.2em] uppercase">{svc.name}</h3>
-                             <p className="text-gray-400 text-sm leading-relaxed mt-2 max-w-2xl">{svc.description}</p>
-                           </div>
-                           <div className="flex gap-2">
-                             <button onClick={() => setEditingService(svc)} className="px-4 py-2 rounded-full backdrop-blur-md bg-white/10 border border-white/30 text-white text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">Edit</button>
-                             <button onClick={() => handleDeleteService(svc._id)} className="px-4 py-2 rounded-full backdrop-blur-md bg-red-500/80 border border-red-500 text-white text-xs uppercase tracking-widest hover:bg-red-500 transition-all">Delete</button>
-                           </div>
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                           {(svc.subServices || []).map((sub, i) => (
-                             <div key={i} className="bg-white/5 border border-white/5 p-4 rounded-xl backdrop-blur-sm flex items-center gap-3">
-                               {sub.imageUrl && <div className="w-10 h-10 rounded-full bg-cover bg-center shrink-0" style={{ backgroundImage: `url(${sub.imageUrl})` }}></div>}
-                               <strong className="text-white block uppercase tracking-wider text-xs">{sub.name}</strong>
-                             </div>
-                           ))}
-                           {(!svc.subServices || svc.subServices.length === 0) && (
-                             <p className="text-xs text-gray-500 uppercase tracking-widest">No Sub-Experiences added yet.</p>
-                           )}
-                        </div>
+                    <div className="relative max-w-xs">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                       </div>
-                    ))}
+                      <input 
+                        type="text" 
+                        placeholder="Search services..." 
+                        value={serviceSearch} 
+                        onChange={(e) => setServiceSearch(e.target.value)} 
+                        className="w-full bg-[#111111] border border-white/10 rounded-md pl-9 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
+                      />
+                    </div>
+
+                    <div className="bg-[#111111] border border-white/10 rounded-md overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                          <thead>
+                            <tr className="border-b border-white/10 bg-black/40 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                              <th className="px-6 py-4">TITLE</th>
+                              <th className="px-6 py-4">SLUG</th>
+                              <th className="px-6 py-4 text-center">IMAGES</th>
+                              <th className="px-6 py-4 text-center">VIDEOS</th>
+                              <th className="px-6 py-4 text-right">ACTIONS</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-white/5 text-xs text-gray-300">
+                            {services
+                              .filter(svc => {
+                                if (!serviceSearch) return true;
+                                const q = serviceSearch.toLowerCase();
+                                return (svc.title || svc.name || '').toLowerCase().includes(q) || (svc.slug || '').toLowerCase().includes(q);
+                              })
+                              .map(svc => {
+                                const imgCount = (svc.images && svc.images.length > 0) ? svc.images.length : (svc.portfolioImages?.length || 0);
+                                const vidCount = (svc.videos && svc.videos.length > 0) ? svc.videos.length : (svc.portfolioVideos?.length || 0);
+                                return (
+                                  <tr key={svc._id} className="hover:bg-white/[0.02] transition-colors">
+                                    <td className="px-6 py-4 font-semibold text-white">{svc.title || svc.name}</td>
+                                    <td className="px-6 py-4 font-mono text-gray-400">{svc.slug}</td>
+                                    <td className="px-6 py-4 text-center">{imgCount}</td>
+                                    <td className="px-6 py-4 text-center">{vidCount}</td>
+                                    <td className="px-6 py-4 text-right">
+                                      <div className="flex items-center justify-end gap-2">
+                                        <button 
+                                          onClick={() => { setMediaModalService(svc); setMediaModalTab('images'); }} 
+                                          className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                          title="Gallery / Media"
+                                        >
+                                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        </button>
+                                        <button 
+                                          onClick={() => setEditingService(svc)} 
+                                          className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                          title="Edit Service"
+                                        >
+                                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                        </button>
+                                        <button 
+                                          onClick={() => handleDeleteService(svc._id)} 
+                                          className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+                                          title="Delete Service"
+                                        >
+                                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            {services.length === 0 && (
+                              <tr>
+                                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">No services found. Click "+ ADD SERVICE" to create one.</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* MEDIA MODAL */}
+                {mediaModalService && (
+                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h2 className="text-2xl font-serif text-white tracking-wide">Media: {mediaModalService.title || mediaModalService.name}</h2>
+                          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">
+                            {((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images.length : (mediaModalService.portfolioImages?.length || 0))} IMAGES · {((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos.length : (mediaModalService.portfolioVideos?.length || 0))} VIDEOS
+                          </p>
+                        </div>
+                        <button type="button" onClick={() => setMediaModalService(null)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                      </div>
+
+                      <div className="flex border-b border-white/10 mb-6">
+                        <button 
+                          onClick={() => setMediaModalTab('images')}
+                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'images' ? 'border-[#C9A227] text-[#C9A227]' : 'border-transparent text-gray-400 hover:text-white'}`}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                          IMAGES ({((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images.length : (mediaModalService.portfolioImages?.length || 0))})
+                        </button>
+                        <button 
+                          onClick={() => setMediaModalTab('videos')}
+                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'videos' ? 'border-[#C9A227] text-[#C9A227]' : 'border-transparent text-gray-400 hover:text-white'}`}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                          VIDEOS ({((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos.length : (mediaModalService.portfolioVideos?.length || 0))})
+                        </button>
+                      </div>
+
+                      {mediaModalTab === 'images' && (
+                        <div className="space-y-4">
+                          <DragDropImageUploader 
+                            currentImage="" 
+                            multiple={true} 
+                            onUploadSuccess={(urls) => handleAddMediaImagesToService(urls)} 
+                            customLabel={
+                              <div className="flex flex-col items-center justify-center py-6 text-center">
+                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-2 text-white/70">
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">ADD IMAGES TO GALLERY</span>
+                                <span className="text-[11px] text-gray-400 mt-1">Drag and drop or click to select</span>
+                              </div>
+                            }
+                          />
+
+                          <div className="bg-emerald-950/30 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold tracking-wider uppercase px-4 py-2.5 rounded-md flex items-center gap-2">
+                            <span className="w-3.5 h-3.5 rounded-full border border-emerald-400 flex items-center justify-center text-[9px] font-bold">i</span>
+                            FILES ARE UPLOADED TO CLOUDINARY. THIS SAVES SPACE AND KEEPS YOUR SITE FAST!
+                          </div>
+
+                          {((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images : (mediaModalService.portfolioImages || [])).length === 0 ? (
+                            <div className="text-center py-12 text-gray-500 text-sm">No images yet.</div>
+                          ) : (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
+                              {((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images : (mediaModalService.portfolioImages || [])).map((img, idx) => (
+                                <div key={idx} className="relative group aspect-square rounded-md overflow-hidden bg-black/40 border border-white/10">
+                                  <img src={img} className="w-full h-full object-cover" alt="Service media" />
+                                  <button 
+                                    type="button" 
+                                    onClick={() => handleDeleteMediaImageFromService(idx)} 
+                                    className="absolute top-1.5 right-1.5 bg-red-600/90 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow"
+                                  >
+                                    &times;
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {mediaModalTab === 'videos' && (
+                        <div className="space-y-4">
+                          <form onSubmit={handleAddMediaVideoToService} className="flex gap-2">
+                            <input 
+                              type="text" 
+                              placeholder="Paste YouTube or Cloudinary video URL..." 
+                              value={mediaVideoUrl} 
+                              onChange={(e) => setMediaVideoUrl(e.target.value)} 
+                              className="flex-1 bg-[#161616] border border-white/10 rounded-md px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
+                            />
+                            <button type="submit" className="bg-[#C9A227] hover:bg-[#b59121] text-black font-bold text-xs uppercase px-5 py-2.5 rounded-md tracking-wider">
+                              + ADD VIDEO
+                            </button>
+                          </form>
+
+                          <div className="bg-emerald-950/30 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold tracking-wider uppercase px-4 py-2.5 rounded-md flex items-center gap-2">
+                            <span className="w-3.5 h-3.5 rounded-full border border-emerald-400 flex items-center justify-center text-[9px] font-bold">i</span>
+                            FILES ARE UPLOADED TO CLOUDINARY. THIS SAVES SPACE AND KEEPS YOUR SITE FAST!
+                          </div>
+
+                          {((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos : (mediaModalService.portfolioVideos || [])).length === 0 ? (
+                            <div className="text-center py-12 text-gray-500 text-sm">No videos yet.</div>
+                          ) : (
+                            <div className="space-y-2 pt-2">
+                              {((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos : (mediaModalService.portfolioVideos || [])).map((vid, idx) => (
+                                <div key={idx} className="bg-[#161616] border border-white/10 p-3 rounded-md flex items-center justify-between text-xs text-white">
+                                  <span className="truncate max-w-lg font-mono text-gray-300">{vid}</span>
+                                  <button type="button" onClick={() => handleDeleteMediaVideoFromService(idx)} className="text-red-400 hover:text-red-300 p-1">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </motion.div>
                   </div>
                 )}
 
                 {/* EDIT SERVICE MODAL */}
                 {editingService && (
-                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 py-10">
-                     <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={`${glassPanel} p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar`}>
-                       <div className="flex justify-between items-start mb-6">
-                         <h2 className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Edit Service: {editingService.name}</h2>
-                         <button type="button" onClick={() => setEditingService(null)} className="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
-                       </div>
-                       <form onSubmit={(e) => handleSaveService(e, editingService)} className="space-y-8">
-                         <div className="space-y-4">
-                           <div className="grid grid-cols-2 gap-4">
-                             <div>
-                               <label className="block text-xs uppercase text-gray-400 mb-2">Service Category Name</label>
-                               <input type="text" className={glassInput} value={editingService.name} onChange={e => setEditingService({...editingService, name: e.target.value})} />
-                             </div>
-                             <div>
-                               <label className="block text-xs uppercase text-gray-400 mb-2">Slug</label>
-                               <input type="text" className={glassInput} value={editingService.slug} onChange={e => setEditingService({...editingService, slug: e.target.value})} />
-                             </div>
-                             <div>
-                               <label className="block text-xs uppercase text-gray-400 mb-2">Order</label>
-                               <input type="number" className={glassInput} value={editingService.order || 0} onChange={e => setEditingService({...editingService, order: Number(e.target.value)})} />
-                             </div>
-                             <div>
-                               <label className="block text-xs uppercase text-gray-400 mb-2">Tagline (for Portfolio Page)</label>
-                               <input type="text" className={glassInput} placeholder="e.g. Capturing Moments That Last Forever" value={editingService.tagline || ''} onChange={e => setEditingService({...editingService, tagline: e.target.value})} />
-                             </div>
-                             <div className="col-span-2 flex gap-6">
-                               <label className="flex items-center gap-2 text-xs uppercase text-gray-400 cursor-pointer">
-                                 <input type="checkbox" className="w-4 h-4" checked={editingService.slotsActive !== false} onChange={e => setEditingService({...editingService, slotsActive: e.target.checked})} />
-                                 Slots Active (Show in Booking)
-                               </label>
-                               <label className="flex items-center gap-2 text-xs uppercase text-gray-400 cursor-pointer">
-                                 <input type="checkbox" className="w-4 h-4" checked={editingService.limitOnePerSession || false} onChange={e => setEditingService({...editingService, limitOnePerSession: e.target.checked})} />
-                                 Limit to 1 per session (Exclusive)
-                               </label>
-                             </div>
-                           </div>
-                           <div>
-                             <label className="block text-xs uppercase text-gray-400 mb-2">Category Description</label>
-                             <textarea className={`${glassInput} h-24`} value={editingService.description} onChange={e => setEditingService({...editingService, description: e.target.value})}></textarea>
-                           </div>
-                           <div className="border-t border-white/5 pt-6 mt-6">
-                            <div className="grid lg:grid-cols-3 gap-8">
-                              <div>
-                                <label className="block text-xs uppercase text-gray-400 mb-2">Cover Thumbnail</label>
-                                <DragDropImageUploader currentImage={editingService.imageUrl} onUploadSuccess={(url) => setEditingService({...editingService, imageUrl: url})} />
-                              </div>
-                              <div>
-                                <label className="block text-xs uppercase text-gray-400 mb-2">Hero Background</label>
-                                <DragDropImageUploader currentImage={editingService.heroImage} aspect={16/9} onUploadSuccess={(url) => setEditingService({...editingService, heroImage: url})} />
-                              </div>
-                              <div>
-                                <label className="block text-xs uppercase text-gray-400 mb-2">Mobile Hero (Vertical)</label>
-                                <DragDropImageUploader currentImage={editingService.mobileHeroImage} aspect={9/16} onUploadSuccess={(url) => setEditingService({...editingService, mobileHeroImage: url})} />
-                              </div>
-                            </div>
-                           </div>
-                           </div>
+                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-serif text-white tracking-wide">Edit Service</h2>
+                        <button type="button" onClick={() => setEditingService(null)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                      </div>
 
-                           <div className="border-t border-white/5 pt-8 mt-8">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase mb-4">Main Service Portfolio Images</h3>
-                            <label className="block text-xs uppercase text-gray-400 mb-2">Add Image</label>
-                            <DragDropImageUploader currentImage={''} multiple={true} onUploadSuccess={(urls) => {
-                              const newImgs = [...(editingService.portfolioImages || []), ...urls];
-                              setEditingService({...editingService, portfolioImages: newImgs});
-                              urls.forEach(url => {
-                                axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/gallery`, { url, category: editingService.name, type: 'image' }).catch(console.error);
-                              });
-                            }} />
-                            <div className="mt-4 grid grid-cols-4 gap-2">
-                              {(editingService.portfolioImages || []).map((img, idx) => (
-                                <div 
-                                  key={`${img}-${idx}`} 
-                                  onClick={(e) => {
-                                    if (selectedImageIndices.includes(idx)) {
-                                      setSelectedImageIndices(selectedImageIndices.filter(i => i !== idx));
-                                    } else {
-                                      setSelectedImageIndices([...selectedImageIndices, idx].sort((a,b)=>a-b));
-                                    }
-                                  }}
-                                  draggable 
-                                  onDragStart={(e) => {
-                                    let indicesToDrag = selectedImageIndices.includes(idx) ? selectedImageIndices : [idx];
-                                    e.dataTransfer.setData('application/json', JSON.stringify(indicesToDrag));
-                                  }}
-                                  onDragOver={(e) => e.preventDefault()}
-                                  onDrop={(e) => {
-                                    e.preventDefault();
-                                    try {
-                                      const data = e.dataTransfer.getData('application/json');
-                                      if (!data) return;
-                                      const fromIndices = JSON.parse(data);
-                                      if (!fromIndices || fromIndices.length === 0) return;
-                                      
-                                      const newImgs = [...editingService.portfolioImages];
-                                      const itemsToMove = fromIndices.map(i => newImgs[i]);
-                                      
-                                      for (let i = fromIndices.length - 1; i >= 0; i--) {
-                                        newImgs.splice(fromIndices[i], 1);
-                                      }
-                                      
-                                      let adjustedToIdx = idx;
-                                      let numRemovedBeforeTarget = fromIndices.filter(i => i < idx).length;
-                                      adjustedToIdx -= numRemovedBeforeTarget;
-                                      
-                                      newImgs.splice(adjustedToIdx, 0, ...itemsToMove);
-                                      
-                                      setEditingService({...editingService, portfolioImages: newImgs});
-                                      setSelectedImageIndices([]);
-                                    } catch (err) {
-                                      const fromIdx = Number(e.dataTransfer.getData('text/plain'));
-                                      if (!isNaN(fromIdx) && fromIdx !== idx) {
-                                        const newImgs = [...editingService.portfolioImages];
-                                        const [movedImg] = newImgs.splice(fromIdx, 1);
-                                        newImgs.splice(idx, 0, movedImg);
-                                        setEditingService({...editingService, portfolioImages: newImgs});
-                                      }
-                                    }
-                                  }}
-                                  className={`relative group cursor-move ${selectedImageIndices.includes(idx) ? 'ring-2 ring-blue-500 rounded' : ''}`}
+                      <form onSubmit={(e) => handleSaveService(e, editingService)} className="space-y-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">TITLE *</label>
+                            <input 
+                              type="text" 
+                              required 
+                              className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                              value={editingService.title || editingService.name || ''} 
+                              onChange={e => setEditingService({...editingService, title: e.target.value, name: e.target.value})} 
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">SLUG *</label>
+                            <input 
+                              type="text" 
+                              required 
+                              className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                              value={editingService.slug || ''} 
+                              onChange={e => setEditingService({...editingService, slug: e.target.value})} 
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">DESCRIPTION *</label>
+                          <textarea 
+                            rows="3" 
+                            required 
+                            className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                            value={editingService.description || ''} 
+                            onChange={e => setEditingService({...editingService, description: e.target.value})}
+                          ></textarea>
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">HERO PAGE TAGLINE (SHOWN ON SERVICE PAGE PARALLAX BANNER)</label>
+                          <input 
+                            type="text" 
+                            placeholder='"Capturing Moments That Last Forever"' 
+                            className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                            value={editingService.heroDescription || editingService.tagline || ''} 
+                            onChange={e => setEditingService({...editingService, heroDescription: e.target.value, tagline: e.target.value})} 
+                          />
+                        </div>
+
+                        {/* COVER IMAGE */}
+                        <div className="border border-white/10 rounded-md p-4 bg-[#161616]">
+                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-3">COVER IMAGE (SHOWN ON HOME / SERVICES LISTING)</label>
+                          {(editingService.coverImage || editingService.imageUrl) ? (
+                            <div className="space-y-2">
+                              <div className="relative w-48 mx-auto aspect-[3/4] rounded overflow-hidden border border-white/10 bg-black/40">
+                                <img src={editingService.coverImage || editingService.imageUrl} className="w-full h-full object-cover" alt="Cover" />
+                                <button 
+                                  type="button" 
+                                  onClick={() => setEditingService({...editingService, coverImage: '', imageUrl: ''})} 
+                                  className="absolute top-2 right-2 bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow"
                                 >
-                                  <img src={img} className="w-full h-32 object-contain bg-black/40 rounded border border-white/10 pointer-events-none" />
-                                  <button type="button" onClick={async (e) => {
-                                    e.stopPropagation();
-                                    const newImgs = [...editingService.portfolioImages];
-                                    const removedUrl = newImgs[idx];
-                                    newImgs.splice(idx, 1);
-                                    setEditingService({...editingService, portfolioImages: newImgs});
-                                    try {
-                                      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/gallery`);
-                                      const found = res.data.find(i => i.url === removedUrl);
-                                      if (found) await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/gallery/${found._id}`);
-                                    } catch (err) { console.error(err); }
-                                  }} className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer">×</button>
-                                </div>
-                              ))}
+                                  &times;
+                                </button>
+                              </div>
+                              <div className="flex justify-between items-center text-[11px] text-gray-400 px-1 pt-1">
+                                <span>POSITION: {editingService.coverImagePosition || '50% 50%'}</span>
+                                <button 
+                                  type="button" 
+                                  onClick={() => setEditingService({...editingService, coverImagePosition: '50% 50%'})} 
+                                  className="text-[#C9A227] hover:underline"
+                                >
+                                  Reset to Center
+                                </button>
+                              </div>
                             </div>
+                          ) : (
+                            <DragDropImageUploader 
+                              currentImage="" 
+                              onUploadSuccess={(url) => setEditingService({...editingService, coverImage: url, imageUrl: url})} 
+                            />
+                          )}
+                        </div>
+
+                        {/* HERO BANNER IMAGES */}
+                        <div className="border border-white/10 rounded-md p-4 bg-[#161616]">
+                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-3">HERO PARALLAX BANNER IMAGES (SELECT MULTIPLE IMAGES FOR SLIDESHOW)</label>
+                          
+                          <DragDropImageUploader 
+                            currentImage="" 
+                            multiple={true} 
+                            onUploadSuccess={(urls) => {
+                              const newUrls = Array.isArray(urls) ? urls : [urls];
+                              const currentHeroes = editingService.heroImages || (editingService.heroImage ? [editingService.heroImage] : []);
+                              const updated = [...currentHeroes, ...newUrls];
+                              setEditingService({...editingService, heroImages: updated, heroImage: updated[0] || ''});
+                            }} 
+                            customLabel={
+                              <div className="flex flex-col items-center justify-center py-6 text-center">
+                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-2 text-white/70">
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">ADD HERO BANNER IMAGES</span>
+                                <span className="text-[11px] text-gray-400 mt-1">Drag and drop or click to select</span>
+                              </div>
+                            }
+                          />
+
+                          <div className="bg-emerald-950/30 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold tracking-wider uppercase px-4 py-2.5 rounded-md flex items-center gap-2 mt-3">
+                            <span className="w-3.5 h-3.5 rounded-full border border-emerald-400 flex items-center justify-center text-[9px] font-bold">i</span>
+                            FILES ARE UPLOADED TO CLOUDINARY. THIS SAVES SPACE AND KEEPS YOUR SITE FAST!
                           </div>
 
-                         <div className="border-t border-white/5 pt-8 mt-8">
-                           <div className="flex justify-between items-center mb-6">
-                             <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Sub-Experiences</h3>
-                             <button type="button" onClick={() => {
-                               const newSub = { name: '', slug: '', tagline: '', description: '', imageUrl: '', heroImage: '', mobileHeroImage: '', portfolioImages: [], portfolioVideos: [], packages: [], landingAbout: { title: '', description: '', imageUrl: '' }, features: [], faqs: [] };
-                               setEditingSubService({ index: editingService.subServices?.length || 0, data: newSub });
-                             }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">
-                               + Add
-                             </button>
-                           </div>
-                           <div className="grid md:grid-cols-2 gap-4">
-                             {(editingService.subServices || []).map((sub, idx) => (
-                               <div key={idx} className="bg-black/20 border border-white/5 p-4 rounded-xl flex justify-between items-center">
-                                 <div>
-                                   <strong className="text-white block text-sm mb-1 uppercase tracking-wider">{sub.name || 'Untitled'}</strong>
-                                   <span className="text-xs text-gray-500">{sub.packages?.length || 0} packages</span>
-                                 </div>
-                                 <div className="flex gap-2">
-                                   <button type="button" onClick={() => setEditingSubService({ index: idx, data: {...sub} })} className="text-xs uppercase bg-white/5 px-3 py-1 rounded hover:bg-white/20 transition-colors">Edit</button>
-                                   <button type="button" onClick={() => {
-                                      const newSubs = [...(editingService.subServices || [])];
-                                      newSubs.splice(idx, 1);
-                                      setEditingService({...editingService, subServices: newSubs});
-                                   }} className="text-xs uppercase bg-red-500/20 text-red-400 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition-colors">Remove</button>
-                                 </div>
-                               </div>
-                             ))}
-                           </div>
-                         </div>
+                          {(editingService.heroImages || (editingService.heroImage ? [editingService.heroImage] : [])).length > 0 && (
+                            <div className="space-y-2 mt-4">
+                              {(editingService.heroImages || (editingService.heroImage ? [editingService.heroImage] : [])).map((slideUrl, idx) => {
+                                const displayUrl = typeof slideUrl === 'string' ? slideUrl : (slideUrl?.url || '');
+                                return (
+                                <div key={idx} className="bg-[#111111] border border-white/10 p-2.5 rounded-md flex items-center justify-between gap-3">
+                                  <div className="flex items-center gap-3">
+                                    <img src={displayUrl} className="w-20 h-12 object-cover rounded border border-white/10" alt="Slide" />
+                                    <div>
+                                      <div className="font-bold text-white text-xs uppercase tracking-wider">HERO SLIDE {idx + 1}</div>
+                                      <div className="text-[10px] text-gray-400">POSITION: 50% 29%</div>
+                                    </div>
+                                  </div>
 
-                         <div className="flex justify-end gap-3 pt-6 border-t border-white/5">
-                           <button type="button" onClick={() => setEditingService(null)} className="px-6 py-3 rounded-xl bg-white/5 text-xs uppercase hover:bg-white/10 transition-colors">Cancel</button>
-                           <button type="submit" disabled={isGlobalSubmitting} className="px-8 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save All Changes'}</button>
-                         </div>
-                       </form>
-                     </motion.div>
+                                  <div className="flex items-center gap-3">
+                                    <button 
+                                      type="button" 
+                                      onClick={() => {
+                                        // Reset slide position
+                                      }} 
+                                      className="text-[#C9A227] hover:underline text-[11px]"
+                                    >
+                                      Reset to Center
+                                    </button>
+                                    <button 
+                                      type="button" 
+                                      onClick={() => {
+                                        const slides = [...(editingService.heroImages || [editingService.heroImage])];
+                                        slides.splice(idx, 1);
+                                        setEditingService({...editingService, heroImages: slides, heroImage: slides[0] || ''});
+                                      }} 
+                                      className="text-gray-400 hover:text-red-400 p-1"
+                                    >
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                              })}
+                            </div>
+
+                          )}
+                        </div>
+
+                        <button 
+                          type="submit" 
+                          disabled={isGlobalSubmitting} 
+                          className="w-full bg-[#C9A227] hover:bg-[#b59121] text-black font-bold text-xs uppercase tracking-widest py-4 rounded-md transition-all shadow-[0_0_20px_rgba(201,162,39,0.2)] disabled:opacity-50 mt-4"
+                        >
+                          {isGlobalSubmitting ? 'SAVING...' : 'SAVE SERVICE'}
+                        </button>
+                      </form>
+                    </motion.div>
                   </div>
                 )}
 

@@ -54,7 +54,7 @@ const Navbar = () => {
             transition={{ duration: 0.8 }}
             className="z-[60] flex items-center"
           >
-            <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-10 md:h-14 w-auto object-contain" />
+            <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-14 sm:h-16 md:h-18 w-auto object-contain transition-all duration-300" />
           </motion.a>
 
           {/* DESKTOP LINKS */}
@@ -69,7 +69,8 @@ const Navbar = () => {
             </motion.div>
             )}
 
-            {/* Packages with Dropdown */}
+            {/* Services with Dropdown */}
+            {siteConfig.features.services && (
             <motion.div 
               initial={{ opacity: 0, y: -10 }} 
               animate={{ opacity: 1, y: 0 }} 
@@ -78,8 +79,11 @@ const Navbar = () => {
               onMouseEnter={() => setShowDropdown(true)}
               onMouseLeave={() => setShowDropdown(false)}
             >
-              <Link to="/packages" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block py-4">
-                Packages
+              <Link to="/packages" className="font-sans text-xs text-white brightness-125 uppercase tracking-[0.3em] hover:text-white transition-all duration-300 relative group block py-4 flex items-center gap-1">
+                Services
+                <svg className="w-3 h-3 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
                 <span className="absolute bottom-2 left-1/2 w-0 h-[1px] bg-white group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
               
@@ -89,15 +93,16 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 mt-0 w-48 bg-black/90 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl py-2"
+                    className="absolute top-full left-0 mt-0 w-52 bg-black/90 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl py-2 z-50"
                   >
                     {services.length > 0 ? services.map(svc => (
                       <div key={svc._id} className="relative group/sub">
                         <Link 
-                          to={`/packages?service=${encodeURIComponent(svc.slug)}`} 
-                          className="block px-4 py-3 text-[10px] font-sans text-gray-200 brightness-110 hover:text-white hover:bg-white/5 uppercase tracking-widest transition-colors"
+                          to={`/services/${svc.slug}`} 
+                          className="block px-4 py-3 text-[10px] font-sans text-gray-200 brightness-110 hover:text-white hover:bg-white/10 uppercase tracking-widest transition-colors flex items-center justify-between"
                         >
-                          {svc.name}
+                          <span>{svc.title || svc.name}</span>
+                          {svc.subServices && svc.subServices.length > 0 && <span className="text-[8px] text-gray-400">▶</span>}
                         </Link>
                         {/* Nested SubServices if any */}
                         {svc.subServices && svc.subServices.length > 0 && (
@@ -115,12 +120,13 @@ const Navbar = () => {
                         )}
                       </div>
                     )) : (
-                      <div className="px-4 py-3 text-[10px] text-gray-500 uppercase tracking-widest">Loading...</div>
+                      <div className="px-4 py-3 text-[10px] text-gray-500 uppercase tracking-widest">Loading services...</div>
                     )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
+            )}
 
             {/* Themes */}
             {siteConfig.features.themes && (
@@ -232,7 +238,7 @@ const Navbar = () => {
             <div className="flex flex-col items-center gap-8 w-full px-6">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Home</Link>
               {siteConfig.features.gallery && <Link to="/gallery" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Portfolio</Link>}
-              <Link to="/packages" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Packages</Link>
+              {siteConfig.features.services && <Link to="/packages" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Services</Link>}
               {siteConfig.features.themes && <Link to="/themes" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Themes</Link>}
               {siteConfig.features.studio && <Link to="/studio" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">Studio</Link>}
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-oswald text-white uppercase tracking-[0.2em]">About</Link>

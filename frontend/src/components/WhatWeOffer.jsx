@@ -70,12 +70,13 @@ const WhatWeOffer = () => {
           className="text-center flex flex-col items-center justify-center w-full mb-16 md:mb-24"
         >
           <div className="mb-8">
-            <h4 className="font-sans text-[10px] text-gray-500 uppercase tracking-[0.4em] mb-4">
+            <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">
               Curated Offerings
-            </h4>
-            <h2 className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none mb-8">
+            </span>
+            <h2 className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none mb-6">
               Signature<br className="hidden md:block" /> Experiences
             </h2>
+            <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-6 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
           </div>
         </motion.div>
 
@@ -88,7 +89,7 @@ const WhatWeOffer = () => {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               onClick={() => handleCardClick(svc)}
-              className="group relative h-[400px] md:h-[600px] w-full overflow-hidden bg-[#0a0a0a] border border-white/5 cursor-pointer"
+              className="group relative h-[400px] md:h-[600px] w-full overflow-hidden bg-[#0a0a0a] border border-white/5 hover:border-[#C9A227]/40 transition-all duration-700 cursor-pointer"
             >
               {/* Background Image */}
               <div 
@@ -96,23 +97,23 @@ const WhatWeOffer = () => {
                 style={{ backgroundImage: `url(${optimizeCloudinaryUrl(svc.imageUrl || 'https://images.unsplash.com/photo-1542044896530-05d85be9b11a?q=80')})` }}
               ></div>
               
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-80 group-hover:opacity-85 transition-opacity duration-700"></div>
 
               {/* Default Content */}
-              <div className="absolute inset-0 p-10 flex flex-col justify-end transition-transform duration-700 md:group-hover:-translate-y-8">
-                <h3 className="font-oswald text-4xl md:text-5xl text-white uppercase tracking-widest leading-none mb-6">
+              <div className="absolute inset-0 p-10 flex flex-col justify-end transition-transform duration-700 md:group-hover:-translate-y-6">
+                <h3 className="font-oswald text-3xl md:text-4xl text-white uppercase tracking-widest leading-none mb-4 group-hover:text-[#C9A227] transition-colors">
                   {svc.name}
                 </h3>
-                <div className="h-[1px] w-12 bg-white/20 mb-6 md:group-hover:w-full transition-all duration-700 ease-in-out"></div>
+                <div className="h-[2px] w-12 bg-[#C9A227]/50 mb-6 md:group-hover:w-full transition-all duration-700 ease-in-out"></div>
                 
-                {/* Hidden Description (Reveals on Hover on Desktop, Hidden on Mobile) */}
+                {/* Hidden Description */}
                 <div className="hidden md:block h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-700 delay-100">
-                  <p className="font-sans text-xs text-gray-300 tracking-wider leading-relaxed mb-6">
+                  <p className="font-sans text-xs text-gray-300 tracking-wider leading-relaxed mb-6 font-light">
                     {svc.description}
                   </p>
                 </div>
                 
-                {/* View Gallery Button - Always visible on mobile, visible on hover on desktop */}
+                {/* View Gallery Button */}
                 <div className="block md:hidden md:group-hover:block transition-all duration-700">
                   {svc.externalLink ? (
                     <a 
@@ -120,7 +121,7 @@ const WhatWeOffer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()} 
-                      className="inline-block text-[9px] font-sans text-white uppercase tracking-[0.3em] border border-white/30 px-6 py-3 hover:bg-white hover:text-black transition-colors"
+                      className="inline-block text-[10px] font-oswald text-white uppercase tracking-[0.3em] border border-[#C9A227]/50 px-6 py-3 hover:bg-[#C9A227] hover:text-black transition-all"
                     >
                       View Gallery
                     </a>
@@ -128,7 +129,7 @@ const WhatWeOffer = () => {
                     <Link 
                       to={`/portfolio?service=${encodeURIComponent(svc.slug)}`}
                       onClick={(e) => e.stopPropagation()} 
-                      className="inline-block text-[9px] font-sans text-white uppercase tracking-[0.3em] border border-white/30 px-6 py-3 hover:bg-white hover:text-black transition-colors"
+                      className="inline-block text-[10px] font-oswald text-white uppercase tracking-[0.3em] border border-[#C9A227]/50 px-6 py-3 hover:bg-[#C9A227] hover:text-black transition-all"
                     >
                       View Gallery
                     </Link>

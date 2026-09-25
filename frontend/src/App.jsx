@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -93,14 +94,40 @@ function App() {
     return true;
   });
   const [adminBypass, setAdminBypass] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (animationFinished) return;
-    const timer = setTimeout(() => {
-      setAnimationFinished(true);
-    }, 2500);
-    return () => clearTimeout(timer);
+    let animationFrameId;
+    const startTime = performance.now();
+    const duration = 1800; // 1.8s silky smooth duration
+
+    const updateProgress = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const linear = Math.min(1, elapsed / duration);
+      
+      // Cubic ease-out curve for natural deceleration into 100%
+      const eased = 1 - Math.pow(1 - linear, 3);
+      const currentPct = Math.round(eased * 100);
+      
+      setProgress(currentPct);
+
+      if (linear < 1) {
+        animationFrameId = requestAnimationFrame(updateProgress);
+      } else {
+        // Hold briefly at 100% then trigger smooth fade-out exit
+        setTimeout(() => {
+          setAnimationFinished(true);
+        }, 350);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(updateProgress);
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, [animationFinished]);
+
 
   useEffect(() => {
     // Check for admin bypass in localStorage
@@ -189,29 +216,68 @@ function App() {
   const showLoader = !animationFinished;
 
   return (
-    <>
-      {showLoader && (
-        <div className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center opacity-100">
-          <div className="relative w-40 sm:w-64 h-20 sm:h-24">
-            <img src={siteConfig.brand.logoUrl} alt={`${siteConfig.brand.name} Logo`} className="absolute inset-0 w-full h-full object-contain opacity-20" />
-            <div 
-              className="absolute top-0 left-0 h-full overflow-hidden" 
-              style={{ animation: 'fillLogo 2.5s ease-in-out forwards' }}
-            >
-              <img src={siteConfig.brand.logoUrl} alt={`${siteConfig.brand.name} Logo`} className="w-40 sm:w-64 h-20 sm:h-24 object-contain max-w-none origin-left" />
-            </div>
-          </div>
-          <style>{`
-            @keyframes fillLogo {
-              0% { width: 0%; }
-              100% { width: 100%; }
-            }
-          `}</style>
-        </div>
-      )}
+    <HelmetProvider>
+      <AnimatePresence mode="wait">
+        {showLoader && (
+          <motion.div 
+            key="luxury-loader"
+            initial={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05, filter: 'blur(6px)' }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center pointer-events-none select-none"
+          >
+            <div className="relative flex flex-col items-center justify-center">
+              {/* Circular Ring Container surrounding the logo */}
+              <div className="relative w-72 h-72 sm:w-96 sm:h-96 flex items-center justify-center">
+                {/* Circular Gold Ambient Glow behind the ring */}
+                <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(201,162,39,0.2)_0%,transparent_70%)] pointer-events-none"></div>
 
-      {!showLoader && (
-      <HelmetProvider>
+                {/* SVG Ring Spinner */}
+                <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+                  {/* Background Ring Track */}
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="88"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.08)"
+                    strokeWidth="3"
+                  />
+                  {/* Animated Glowing Gold Progress Ring */}
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="88"
+                    fill="none"
+                    stroke="#C9A227"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={552.92}
+                    strokeDashoffset={552.92 - (552.92 * progress) / 100}
+                    className="transition-[stroke-dashoffset] duration-150 ease-out"
+                    style={{ filter: 'drop-shadow(0 0 12px rgba(201,162,39,0.8))' }}
+                  />
+                </svg>
+
+                {/* Logo inside the Circle */}
+                <div className="w-44 sm:w-60 h-32 sm:h-44 p-1 flex items-center justify-center">
+                  <img 
+                    src={siteConfig.brand.logoUrl} 
+                    alt={`${siteConfig.brand.name} Logo`} 
+                    className="w-full h-full object-contain" 
+                  />
+                </div>
+              </div>
+
+              {/* Percentage Text Below Ring */}
+              <div className="font-oswald text-xl sm:text-3xl text-[#C9A227] tracking-[0.2em] font-bold mt-6 drop-shadow-[0_0_12px_rgba(201,162,39,0.6)]">
+                {progress}%
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Router>
         <NoInternetOverlay />
         
@@ -259,8 +325,6 @@ function App() {
         </Suspense>
       </Router>
     </HelmetProvider>
-    )}
-    </>
   );
 }
 

@@ -20,10 +20,10 @@ export const siteConfig = {
 
   // ─── Brand ─────────────────────────────────────────────────────────────────
   brand: {
-    name: 'Your Business Name',
-    shortName: 'Your Brand',
-    tagline: 'Your Business Tagline',
-    description: 'Your business description goes here.',
+    name: 'A Story By Pavan',
+    shortName: 'A Story By Pavan',
+    tagline: 'Cinematic Photography & Visual Storytelling',
+    description: 'Capture your most beautiful memories with professional cinematic photography and creative storytelling by A Story By Pavan.',
 
     // Replace these files in /frontend/public/images/
     logoUrl: '/images/logo.png',
@@ -33,25 +33,21 @@ export const siteConfig = {
 
   // ─── Contact ────────────────────────────────────────────────────────────────
   contact: {
-    email: 'hello@example.com',
-    phone: '+91 00000 00000',    // Display format (shown in UI)
-    whatsapp: '910000000000',    // Digits only (used for wa.me links)
+    email: 'astorybypavan4@gmail.com',
+    phone: '+91 96423 35315',    // Display format (shown in UI)
+    whatsapp: '919030040582',    // Digits only (used for wa.me links)
 
     // Full address as a single string (supports \n for line breaks)
-    address: 'Your Business Address\nYour City, State 000000\nIndia',
+    address: 'Srikakulam, Andhra Pradesh, India',
 
     // Cities shown in the footer Locations column
-    locations: ['Your City'],
+    locations: ['Srikakulam'],
   },
 
   // ─── Social Media ───────────────────────────────────────────────────────────
   // These are the fallback social links shown in the Footer when the database
   // has not been configured. Update via Admin Dashboard → Settings → Socials.
-  socials: [
-    { platform: 'Instagram', link: 'https://instagram.com/yourusername' },
-    { platform: 'Facebook',  link: 'https://facebook.com/yourusername' },
-    { platform: 'Pinterest', link: 'https://pinterest.com/yourusername' },
-  ],
+  socials: [],
 
   // ─── Analytics ──────────────────────────────────────────────────────────────
   // Leave empty. Configure via Admin Dashboard → Settings → Analytics.
@@ -66,8 +62,8 @@ export const siteConfig = {
   // Set enabled: true and fill name/url if this studio is a sub-brand.
   parentCompany: {
     enabled: false,
-    name: 'Your Parent Company',
-    url: 'https://example.com',
+    name: '',
+    url: '',
   },
 
   // ─── Feature Flags ──────────────────────────────────────────────────────────
@@ -76,29 +72,29 @@ export const siteConfig = {
   features: {
     // Core public-facing features — on by default
     gallery:       true,
-    booking:       true,
+    booking:       false,
     testimonials:  true,
     contact:       true,
     services:      true,
-    themes:        true,
-    studio:        true,
+    themes:        false,
+    studio:        false,
     whatsapp:      true,
 
     // Optional features — off by default (enable if the backend module is active)
-    clientGallery: false,
+    clientGallery: true,
     subscriptions: false,
-    leads:         false,
+    leads:         true,
     rentals:       false,
-    events:        false,
+    events:        true,
     getQuote:      true,    // "Get a Quote" multi-step wizard
   },
 
   // ─── SEO Defaults ───────────────────────────────────────────────────────────
   // Default metadata for the website.
   seo: {
-    title: 'Your Studio | Premium Photography & Creative Space',
-    description: 'Capture your most beautiful memories with professional cinematic photography and creative storytelling.',
-    keywords: 'photography studio, portrait, wedding, maternity, creative studio',
+    title: 'A Story By Pavan | Premium Photography & Cinematic Visuals',
+    description: 'Professional cinematic photography and creative storytelling by A Story By Pavan. Capturing weddings, portraits, and special moments in Srikakulam.',
+    keywords: 'A Story By Pavan, photography, cinematic photography, wedding photography, portrait studio, Srikakulam photography',
   },
 
   // ─── Theme ──────────────────────────────────────────────────────────────────
@@ -120,3 +116,4 @@ export const siteConfig = {
     },
   },
 };
+

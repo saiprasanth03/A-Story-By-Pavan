@@ -27,19 +27,25 @@ const WhatWeDo = () => {
   if (items.length === 0) return null;
 
   return (
-    <section className="bg-[#050505] py-32 px-6 lg:px-12 text-white border-t border-white/5 relative z-10">
+    <section className="bg-[#050505] py-32 px-6 lg:px-12 text-white border-t border-white/10 relative z-10">
       <div className="max-w-7xl mx-auto">
-        <motion.h2 
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-oswald text-white text-3xl sm:text-4xl md:text-5xl text-center tracking-[0.3em] mb-20 uppercase font-light"
+          className="text-center mb-20"
         >
-          What We Do
-        </motion.h2>
+          <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">
+            Core Specialties
+          </span>
+          <h2 className="font-oswald text-4xl sm:text-5xl md:text-6xl text-white tracking-[0.25em] uppercase font-bold">
+            What We Do
+          </h2>
+          <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-6 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
+        </motion.div>
 
         {/* CSS grid for Masonry/Variable width look */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {items.map((item, index) => (
             <motion.div 
               key={index}
@@ -47,14 +53,17 @@ const WhatWeDo = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className={`group flex flex-col justify-center items-center p-10 md:p-14 border border-white/20 hover:bg-[#1a1a1a] transition-colors duration-500 cursor-pointer ${
+              className={`group relative flex flex-col justify-center items-center p-10 md:p-14 bg-[#0a0a0a] border border-white/5 hover:border-[#C9A227]/40 transition-all duration-700 cursor-pointer overflow-hidden ${
                 index < 2 ? 'w-full md:w-[calc(50%-0.75rem)]' : 'w-full md:w-[calc(33.333%-1rem)]'
               }`}
             >
-              <h3 className="font-oswald text-xl md:text-2xl text-center mb-6 tracking-[0.2em] uppercase transition-colors duration-500 text-white">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-[#C9A227]/5 rounded-full blur-2xl pointer-events-none group-hover:bg-[#C9A227]/15 transition-all duration-700"></div>
+              
+              <h3 className="font-oswald text-2xl md:text-3xl text-center mb-6 tracking-[0.2em] uppercase transition-colors duration-500 text-white group-hover:text-[#C9A227]">
                 {item.title}
               </h3>
-              <p className="font-sans text-base md:text-lg text-center leading-relaxed font-light opacity-70 group-hover:opacity-100 transition-opacity duration-500 text-white">
+              <div className="w-10 h-[1px] bg-[#C9A227]/40 mb-6 group-hover:w-20 transition-all duration-500"></div>
+              <p className="font-sans text-sm md:text-base text-center leading-relaxed font-light text-gray-400 group-hover:text-gray-200 transition-colors duration-500">
                 {item.description}
               </p>
             </motion.div>

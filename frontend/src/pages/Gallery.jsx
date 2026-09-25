@@ -20,26 +20,76 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/gallery`)
-      .then(res => {
-        if (res.data && res.data.length > 0) {
-          setImages(res.data);
-        } else {
-          // Fallback data
-          const fallback = [
-            { id: 1, category: 'Maternity', url: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1000' },
-            { id: 2, category: 'Newborn', url: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?q=80&w=1000' },
-            { id: 3, category: 'Baby', url: 'https://images.unsplash.com/photo-1519759312658-0ce400821ec9?q=80&w=1000' },
-            { id: 4, category: 'Family', url: 'https://images.unsplash.com/photo-1517594539167-a8dc824c0d05?q=80&w=1000' }
-          ];
-          setImages(fallback);
-        }
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setIsLoading(false);
+    Promise.all([
+      axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/gallery`).catch(() => ({ data: [] })),
+      axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services`).catch(() => ({ data: [] }))
+    ]).then(([galleryRes, servicesRes]) => {
+      let combinedItems = [];
+
+      // 1. Existing standalone gallery items
+      if (galleryRes.data && Array.isArray(galleryRes.data)) {
+        combinedItems.push(...galleryRes.data);
+      }
+
+      // 2. Aggregate media from Services (Gallery images & videos)
+      if (servicesRes.data && Array.isArray(servicesRes.data)) {
+        servicesRes.data.forEach(svc => {
+          const categoryName = svc.title || svc.name || 'Service';
+
+
+          // Service Gallery Images
+          const serviceImgs = (svc.images && svc.images.length > 0) ? svc.images : (svc.portfolioImages || []);
+          serviceImgs.forEach((imgUrl, iIdx) => {
+            if (imgUrl) {
+              combinedItems.push({
+                _id: `svc-img-${svc._id}-${iIdx}`,
+                category: categoryName,
+                url: imgUrl,
+                type: 'image'
+              });
+            }
+          });
+
+          // Service Gallery Videos
+          const serviceVids = (svc.videos && svc.videos.length > 0) ? svc.videos : (svc.portfolioVideos || []);
+          serviceVids.forEach((vidUrl, vIdx) => {
+            if (vidUrl) {
+              combinedItems.push({
+                _id: `svc-vid-${svc._id}-${vIdx}`,
+                category: categoryName,
+                url: vidUrl,
+                type: 'video'
+              });
+            }
+          });
+        });
+      }
+
+      // Deduplicate items by URL
+      const seen = new Set();
+      const uniqueItems = combinedItems.filter(item => {
+        if (!item.url || seen.has(item.url)) return false;
+        seen.add(item.url);
+        return true;
       });
+
+      if (uniqueItems.length > 0) {
+        setImages(uniqueItems);
+      } else {
+        // Fallback data
+        const fallback = [
+          { id: 1, category: 'Maternity', url: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1000' },
+          { id: 2, category: 'Newborn', url: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?q=80&w=1000' },
+          { id: 3, category: 'Baby', url: 'https://images.unsplash.com/photo-1519759312658-0ce400821ec9?q=80&w=1000' },
+          { id: 4, category: 'Family', url: 'https://images.unsplash.com/photo-1517594539167-a8dc824c0d05?q=80&w=1000' }
+        ];
+        setImages(fallback);
+      }
+      setIsLoading(false);
+    }).catch(err => {
+      console.error(err);
+      setIsLoading(false);
+    });
   }, []);
 
   const typeFilteredData = images.filter(img => activeMediaType === 'video' ? img.type === 'video' : img.type !== 'video');
@@ -79,70 +129,70 @@ const Gallery = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="font-oswald text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Portfolio</h2>
+          <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">Portfolio</span>
           <h1 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
             Cinematic Gallery
           </h1>
-          <div className="w-12 h-[1px] bg-white mx-auto mt-8 mb-12"></div>
+          <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-6 mb-12 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
           
-          {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-6 py-2 rounded-full font-sans text-xs tracking-widest uppercase transition-all duration-300 ${
-                  filter === cat 
-                  ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105' 
-                  : 'bg-transparent border border-white/20 text-gray-400 hover:text-white hover:border-white/50'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
           {/* Media Type Toggles */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-4 mb-8">
             <button 
               onClick={() => { setActiveMediaType('image'); setLightboxIndex(null); }}
-              className={`px-6 py-2 rounded-full font-oswald text-[10px] tracking-widest uppercase transition-all duration-300 ${
+              className={`px-8 py-2.5 font-oswald text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
                 activeMediaType === 'image' 
-                ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.5)]' 
-                : 'bg-black/40 border border-white/20 text-gray-400 hover:text-white'
+                ? 'bg-[#C9A227] text-black font-bold border-[#C9A227] shadow-[0_0_20px_rgba(201,162,39,0.4)]' 
+                : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
               }`}
             >
               Images
             </button>
             <button 
               onClick={() => { setActiveMediaType('video'); setLightboxIndex(null); }}
-              className={`px-6 py-2 rounded-full font-oswald text-[10px] tracking-widest uppercase transition-all duration-300 ${
+              className={`px-8 py-2.5 font-oswald text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
                 activeMediaType === 'video' 
-                ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.5)]' 
-                : 'bg-black/40 border border-white/20 text-gray-400 hover:text-white'
+                ? 'bg-[#C9A227] text-black font-bold border-[#C9A227] shadow-[0_0_20px_rgba(201,162,39,0.4)]' 
+                : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
               }`}
             >
               Videos
             </button>
           </div>
+
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`px-5 py-2 font-sans text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                  filter === cat 
+                  ? 'bg-white text-black font-semibold shadow-md' 
+                  : 'bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
         {isLoading ? (
           <div className="flex justify-center py-32">
-            <div className="w-12 h-12 border-4 border-white/10 border-t-white rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-2 border-[#C9A227] border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <motion.div layout className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">
+          <motion.div layout className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
             <AnimatePresence>
               {filteredImages.map((img, index) => (
                 <motion.div
                   key={img._id || img.id || index}
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="relative group overflow-hidden bg-black break-inside-avoid shadow-2xl mb-6"
+                  className="relative group overflow-hidden bg-[#111] border border-white/5 break-inside-avoid shadow-2xl mb-6 cursor-pointer"
                   onClick={() => img.type !== 'video' && setLightboxIndex(index)}
                 >
                   {img.type === 'video' ? (
@@ -160,16 +210,16 @@ const Gallery = () => {
                       src={optimizeCloudinaryUrl(img.url, true)} 
                       alt={img.category} 
                       loading="lazy"
-                      className="w-full h-auto object-cover opacity-80 group-hover:scale-[1.02] group-hover:opacity-100 transition-all duration-700 cursor-pointer" 
+                      className="w-full h-auto object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out" 
                     />
                   )}
                   
                   {img.type !== 'video' && (
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                   )}
                   
-                  <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 pointer-events-none">
-                    <span className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] text-white uppercase tracking-widest border border-white/20 shadow-xl">
+                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                    <span className="bg-black/90 backdrop-blur-md px-3 py-1 text-[10px] text-[#C9A227] uppercase font-bold tracking-[0.25em] border border-[#C9A227]/30 shadow-xl">
                       {img.category}
                     </span>
                   </div>
@@ -180,7 +230,7 @@ const Gallery = () => {
         )}
         
         {!isLoading && filteredImages.length === 0 && (
-          <div className="text-center py-32 text-gray-500 font-sans text-sm tracking-widest uppercase">
+          <div className="text-center py-32 text-gray-400 font-sans text-sm tracking-widest uppercase border border-white/10 rounded-2xl bg-white/5">
             No {activeMediaType === 'video' ? 'videos' : 'images'} found in this category.
           </div>
         )}
@@ -193,6 +243,7 @@ const Gallery = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+              onClick={() => setLightboxIndex(null)}
             >
               <button onClick={() => setLightboxIndex(null)} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl font-light z-50">&times;</button>
               
@@ -203,16 +254,16 @@ const Gallery = () => {
                 &#8249;
               </button>
 
-              <div className="w-full max-w-6xl h-[85vh] p-4 flex items-center justify-center" onClick={() => setLightboxIndex(null)}>
+              <div className="w-full max-w-6xl h-[85vh] p-4 flex items-center justify-center">
                 <motion.img 
                   key={lightboxIndex}
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
                   src={optimizeCloudinaryUrl(filteredImages[lightboxIndex].url, false)} 
-                  alt="Gallery large" 
+                  alt="Gallery preview" 
                   loading="eager"
-                  className="max-w-full max-h-full object-contain shadow-2xl"
+                  className="max-w-full max-h-full object-contain shadow-2xl rounded-lg"
                   onClick={(e) => e.stopPropagation()}
                 />
               </div>

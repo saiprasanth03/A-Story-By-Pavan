@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { siteConfig } from '../config/site.config';
+
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,6 +10,7 @@ const AdminLogin = () => {
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // If already logged in, redirect to dashboard
@@ -21,13 +23,21 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/login`, { email, password });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/login`, 
+        { email, password }
+      );
       localStorage.setItem('adminToken', res.data.token);
       localStorage.setItem('adminUser', JSON.stringify(res.data.user));
+      localStorage.removeItem('adminBypass');
       window.location.href = '/admin';
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || 'Login failed. Invalid email or password.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -35,12 +45,15 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
     setMessage('');
+    setIsSubmitting(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/forgot-password`, { email });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/forgot-password`, { email }, { timeout: 5000 });
       setMessage(res.data.message);
       setMode('otp');
     } catch (err) {
       setError(err.response?.data?.message || 'Error requesting OTP');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -48,8 +61,9 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
     setMessage('');
+    setIsSubmitting(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/reset-password`, { email, otp, newPassword });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/reset-password`, { email, otp, newPassword }, { timeout: 5000 });
       setMessage(res.data.message);
       setMode('login');
       setPassword('');
@@ -57,6 +71,8 @@ const AdminLogin = () => {
       setNewPassword('');
     } catch (err) {
       setError(err.response?.data?.message || 'Error resetting password');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -81,7 +97,14 @@ const AdminLogin = () => {
               <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Password</label>
               <input type="password" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
-            <button type="submit" className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded">Login</button>
+            <button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50"
+            >
+              {isSubmitting ? 'Logging in...' : 'Login'}
+            </button>
+
             <div className="text-center pt-4">
               <button type="button" onClick={() => { setMode('forgot'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Forgot Password?</button>
             </div>
@@ -94,7 +117,9 @@ const AdminLogin = () => {
               <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email</label>
               <input type="email" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
-            <button type="submit" className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded">Send OTP</button>
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+              {isSubmitting ? 'Sending...' : 'Send OTP'}
+            </button>
             <div className="text-center pt-4">
               <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Back to Login</button>
             </div>
@@ -115,7 +140,9 @@ const AdminLogin = () => {
               <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">New Password</label>
               <input type="password" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
             </div>
-            <button type="submit" className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded">Reset Password</button>
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+              {isSubmitting ? 'Resetting...' : 'Reset Password'}
+            </button>
             <div className="text-center pt-4">
               <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Back to Login</button>
             </div>

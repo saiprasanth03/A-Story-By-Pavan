@@ -1,7 +1,7 @@
 {
-  "name": "Your Business Name",
-  "short_name": "Your Brand",
-  "description": "Your business description goes here.",
+  "name": "A Story By Pavan",
+  "short_name": "A Story By Pavan",
+  "description": "Professional cinematic photography and creative storytelling by A Story By Pavan.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
