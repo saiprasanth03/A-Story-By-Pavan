@@ -48,7 +48,7 @@ const NoInternetOverlay = () => {
               </svg>
             </motion.div>
 
-            <h2 className="font-oswald font-bold text-3xl md:text-4xl text-white uppercase tracking-widest mb-4 drop-shadow-xl">
+            <h2 className="font-mirage font-bold text-3xl md:text-4xl text-white uppercase tracking-widest mb-4 drop-shadow-xl">
               Connection Lost
             </h2>
             <p className="font-sans text-sm text-gray-400 tracking-wider leading-relaxed">

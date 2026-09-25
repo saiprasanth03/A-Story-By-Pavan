@@ -164,7 +164,7 @@ const Book = () => {
         {/* Glow effect inside card */}
         <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
 
-        <h1 className="font-oswald font-light text-2xl md:text-3xl text-center text-white uppercase tracking-[0.2em] mb-12">
+        <h1 className="font-mirage font-light text-2xl md:text-3xl text-center text-white uppercase tracking-[0.2em] mb-12">
           Book The Slot
         </h1>
 
@@ -183,7 +183,7 @@ const Book = () => {
           {/* Step 1: Select Service / SubService */}
           {step === 1 && (
             <motion.div key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                 {selectedParentService ? 'Select Specialization' : 'Select Experience'}
               </h2>
               {servicesData.length === 0 ? <p className="text-center font-sans tracking-widest uppercase text-xs text-gray-500 animate-pulse">Loading Collections...</p> : (
@@ -202,7 +202,7 @@ const Book = () => {
                         }}
                         className="group cursor-pointer bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/10 hover:border-gray-300/50 hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] transition-all flex justify-between items-center"
                       >
-                        <h3 className="text-xl sm:text-2xl text-gray-300 group-hover:text-white font-oswald uppercase tracking-widest transition-colors">{pkg.name}</h3>
+                        <h3 className="text-xl sm:text-2xl text-gray-300 group-hover:text-white font-mirage uppercase tracking-widest transition-colors">{pkg.name}</h3>
                         <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-gray-300/50 group-hover:bg-gray-500/20 transition-all shadow-inner">
                           <span className="text-white text-xs opacity-50 group-hover:opacity-100 transition-opacity">→</span>
                         </div>
@@ -219,7 +219,7 @@ const Book = () => {
                             }}
                             className="group cursor-pointer bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/10 hover:border-gray-300/50 hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] transition-all flex justify-between items-center"
                           >
-                            <h3 className="text-xl sm:text-2xl text-gray-300 group-hover:text-white font-oswald uppercase tracking-widest transition-colors">{sub.name}</h3>
+                            <h3 className="text-xl sm:text-2xl text-gray-300 group-hover:text-white font-mirage uppercase tracking-widest transition-colors">{sub.name}</h3>
                             <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-gray-300/50 group-hover:bg-white/20 transition-all shadow-inner">
                               <span className="text-white text-xs opacity-50 group-hover:opacity-100 transition-opacity">→</span>
                             </div>
@@ -243,7 +243,7 @@ const Book = () => {
                   {getActiveTitle()}
                 </p>
               )}
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Choose Package</h2>
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Choose Package</h2>
               <div className="space-y-4">
                 {getActivePackages().map((t, i) => (
                   <div 
@@ -253,9 +253,9 @@ const Book = () => {
                   >
                     <div className="absolute left-0 top-0 w-1 h-full bg-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="flex-1">
-                      <h3 className="text-xl sm:text-2xl font-oswald text-white uppercase tracking-widest mb-2">{t.name}</h3>
+                      <h3 className="text-xl sm:text-2xl font-mirage text-white uppercase tracking-widest mb-2">{t.name}</h3>
                       {t.price && (
-                        <p className="font-oswald text-4xl sm:text-5xl tracking-[0.1em] text-white mb-4">₹{t.price}</p>
+                        <p className="font-mirage text-4xl sm:text-5xl tracking-[0.1em] text-white mb-4">₹{t.price}</p>
                       )}
                       {t.features && t.features.length > 0 && (
                          <ul className="text-xs text-gray-400 space-y-2 tracking-wide font-sans">
@@ -283,7 +283,7 @@ const Book = () => {
           {/* Step 3: Select Date */}
           {step === 3 && (
             <motion.div key="step3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Pick a Date</h2>
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Pick a Date</h2>
               <div className="max-w-md mx-auto relative">
                 <div className="bg-black/40 p-1 rounded-2xl border border-white/10 hover:border-white/30 transition-colors">
                   <input 
@@ -334,7 +334,7 @@ const Book = () => {
           {/* Step 4: Select Slot */}
           {step === 4 && (
             <motion.div key="step4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-3 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Select Slot</h2>
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-3 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Select Slot</h2>
               <p className="text-center font-sans tracking-[0.3em] uppercase text-[10px] text-gray-300 mb-12">{formData.date}</p>
               
               {isLoadingSlots ? (
@@ -371,7 +371,7 @@ const Book = () => {
                         : 'border-white/5 bg-black/40 opacity-50 cursor-not-allowed'
                       }`}
                     >
-                      <h3 className={`text-xl font-oswald uppercase tracking-widest ${isAvailable ? 'text-gray-300 group-hover:text-white' : 'text-gray-600'}`}>
+                      <h3 className={`text-xl font-mirage uppercase tracking-widest ${isAvailable ? 'text-gray-300 group-hover:text-white' : 'text-gray-600'}`}>
                         {slot.slot === 'Morning' ? 'Morning Slot (9 AM - 12 PM)' : slot.slot === 'Afternoon' ? 'Afternoon Slot (1 PM - 4 PM)' : slot.slot === 'Evening' ? 'Evening Slot (5 PM - 8 PM)' : slot.slot}
                       </h3>
                       <span className={`font-sans text-[10px] tracking-[0.2em] uppercase px-3 py-1 rounded-full ${isAvailable ? 'bg-white/10 text-gray-300 group-hover:bg-white/20' : 'bg-red-500/10 text-red-500/70'}`}>
@@ -390,7 +390,7 @@ const Book = () => {
           {/* Step 5: Fill Details */}
           {step === 5 && (
             <motion.div key="step5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Your Details</h2>
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Your Details</h2>
               {sessionStorage.getItem('portfolioMode') === 'true' ? (
                 <div className="bg-white/5 border border-white/10 p-8 rounded-xl text-center max-w-md mx-auto">
                     <p className="text-white font-sans text-sm tracking-widest uppercase mb-2">
@@ -448,14 +448,14 @@ const Book = () => {
           {/* Step 6: Payment UI */}
           {step === 6 && (
             <motion.div key="step6" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }} className="text-center">
-              <h2 className="font-oswald font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Finalize Session</h2>
+              <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-white uppercase tracking-[0.2em] mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Finalize Session</h2>
               <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-gray-400 mb-10">Advance Payment Required</p>
               
               <div className="relative border border-white/10 rounded-3xl p-10 mb-12 max-w-sm mx-auto text-center flex flex-col items-center bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gray-500/20 blur-[50px] rounded-full"></div>
                 
-                <h3 className="relative z-10 text-2xl text-white font-oswald uppercase tracking-widest mb-3">{formData.package}</h3>
+                <h3 className="relative z-10 text-2xl text-white font-mirage uppercase tracking-widest mb-3">{formData.package}</h3>
                 <p className="relative z-10 text-gray-300 text-[10px] font-bold font-sans tracking-[0.3em] uppercase mb-4">{getActiveTitle()}</p>
                 
                 <div className="relative z-10 w-full h-[1px] bg-white/10 my-4"></div>
@@ -467,7 +467,7 @@ const Book = () => {
                   <span className="text-white">⏰ {formData.slot}</span>
                 </p>
 
-                <div className="relative z-10 mt-4 text-white font-oswald text-5xl tracking-widest bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+                <div className="relative z-10 mt-4 text-white font-mirage text-5xl tracking-widest bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
                   ₹1,000
                 </div>
                 <span className="relative z-10 text-[9px] tracking-[0.4em] text-gray-500 block mt-3 uppercase font-bold">Advance Deposit</span>
@@ -489,7 +489,7 @@ const Book = () => {
                        console.error(error);
                      }
                   }} 
-                  className="group relative px-10 py-5 bg-white text-black font-oswald text-sm font-bold uppercase tracking-[0.3em] rounded-full overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all"
+                  className="group relative px-10 py-5 bg-white text-black font-mirage text-sm font-bold uppercase tracking-[0.3em] rounded-full overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-[#25D366] to-[#128C7E] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <span className="relative z-10 group-hover:text-white transition-colors flex items-center gap-3">
@@ -508,7 +508,7 @@ const Book = () => {
               <div className="w-24 h-24 bg-gradient-to-tr from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-[0_0_40px_rgba(255,255,255,0.4)]">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
               </div>
-              <h2 className="font-oswald font-bold text-4xl sm:text-5xl text-white uppercase tracking-widest mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Request Sent</h2>
+              <h2 className="font-mirage font-bold text-4xl sm:text-5xl text-white uppercase tracking-widest mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Request Sent</h2>
               <p className="font-sans text-xs sm:text-sm text-gray-400 font-light leading-relaxed max-w-md mx-auto mb-16 tracking-wide">
                 Thank you, <span className="text-white font-bold">{formData.name}</span>. Your session request for <span className="text-white font-bold">{formData.date}</span> has been successfully submitted! A confirmation email has been sent to your inbox. Our team will contact you shortly to confirm the final details.
               </p>

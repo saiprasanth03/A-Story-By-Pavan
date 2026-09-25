@@ -64,7 +64,7 @@ const ServiceDetails = () => {
   if (!service) {
     return (
       <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center text-white p-6 text-center">
-        <h2 className="text-4xl font-oswald mb-4">Service Not Found</h2>
+        <h2 className="text-4xl font-mirage mb-4">Service Not Found</h2>
         <button onClick={() => navigate('/packages')} className="px-6 py-2 border border-white/20 hover:bg-white hover:text-black transition">
           View All Services
         </button>
@@ -103,12 +103,12 @@ const ServiceDetails = () => {
             <span>←</span> ALL SERVICES
           </button>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-oswald uppercase tracking-widest text-white mb-4 drop-shadow-2xl">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-mirage uppercase tracking-widest text-white mb-4 drop-shadow-2xl">
             {service.title || service.name}
           </h1>
 
           {(service.heroDescription || service.tagline) && (
-            <p className="font-serif italic text-lg md:text-2xl text-[#C9A227] mb-4">
+            <p className="font-serif italic text-lg md:text-2xl text-white/70 mb-4">
               "{service.heroDescription || service.tagline}"
             </p>
           )}
@@ -128,7 +128,7 @@ const ServiceDetails = () => {
         <div className="flex flex-wrap justify-center gap-4 mb-16 border-b border-white/10 pb-6">
           <button 
             onClick={() => setActiveTab('images')}
-            className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'images' ? 'bg-[#C9A227] text-black font-bold shadow-[0_0_20px_rgba(201,162,39,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
+            className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'images' ? 'bg-white text-black font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
           >
             GALLERY IMAGES ({images.length})
           </button>
@@ -136,7 +136,7 @@ const ServiceDetails = () => {
           {videos.length > 0 && (
             <button 
               onClick={() => setActiveTab('videos')}
-              className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'videos' ? 'bg-[#C9A227] text-black font-bold shadow-[0_0_20px_rgba(201,162,39,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
+              className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'videos' ? 'bg-white text-black font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
             >
               VIDEOS ({videos.length})
             </button>
@@ -145,7 +145,7 @@ const ServiceDetails = () => {
           {service.packages && service.packages.length > 0 && (
             <button 
               onClick={() => setActiveTab('packages')}
-              className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'packages' ? 'bg-[#C9A227] text-black font-bold shadow-[0_0_20px_rgba(201,162,39,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
+              className={`px-8 py-3 rounded-full font-sans text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'packages' ? 'bg-white text-black font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'}`}
             >
               PACKAGES ({service.packages.length})
             </button>
@@ -160,7 +160,7 @@ const ServiceDetails = () => {
                 {images.map((imgUrl, i) => (
                   <div 
                     key={i} 
-                    className="relative group overflow-hidden rounded-lg bg-black border border-white/10 cursor-pointer break-inside-avoid shadow-xl hover:border-white/30 transition-all duration-300"
+                    className="relative group overflow-hidden rounded-lg bg-black border border-white/10 cursor-pointer break-inside-avoid shadow-xl hover:border-white/40 transition-all duration-300"
                     onClick={() => setSelectedImageIndex(i)}
                   >
                     <img 
@@ -205,24 +205,24 @@ const ServiceDetails = () => {
         {activeTab === 'packages' && service.packages && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {service.packages.map((pkg, idx) => (
-              <div key={idx} className={`bg-[#111] border ${pkg.isPopular ? 'border-[#C9A227]' : 'border-white/10'} p-8 rounded-2xl flex flex-col justify-between relative`}>
+              <div key={idx} className={`bg-[#111] border ${pkg.isPopular ? 'border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'border-white/10'} p-8 rounded-2xl flex flex-col justify-between relative`}>
                 {pkg.isPopular && (
-                  <span className="absolute -top-3 right-6 bg-[#C9A227] text-black font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">POPULAR CHOICE</span>
+                  <span className="absolute -top-3 right-6 bg-white text-black font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">POPULAR CHOICE</span>
                 )}
                 <div>
-                  <h3 className="text-xl font-oswald text-white uppercase tracking-wider mb-2">{pkg.name}</h3>
-                  <div className="text-3xl font-bold text-[#C9A227] mb-6">{pkg.price}</div>
+                  <h3 className="text-xl font-mirage text-white uppercase tracking-wider mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-white mb-6">{pkg.price}</div>
                   <ul className="space-y-3 mb-8">
                     {(pkg.features || []).map((f, i) => (
                       <li key={i} className="text-xs text-gray-300 flex items-start gap-2">
-                        <span className="text-[#C9A227]">✓</span> {f}
+                        <span className="text-white/80">✓</span> {f}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <Link 
                   to="/get-quote"
-                  className="w-full py-3 text-center bg-[#C9A227] hover:bg-[#b59121] text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-colors"
+                  className="w-full py-3 text-center bg-white hover:bg-neutral-200 text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-colors"
                 >
                   Get Quote
                 </Link>
@@ -234,13 +234,13 @@ const ServiceDetails = () => {
         {/* Sub-services Section (if present) */}
         {service.subServices && service.subServices.length > 0 && (
           <div className="mt-24 pt-16 border-t border-white/10">
-            <h2 className="text-2xl font-oswald text-white uppercase tracking-wider mb-8">Sub-Experiences</h2>
+            <h2 className="text-2xl font-mirage text-white uppercase tracking-wider mb-8">Sub-Experiences</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {service.subServices.map((sub, idx) => (
                 <div 
                   key={idx}
                   onClick={() => navigate(`/portfolio?service=${service.slug}&sub=${sub.slug}`)}
-                  className="group cursor-pointer bg-[#141414] hover:bg-[#1f1f1f] border border-white/10 hover:border-[#C9A227]/50 rounded-xl p-4 flex items-center gap-4 transition-all duration-300"
+                  className="group cursor-pointer bg-[#141414] hover:bg-[#1f1f1f] border border-white/10 hover:border-white/40 rounded-xl p-4 flex items-center gap-4 transition-all duration-300"
                 >
                   <div className="w-14 h-14 rounded-full overflow-hidden bg-black shrink-0 border border-white/10">
                     {sub.imageUrl && <img src={sub.imageUrl} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />}

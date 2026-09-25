@@ -125,7 +125,7 @@ const PWAInstallPrompt = () => {
                 className="w-12 h-12 rounded-xl object-cover border border-white/10 shrink-0" 
               />
               <div className="flex-1 min-w-0">
-                <h4 className="font-oswald text-sm font-semibold tracking-wider uppercase text-white truncate">
+                <h4 className="font-mirage text-sm font-semibold tracking-wider uppercase text-white truncate">
                   Install {siteConfig.brand.name}
                 </h4>
                 <p className="font-sans text-[11px] text-gray-300 leading-tight">
@@ -197,7 +197,7 @@ const PWAInstallPrompt = () => {
                 className="w-16 h-16 rounded-2xl mx-auto mb-4 border border-white/10" 
               />
 
-              <h3 className="font-oswald text-lg font-bold tracking-wider uppercase mb-2">
+              <h3 className="font-mirage text-lg font-bold tracking-wider uppercase mb-2">
                 Install {siteConfig.brand.name}
               </h3>
               

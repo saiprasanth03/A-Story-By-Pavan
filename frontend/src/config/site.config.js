@@ -104,7 +104,7 @@ export const siteConfig = {
     colors: {
       primary:    '#111111',
       secondary:  '#ffffff',
-      accent:     '#C9A227',
+      accent:     '#ffffff',
       background: '#050505',
       surface:    '#111111',
       text:       '#ffffff',

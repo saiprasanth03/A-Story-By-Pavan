@@ -68,7 +68,7 @@ const SubServicesBanner = () => {
           <h4 className="font-sans text-xs md:text-sm text-gray-400 uppercase tracking-[0.4em] mb-4">
             Specialized Sessions
           </h4>
-          <h2 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest mb-6 drop-shadow-2xl">
+          <h2 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest mb-6 drop-shadow-2xl">
             Book Your Slot
           </h2>
           <p className="font-sans text-gray-300 text-sm md:text-base max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
@@ -86,7 +86,7 @@ const SubServicesBanner = () => {
           {/* Mobile Dropdown */}
           <div className="md:hidden w-full max-w-xs relative">
             <select 
-              className="w-full appearance-none bg-black/40 border border-white/20 text-white font-oswald text-sm md:text-xl uppercase tracking-widest px-6 py-4 rounded-xl focus:outline-none focus:border-white transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+              className="w-full appearance-none bg-black/40 border border-white/20 text-white font-mirage text-sm md:text-xl uppercase tracking-widest px-6 py-4 rounded-xl focus:outline-none focus:border-white transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
               onChange={(e) => {
                 if (e.target.value) navigate(e.target.value);
               }}
@@ -110,7 +110,7 @@ const SubServicesBanner = () => {
               <Link 
                 key={sub._id || i}
                 to={sub.link}
-                className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/20 text-white font-oswald text-xl uppercase tracking-widest hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] whitespace-nowrap"
+                className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/20 text-white font-mirage text-xl uppercase tracking-widest hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] whitespace-nowrap"
               >
                 {sub.name}
               </Link>

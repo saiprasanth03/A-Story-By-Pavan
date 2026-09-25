@@ -52,7 +52,7 @@ const ThankYou = () => {
         <div className="w-24 h-24 bg-gradient-to-tr from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-[0_0_40px_rgba(255,255,255,0.4)]">
           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
         </div>
-        <h2 className="font-oswald font-bold text-4xl sm:text-5xl text-white uppercase tracking-widest mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <h2 className="font-mirage font-bold text-4xl sm:text-5xl text-white uppercase tracking-widest mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
           {heading}
         </h2>
         <p className="font-sans text-xs sm:text-sm text-gray-400 font-light leading-relaxed max-w-md mx-auto mb-16 tracking-wide">

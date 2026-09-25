@@ -113,7 +113,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
     return (
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="w-full md:w-1/3 bg-black/40 border border-white/10 rounded-2xl p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="font-oswald text-xl uppercase tracking-widest text-white">{selectedDate}</h3>
+          <h3 className="font-mirage text-xl uppercase tracking-widest text-white">{selectedDate}</h3>
           <button onClick={() => setSelectedDate(null)} className="text-gray-400 hover:text-white">&times;</button>
         </div>
         
@@ -149,7 +149,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-gradient-to-r from-blue-900/20 to-transparent p-6 rounded-2xl border border-blue-500/20">
         <div>
-          <h2 className="text-lg font-oswald text-white uppercase tracking-widest mb-1">Booking Calendar</h2>
+          <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Booking Calendar</h2>
           <p className="text-xs text-blue-300/70 tracking-wide">Visualize and manage your daily slot capacity.</p>
         </div>
       </div>
@@ -159,7 +159,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-[#111] border border-white/20 p-8 rounded-2xl w-full max-w-md relative text-white shadow-2xl">
             <button onClick={() => setSelectedEvent(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
-            <h3 className="text-xl font-oswald uppercase tracking-widest mb-6 border-b border-white/10 pb-4">Booking Details</h3>
+            <h3 className="text-xl font-mirage uppercase tracking-widest mb-6 border-b border-white/10 pb-4">Booking Details</h3>
             <div className="space-y-4 text-sm mb-8">
               <p className="flex justify-between"><span className="text-gray-500 uppercase text-xs tracking-widest">Name</span> <span>{selectedEvent.name}</span></p>
               <p className="flex justify-between"><span className="text-gray-500 uppercase text-xs tracking-widest">Phone</span> <span>{selectedEvent.phone}</span></p>
@@ -178,7 +178,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
                   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 100);
               }}
-              className="w-full bg-white text-black font-oswald text-xs font-bold uppercase tracking-[0.2em] py-3 rounded hover:bg-gray-200 transition-colors"
+              className="w-full bg-white text-black font-mirage text-xs font-bold uppercase tracking-[0.2em] py-3 rounded hover:bg-gray-200 transition-colors"
             >
               View In Bookings Tab &rarr;
             </button>
@@ -190,7 +190,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
       <div className="flex flex-col md:flex-row gap-6 items-start">
         <div className={`w-full ${selectedDate ? 'md:w-2/3' : ''} transition-all duration-300 bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl`}>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="font-oswald text-2xl text-white uppercase tracking-widest">
+            <h2 className="font-mirage text-2xl text-white uppercase tracking-widest">
               {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
             </h2>
             <div className="flex gap-4">
@@ -255,7 +255,7 @@ const CalendarView = ({ allBookings, setActiveTab, setHighlightedBookingId, sett
                     onClick={() => { if (!isPast) handleDateClick(day) }}
                     className={`h-16 sm:h-24 rounded-lg border border-transparent sm:border-solid flex flex-col items-center sm:items-start p-2 ${isPast ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:scale-[1.02]'} transition-all duration-300 ${desktopBg} ${isSelected ? 'ring-2 ring-white shadow-[0_0_15px_rgba(255,255,255,0.3)]' : ''}`}
                   >
-                    <span className={`text-sm sm:text-sm font-oswald ${isPast ? textColor : 'text-white ' + textColor} mb-1 sm:mb-0`}>{day}</span>
+                    <span className={`text-sm sm:text-sm font-mirage ${isPast ? textColor : 'text-white ' + textColor} mb-1 sm:mb-0`}>{day}</span>
                     <div className={`w-1.5 h-1.5 rounded-full ${dotColor} sm:hidden mt-auto mb-1`}></div>
                   </div>
                 );

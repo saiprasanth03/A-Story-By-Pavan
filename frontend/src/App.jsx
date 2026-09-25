@@ -73,40 +73,17 @@ const Layout = ({ children }) => {
   );
 };
 
-function App() {
-  const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
-  const [maintenanceEndTime, setMaintenanceEndTime] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [animationFinished, setAnimationFinished] = useState(() => {
-    const path = window.location.pathname;
-    const isKnownCoreRoute = [
-      '/', '/about', '/packages', '/portfolio', '/themes', '/gallery', 
-      '/book', '/contact', '/thank-you', '/studio', '/testimonials', 
-      '/wedding', '/my-gallery', '/admin', '/admin/login'
-    ].includes(path);
-    
-    const isKnownPrefixRoute = path.startsWith('/services/') || path.startsWith('/location/') || path.startsWith('/admin/');
-    
-    if (isKnownCoreRoute || isKnownPrefixRoute) {
-      return false;
-    }
-    return true;
-  });
-  const [adminBypass, setAdminBypass] = useState(false);
+const LuxuryLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (animationFinished) return;
     let animationFrameId;
     const startTime = performance.now();
-    const duration = 1800; // 1.8s silky smooth duration
+    const duration = 1200; // 1.2s smooth duration
 
     const updateProgress = (currentTime) => {
       const elapsed = currentTime - startTime;
       const linear = Math.min(1, elapsed / duration);
-      
-      // Cubic ease-out curve for natural deceleration into 100%
       const eased = 1 - Math.pow(1 - linear, 3);
       const currentPct = Math.round(eased * 100);
       
@@ -115,10 +92,9 @@ function App() {
       if (linear < 1) {
         animationFrameId = requestAnimationFrame(updateProgress);
       } else {
-        // Hold briefly at 100% then trigger smooth fade-out exit
         setTimeout(() => {
-          setAnimationFinished(true);
-        }, 350);
+          onComplete();
+        }, 150);
       }
     };
 
@@ -126,8 +102,75 @@ function App() {
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [animationFinished]);
+  }, [onComplete]);
 
+  return (
+    <motion.div 
+      key="luxury-loader"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center pointer-events-none select-none"
+    >
+      <div className="relative flex flex-col items-center justify-center">
+        {/* Circular Ring Container surrounding the logo */}
+        <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
+          {/* Circular Ambient Glow behind the ring */}
+          <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] pointer-events-none"></div>
+
+          {/* SVG Ring Spinner */}
+          <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+            {/* Background Ring Track */}
+            <circle
+              cx="100"
+              cy="100"
+              r="88"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.08)"
+              strokeWidth="2.5"
+            />
+            {/* Animated Glowing White Progress Ring */}
+            <circle
+              cx="100"
+              cy="100"
+              r="88"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeDasharray={552.92}
+              strokeDashoffset={552.92 - (552.92 * progress) / 100}
+              className="transition-[stroke-dashoffset] duration-75 ease-out"
+              style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }}
+            />
+          </svg>
+
+          {/* Logo inside the Circle */}
+          <div className="w-40 sm:w-52 h-28 sm:h-36 p-1 flex items-center justify-center">
+            <img 
+              src={siteConfig.brand.logoUrl} 
+              alt={`${siteConfig.brand.name} Logo`} 
+              className="w-full h-full object-contain" 
+            />
+          </div>
+        </div>
+
+        {/* Percentage Text Below Ring */}
+        <div className="font-mirage text-lg sm:text-2xl text-white tracking-[0.3em] font-light mt-4 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+          {progress}%
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+function App() {
+  const [analyticsInitialized, setAnalyticsInitialized] = useState(false);
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const [maintenanceEndTime, setMaintenanceEndTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [animationFinished, setAnimationFinished] = useState(false);
+  const [adminBypass, setAdminBypass] = useState(false);
 
   useEffect(() => {
     // Check for admin bypass in localStorage
@@ -217,64 +260,9 @@ function App() {
 
   return (
     <HelmetProvider>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {showLoader && (
-          <motion.div 
-            key="luxury-loader"
-            initial={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: 'blur(6px)' }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center pointer-events-none select-none"
-          >
-            <div className="relative flex flex-col items-center justify-center">
-              {/* Circular Ring Container surrounding the logo */}
-              <div className="relative w-72 h-72 sm:w-96 sm:h-96 flex items-center justify-center">
-                {/* Circular Gold Ambient Glow behind the ring */}
-                <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(201,162,39,0.2)_0%,transparent_70%)] pointer-events-none"></div>
-
-                {/* SVG Ring Spinner */}
-                <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
-                  {/* Background Ring Track */}
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="88"
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.08)"
-                    strokeWidth="3"
-                  />
-                  {/* Animated Glowing Gold Progress Ring */}
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="88"
-                    fill="none"
-                    stroke="#C9A227"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    strokeDasharray={552.92}
-                    strokeDashoffset={552.92 - (552.92 * progress) / 100}
-                    className="transition-[stroke-dashoffset] duration-150 ease-out"
-                    style={{ filter: 'drop-shadow(0 0 12px rgba(201,162,39,0.8))' }}
-                  />
-                </svg>
-
-                {/* Logo inside the Circle */}
-                <div className="w-44 sm:w-60 h-32 sm:h-44 p-1 flex items-center justify-center">
-                  <img 
-                    src={siteConfig.brand.logoUrl} 
-                    alt={`${siteConfig.brand.name} Logo`} 
-                    className="w-full h-full object-contain" 
-                  />
-                </div>
-              </div>
-
-              {/* Percentage Text Below Ring */}
-              <div className="font-oswald text-xl sm:text-3xl text-[#C9A227] tracking-[0.2em] font-bold mt-6 drop-shadow-[0_0_12px_rgba(201,162,39,0.6)]">
-                {progress}%
-              </div>
-            </div>
-          </motion.div>
+          <LuxuryLoader onComplete={() => setAnimationFinished(true)} />
         )}
       </AnimatePresence>
 

@@ -129,19 +129,19 @@ const Gallery = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">Portfolio</span>
-          <h1 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+          <span className="font-mirage text-xs text-white/60 uppercase tracking-[0.5em] mb-4 block">Portfolio</span>
+          <h1 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
             Cinematic Gallery
           </h1>
-          <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-6 mb-12 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
+          <div className="w-16 h-[2px] bg-white/40 mx-auto mt-6 mb-12"></div>
           
           {/* Media Type Toggles */}
           <div className="flex justify-center gap-4 mb-8">
             <button 
               onClick={() => { setActiveMediaType('image'); setLightboxIndex(null); }}
-              className={`px-8 py-2.5 font-oswald text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
+              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
                 activeMediaType === 'image' 
-                ? 'bg-[#C9A227] text-black font-bold border-[#C9A227] shadow-[0_0_20px_rgba(201,162,39,0.4)]' 
+                ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
                 : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
               }`}
             >
@@ -149,9 +149,9 @@ const Gallery = () => {
             </button>
             <button 
               onClick={() => { setActiveMediaType('video'); setLightboxIndex(null); }}
-              className={`px-8 py-2.5 font-oswald text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
+              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
                 activeMediaType === 'video' 
-                ? 'bg-[#C9A227] text-black font-bold border-[#C9A227] shadow-[0_0_20px_rgba(201,162,39,0.4)]' 
+                ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
                 : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
               }`}
             >
@@ -179,7 +179,7 @@ const Gallery = () => {
 
         {isLoading ? (
           <div className="flex justify-center py-32">
-            <div className="w-12 h-12 border-2 border-[#C9A227] border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
           <motion.div layout className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
@@ -219,7 +219,7 @@ const Gallery = () => {
                   )}
                   
                   <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
-                    <span className="bg-black/90 backdrop-blur-md px-3 py-1 text-[10px] text-[#C9A227] uppercase font-bold tracking-[0.25em] border border-[#C9A227]/30 shadow-xl">
+                    <span className="bg-black/90 backdrop-blur-md px-3 py-1 text-[10px] text-white uppercase font-bold tracking-[0.25em] border border-white/30 shadow-xl">
                       {img.category}
                     </span>
                   </div>

@@ -84,8 +84,8 @@ const Themes = () => {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <h2 className="font-oswald text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
-          <h3 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+          <h2 className="font-mirage text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
+          <h3 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
             {selectedCategory ? selectedCategory : 'Theme Catalog'}
           </h3>
           <div className="w-12 h-[1px] bg-white mx-auto mt-8"></div>
@@ -122,7 +122,7 @@ const Themes = () => {
                       ></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-8 text-center">
-                        <h4 className="font-oswald text-3xl text-white uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-700 drop-shadow-2xl">
+                        <h4 className="font-mirage text-3xl text-white uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-700 drop-shadow-2xl">
                           {cat.name}
                         </h4>
                         <span className="mt-4 text-[10px] font-sans text-gray-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -173,7 +173,7 @@ const Themes = () => {
                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-700"></div>
                       
                       <div className="absolute inset-0 flex flex-col justify-end p-8 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent">
-                        <h3 className="font-oswald text-3xl text-white uppercase tracking-widest leading-none mb-4 group-hover:text-gray-200 transition-colors">{theme.name}</h3>
+                        <h3 className="font-mirage text-3xl text-white uppercase tracking-widest leading-none mb-4 group-hover:text-gray-200 transition-colors">{theme.name}</h3>
                         <div className="h-[1px] w-12 bg-white/30 mb-4 group-hover:w-full transition-all duration-700 ease-in-out"></div>
                         <div className="flex justify-between items-center text-[10px] font-sans text-gray-400 tracking-widest uppercase opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                           <span>{theme.age}</span>
@@ -245,7 +245,7 @@ const Themes = () => {
                 className="w-full h-full object-contain drop-shadow-2xl"
               />
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex justify-center items-end pointer-events-none">
-                <h3 className="font-oswald text-4xl md:text-5xl text-white uppercase tracking-[0.2em] leading-none drop-shadow-lg text-center pb-4">
+                <h3 className="font-mirage text-4xl md:text-5xl text-white uppercase tracking-[0.2em] leading-none drop-shadow-lg text-center pb-4">
                   {lightboxTheme.name}
                 </h3>
               </div>

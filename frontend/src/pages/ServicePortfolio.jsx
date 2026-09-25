@@ -64,9 +64,10 @@ const ServicePortfolio = () => {
       try {
         setLoading(true);
         const svcRes = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/services`);
-        const services = svcRes.data;
+        const services = svcRes.data || [];
         
         const parentService = services.find(s => s.slug === serviceSlug);
+
         if (!parentService) {
           navigate('/packages');
           return;
@@ -190,7 +191,7 @@ const ServicePortfolio = () => {
             >
               <span>←</span> BACK TO HOME
             </button>
-            <h1 className="font-oswald font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-widest leading-none mb-4 md:mb-6 drop-shadow-2xl">
+            <h1 className="font-mirage font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-widest leading-none mb-4 md:mb-6 drop-shadow-2xl">
               {activeData.name}
             </h1>
             {activeData.tagline && (

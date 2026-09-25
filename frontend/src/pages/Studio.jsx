@@ -111,7 +111,7 @@ const Studio = () => {
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl"
           >
-            <h1 className="font-oswald font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-widest leading-none mb-6 drop-shadow-2xl text-white">
+            <h1 className="font-mirage font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-widest leading-none mb-6 drop-shadow-2xl text-white">
               {studioData.name || 'TWILIGHT STUDIOS'}
             </h1>
             <p className="font-sans text-sm md:text-base text-white tracking-[0.2em] uppercase max-w-xl mx-auto drop-shadow-md">
@@ -207,7 +207,7 @@ const Studio = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                           </svg>
                         </div>
-                        <h3 className="font-oswald text-2xl tracking-widest uppercase text-white mb-2">Our Studio Location</h3>
+                        <h3 className="font-mirage text-2xl tracking-widest uppercase text-white mb-2">Our Studio Location</h3>
                         <p className="font-sans text-xs text-gray-400 tracking-[0.2em] uppercase max-w-sm px-4">Click here to open our exact location in Google Maps and get directions.</p>
                       </div>
                     </a>

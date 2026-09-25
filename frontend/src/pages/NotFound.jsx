@@ -18,10 +18,10 @@ const NotFound = () => {
         transition={{ duration: 1 }}
         className="relative z-10 text-center max-w-2xl"
       >
-        <h1 className="font-oswald font-bold text-[150px] md:text-[200px] leading-none text-transparent text-stroke-white uppercase tracking-widest drop-shadow-2xl">
+        <h1 className="font-mirage font-bold text-[150px] md:text-[200px] leading-none text-transparent text-stroke-white uppercase tracking-widest drop-shadow-2xl">
           404
         </h1>
-        <h2 className="font-oswald font-bold text-3xl md:text-5xl text-white uppercase tracking-[0.2em] mb-6">
+        <h2 className="font-mirage font-bold text-3xl md:text-5xl text-white uppercase tracking-[0.2em] mb-6">
           Lost In The Shadows
         </h2>
         <p className="font-sans text-sm md:text-base text-gray-400 tracking-wider leading-relaxed mb-12">
@@ -34,7 +34,7 @@ const NotFound = () => {
         >
           <div className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out"></div>
           <div className="absolute inset-0 border border-white/30 group-hover:border-transparent transition-colors duration-500"></div>
-          <span className="relative z-10 font-oswald text-sm md:text-base text-white group-hover:text-black uppercase tracking-[0.3em] font-bold transition-colors duration-500">
+          <span className="relative z-10 font-mirage text-sm md:text-base text-white group-hover:text-black uppercase tracking-[0.3em] font-bold transition-colors duration-500">
             Return to Studio
           </span>
         </Link>

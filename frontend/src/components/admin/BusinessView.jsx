@@ -597,7 +597,7 @@ const BusinessView = ({ bookings = [], expenses = [], partners = [], teamMembers
                 </div>
               </div>
               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                <button onClick={() => onEditPartner(p)} className="text-xs text-amber-500">Edit</button>
+                <button onClick={() => onEditPartner(p)} className="text-xs text-orange-400 hover:text-white transition-colors">Edit</button>
                 <button onClick={() => onDeletePartner(p._id)} className="text-xs text-red-500">Delete</button>
               </div>
             </div>
@@ -656,7 +656,7 @@ const BusinessView = ({ bookings = [], expenses = [], partners = [], teamMembers
       {/* Pending Amount card */}
       <div className="bg-[#111] p-6 rounded-xl border border-white/5">
         <p className="text-xs text-white/50 uppercase tracking-wider mb-2">Pending Amount</p>
-        <p className="text-3xl font-light text-amber-500">₹{totals.pending.toLocaleString()}</p>
+        <p className="text-3xl font-light text-orange-400">₹{totals.pending.toLocaleString()}</p>
         <p className="text-xs text-white mt-2">
           {viewMode === 'overview' && (
             <>
@@ -1301,7 +1301,7 @@ const BusinessView = ({ bookings = [], expenses = [], partners = [], teamMembers
                 <button onClick={() => { setViewingEventId(null); setEventNoteInput(''); }} className="text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center bg-black/80 backdrop-blur-md rounded-full shadow-lg border border-white/10">✕</button>
               </div>
               <div className="mb-4">
-                <h2 className="text-xl font-oswald text-white uppercase tracking-widest">{event.name}</h2>
+                <h2 className="text-xl font-mirage text-white uppercase tracking-widest">{event.name}</h2>
                 {event.clientName && <p className="text-sm text-gray-400 mt-1">{event.clientName} {event.phone && `· ${event.phone}`}</p>}
                 {event.date && <p className="text-xs text-emerald-400 mt-0.5">{event.date}</p>}
               </div>
@@ -1342,7 +1342,7 @@ const BusinessView = ({ bookings = [], expenses = [], partners = [], teamMembers
 
               {/* Payment Tracking */}
               <div className="mb-4 bg-black/40 border border-white/5 rounded-xl p-4">
-                <h4 className="text-sm font-oswald text-white uppercase tracking-widest mb-3">Payment Tracking</h4>
+                <h4 className="text-sm font-mirage text-white uppercase tracking-widest mb-3">Payment Tracking</h4>
                 {event.payments && event.payments.length > 0 && (
                   <div className="mb-3">
                     <h5 className="text-[10px] uppercase text-gray-400 mb-2">Installments</h5>
@@ -1416,7 +1416,7 @@ const BusinessView = ({ bookings = [], expenses = [], partners = [], teamMembers
 
               {/* Notes — directly displayed */}
               <div className="mb-4 bg-black/40 border border-white/5 rounded-xl p-4">
-                <h4 className="text-sm font-oswald text-white uppercase tracking-widest mb-3">Notes</h4>
+                <h4 className="text-sm font-mirage text-white uppercase tracking-widest mb-3">Notes</h4>
                 {event.followUps && event.followUps.length > 0 ? (
                   <div className="space-y-2 mb-3">
                     {event.followUps.map((fu, idx) => (

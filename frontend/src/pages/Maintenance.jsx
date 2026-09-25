@@ -58,7 +58,7 @@ const Maintenance = ({ endTime }) => {
         <h4 className="font-sans text-xs text-white/40 uppercase tracking-[0.5em] mb-4">
           {siteConfig.brand.name}
         </h4>
-        <h2 className="font-oswald font-light text-5xl md:text-7xl text-white uppercase tracking-[0.1em] mb-8 leading-tight">
+        <h2 className="font-mirage font-light text-5xl md:text-7xl text-white uppercase tracking-[0.1em] mb-8 leading-tight">
           System Upgrade<br/><span className="text-white/50">In Progress</span>
         </h2>
         <p className="font-sans text-sm md:text-base text-gray-400 tracking-wider leading-relaxed mb-12 max-w-xl mx-auto">
@@ -71,22 +71,22 @@ const Maintenance = ({ endTime }) => {
             <h5 className="font-sans text-[10px] text-white/30 uppercase tracking-widest mb-8">Expected Return</h5>
             <div className="flex justify-center gap-6 md:gap-12">
               <div className="flex flex-col items-center">
-                <span className="font-oswald text-4xl md:text-5xl text-white">{String(timeLeft.days).padStart(2, '0')}</span>
+                <span className="font-mirage text-4xl md:text-5xl text-white">{String(timeLeft.days).padStart(2, '0')}</span>
                 <span className="font-sans text-[10px] text-white/40 uppercase tracking-widest mt-2">Days</span>
               </div>
-              <span className="font-oswald text-4xl md:text-5xl text-white/20">:</span>
+              <span className="font-mirage text-4xl md:text-5xl text-white/20">:</span>
               <div className="flex flex-col items-center">
-                <span className="font-oswald text-4xl md:text-5xl text-white">{String(timeLeft.hours).padStart(2, '0')}</span>
+                <span className="font-mirage text-4xl md:text-5xl text-white">{String(timeLeft.hours).padStart(2, '0')}</span>
                 <span className="font-sans text-[10px] text-white/40 uppercase tracking-widest mt-2">Hours</span>
               </div>
-              <span className="font-oswald text-4xl md:text-5xl text-white/20">:</span>
+              <span className="font-mirage text-4xl md:text-5xl text-white/20">:</span>
               <div className="flex flex-col items-center">
-                <span className="font-oswald text-4xl md:text-5xl text-white">{String(timeLeft.minutes).padStart(2, '0')}</span>
+                <span className="font-mirage text-4xl md:text-5xl text-white">{String(timeLeft.minutes).padStart(2, '0')}</span>
                 <span className="font-sans text-[10px] text-white/40 uppercase tracking-widest mt-2">Mins</span>
               </div>
-              <span className="font-oswald text-4xl md:text-5xl text-white/20 hidden md:block">:</span>
+              <span className="font-mirage text-4xl md:text-5xl text-white/20 hidden md:block">:</span>
               <div className="flex flex-col items-center hidden md:flex">
-                <span className="font-oswald text-4xl md:text-5xl text-white">{String(timeLeft.seconds).padStart(2, '0')}</span>
+                <span className="font-mirage text-4xl md:text-5xl text-white">{String(timeLeft.seconds).padStart(2, '0')}</span>
                 <span className="font-sans text-[10px] text-white/40 uppercase tracking-widest mt-2">Secs</span>
               </div>
             </div>

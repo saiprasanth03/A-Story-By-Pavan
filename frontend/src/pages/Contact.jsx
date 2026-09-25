@@ -52,14 +52,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-36 pb-24 relative overflow-hidden">
-      {/* Decorative Golden Blur */}
-      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-[#C9A227]/10 blur-[140px] rounded-full pointer-events-none"></div>
-
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-          <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">Get In Touch</span>
-          <h1 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest mb-4">Contact Us</h1>
-          <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-4 mb-6 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
+          <span className="font-mirage text-xs text-white/60 uppercase tracking-[0.5em] mb-4 block">Get In Touch</span>
+          <h1 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest mb-4">Contact Us</h1>
+          <div className="w-16 h-[2px] bg-white/40 mx-auto mt-4 mb-6"></div>
           <p className="font-sans text-gray-400 text-sm tracking-[0.2em] uppercase font-light">Reach out to {siteConfig.brand.name} for bookings & inquiries</p>
         </motion.div>
 
@@ -84,35 +81,35 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-oswald text-[#C9A227] uppercase tracking-[0.25em] mb-3">Your Name</label>
+                <label className="block text-xs font-mirage text-white/70 uppercase tracking-[0.25em] mb-3">Your Name</label>
                 <input 
                   type="text" 
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-[#C9A227] outline-none transition-all font-sans text-sm"
+                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-white/40 outline-none transition-all font-sans text-sm"
                 />
               </div>
               <div>
-                <label className="block text-xs font-oswald text-[#C9A227] uppercase tracking-[0.25em] mb-3">Your Email</label>
+                <label className="block text-xs font-mirage text-white/70 uppercase tracking-[0.25em] mb-3">Your Email</label>
                 <input 
                   type="email" 
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-[#C9A227] outline-none transition-all font-sans text-sm"
+                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-white/40 outline-none transition-all font-sans text-sm"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-oswald text-[#C9A227] uppercase tracking-[0.25em] mb-3">Phone Number</label>
+                <label className="block text-xs font-mirage text-white/70 uppercase tracking-[0.25em] mb-3">Phone Number</label>
                 <div className="flex gap-2">
                   <select
                     value={formData.countryCode}
                     onChange={e => setFormData({...formData, countryCode: e.target.value})}
-                    className="w-24 bg-[#111] border border-white/10 p-4 text-white focus:border-[#C9A227] outline-none transition-all font-sans appearance-none text-center cursor-pointer text-xs uppercase"
+                    className="w-24 bg-[#111] border border-white/10 p-4 text-white focus:border-white/40 outline-none transition-all font-sans appearance-none text-center cursor-pointer text-xs uppercase"
                   >
                     <option value="91" className="bg-[#111] text-white tracking-widest">IN (+91)</option>
                     <option value="1" className="bg-[#111] text-white tracking-widest">US (+1)</option>
@@ -132,17 +129,17 @@ const Contact = () => {
                       const val = e.target.value.replace(/\D/g, '');
                       if (val.length <= 10) setFormData({...formData, phone: val});
                     }}
-                    className="flex-1 bg-[#111] border border-white/10 p-4 text-white focus:border-[#C9A227] outline-none transition-all font-sans text-sm"
+                    className="flex-1 bg-[#111] border border-white/10 p-4 text-white focus:border-white/40 outline-none transition-all font-sans text-sm"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-oswald text-[#C9A227] uppercase tracking-[0.25em] mb-3">Interested In</label>
+                <label className="block text-xs font-mirage text-white/70 uppercase tracking-[0.25em] mb-3">Interested In</label>
                 <select 
                   required
                   value={formData.interestedIn}
                   onChange={(e) => setFormData({...formData, interestedIn: e.target.value})}
-                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-[#C9A227] outline-none transition-all font-sans appearance-none cursor-pointer text-sm"
+                  className="w-full bg-[#111] border border-white/10 p-4 text-white focus:border-white/40 outline-none transition-all font-sans appearance-none cursor-pointer text-sm"
                 >
                   <option value="Select Event" className="bg-[#111] text-white">Select Event</option>
                   {services.map(s => (
@@ -156,7 +153,7 @@ const Contact = () => {
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#C9A227] text-black font-oswald text-xs font-bold uppercase tracking-[0.3em] hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(201,162,39,0.3)] disabled:opacity-50"
+                className="w-full py-4 bg-white text-black font-mirage text-xs font-bold uppercase tracking-[0.3em] hover:bg-neutral-200 transition-all duration-300 disabled:opacity-50"
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>

@@ -43,8 +43,8 @@ const ThemesPreview = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-oswald text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
-            <h3 className="font-oswald font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+            <h2 className="font-mirage text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
+            <h3 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
               Theme Catalog
             </h3>
           </motion.div>
@@ -94,7 +94,7 @@ const ThemesPreview = () => {
                         ></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-8 text-center">
-                          <h4 className="font-oswald text-3xl text-white uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-700 drop-shadow-2xl">
+                          <h4 className="font-mirage text-3xl text-white uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-700 drop-shadow-2xl">
                             {cat.name}
                           </h4>
                           <span className="mt-4 text-[10px] font-sans text-gray-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">

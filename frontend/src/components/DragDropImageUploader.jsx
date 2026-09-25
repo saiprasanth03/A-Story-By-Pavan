@@ -152,7 +152,7 @@ const DragDropImageUploader = ({
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-8">
           <div className="bg-[#111] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
             <div className="p-4 border-b border-white/10 flex justify-between items-center shrink-0">
-              <h3 className="font-oswald text-white uppercase tracking-widest">Adjust Image</h3>
+              <h3 className="font-mirage text-white uppercase tracking-widest">Adjust Image</h3>
               <button type="button" onClick={() => setImageToCrop(null)} className="text-gray-400 hover:text-white">&times;</button>
             </div>
             

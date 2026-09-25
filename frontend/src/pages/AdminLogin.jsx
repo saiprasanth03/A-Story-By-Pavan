@@ -80,7 +80,7 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#111] border border-white/10 rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-oswald text-white uppercase tracking-widest mb-2">{siteConfig.brand.shortName}</h1>
+          <h1 className="text-3xl font-mirage text-white uppercase tracking-widest mb-2">{siteConfig.brand.shortName}</h1>
           <p className="text-gray-500 font-sans text-xs uppercase tracking-widest">Admin Portal Access</p>
         </div>
 
@@ -100,7 +100,7 @@ const AdminLogin = () => {
             <button 
               type="submit" 
               disabled={isSubmitting} 
-              className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50"
+              className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50"
             >
               {isSubmitting ? 'Logging in...' : 'Login'}
             </button>
@@ -117,7 +117,7 @@ const AdminLogin = () => {
               <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email</label>
               <input type="email" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
               {isSubmitting ? 'Sending...' : 'Send OTP'}
             </button>
             <div className="text-center pt-4">
@@ -140,7 +140,7 @@ const AdminLogin = () => {
               <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">New Password</label>
               <input type="password" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
               {isSubmitting ? 'Resetting...' : 'Reset Password'}
             </button>
             <div className="text-center pt-4">

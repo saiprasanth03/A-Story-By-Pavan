@@ -49,7 +49,7 @@ const Wedding = () => {
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
           </div>
           
-          <h1 className="font-oswald text-5xl md:text-7xl lg:text-8xl font-light uppercase tracking-widest text-white mb-8 drop-shadow-2xl">
+          <h1 className="font-mirage text-5xl md:text-7xl lg:text-8xl font-light uppercase tracking-widest text-white mb-8 drop-shadow-2xl">
             {settings?.weddingHeroHeading || `${siteConfig.brand.name} Weddings`}
           </h1>
           
@@ -64,7 +64,7 @@ const Wedding = () => {
             rel="noopener noreferrer"
             className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
           >
-            <span className="relative z-10 font-oswald uppercase tracking-[0.2em] font-bold text-sm">
+            <span className="relative z-10 font-mirage uppercase tracking-[0.2em] font-bold text-sm">
               {settings?.weddingHeroButtonText || (siteConfig.parentCompany.enabled ? `Visit ${siteConfig.parentCompany.name}` : 'Learn More')}
             </span>
             <span className="relative z-10 group-hover:translate-x-2 transition-transform duration-300">

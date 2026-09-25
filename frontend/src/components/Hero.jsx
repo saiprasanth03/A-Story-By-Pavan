@@ -116,27 +116,27 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/40"></div>
 
               {/* Content with Parallax */}
-              <div className={`absolute inset-0 flex flex-col pointer-events-none ${i === 0 ? "items-center justify-center" : "items-center justify-end pb-24 md:pb-32"}`}>
-                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pointer-events-auto">
+              <div className={`absolute inset-0 flex flex-col pointer-events-none ${i === 0 ? "items-center justify-center" : "items-center justify-end pb-20 md:pb-28"}`}>
+                <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pointer-events-auto">
                   <div 
-                    className="font-oswald text-xs md:text-sm text-[#C9A227] uppercase tracking-[0.5em] mb-4" 
+                    className="font-lato text-[11px] md:text-xs text-gray-300 uppercase tracking-[0.5em] mb-4 font-semibold text-glow-subtle" 
                     data-swiper-parallax="-200"
                   >
                     {slide.text}
                   </div>
                   <h1 
-                    className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-tight drop-shadow-2xl break-words"
+                    className="font-mirage font-medium text-3xl md:text-5xl lg:text-6xl text-white uppercase tracking-[0.15em] leading-[1.15] drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)] break-words"
                     data-swiper-parallax="-300"
                   >
                     {slide.title || content.title.split(' ')[0]}
                   </h1>
                   {(slide.titleOutline || content.title.split(' ')[1]) && (
-                    <h1 
-                      className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-transparent text-stroke-white uppercase tracking-widest leading-tight mt-2 drop-shadow-2xl break-words" 
+                    <h2 
+                      className="font-spectral italic font-normal text-2xl md:text-4xl lg:text-5xl text-gray-200 uppercase tracking-[0.12em] leading-[1.2] mt-3 drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)] break-words" 
                       data-swiper-parallax="-150"
                     >
                       {slide.titleOutline || content.title.split(' ').slice(1).join(' ')}
-                    </h1>
+                    </h2>
                   )}
                 </div>
               </div>
@@ -144,21 +144,23 @@ const Hero = () => {
           ))}
           
           {/* Custom Navigation */}
-          <div className="swiper-button-prev-custom absolute top-1/2 left-4 md:left-8 -translate-y-1/2 z-20 cursor-pointer opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-2 md:gap-4">
-            <div className="w-6 md:w-12 h-[1px] bg-[#C9A227] group-hover:bg-white transition-colors"></div>
-            <span className="text-white font-oswald text-[8px] md:text-xs uppercase tracking-[0.3em] -rotate-90 origin-left">Prev</span>
+          <div className="swiper-button-prev-custom absolute top-1/2 left-6 md:left-12 -translate-y-1/2 z-20 cursor-pointer group flex items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-black/40 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300 shadow-xl">
+            <svg className="w-5 h-5 text-white group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
           </div>
           
-          <div className="swiper-button-next-custom absolute top-1/2 right-4 md:right-8 -translate-y-1/2 z-20 cursor-pointer opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-2 md:gap-4">
-            <span className="text-white font-oswald text-[8px] md:text-xs uppercase tracking-[0.3em] rotate-90 origin-right">Next</span>
-            <div className="w-6 md:w-12 h-[1px] bg-[#C9A227] group-hover:bg-white transition-colors"></div>
+          <div className="swiper-button-next-custom absolute top-1/2 right-6 md:right-12 -translate-y-1/2 z-20 cursor-pointer group flex items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-black/40 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300 shadow-xl">
+            <svg className="w-5 h-5 text-white group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
           </div>
           
           {/* Scroll Indicator */}
-          <div className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex-col items-center animate-bounce">
-            <div className="relative flex justify-center w-[1px]">
-              <span className="absolute bottom-full mb-3 text-[10px] text-[#C9A227] uppercase tracking-[0.3em] font-sans">Scroll</span>
-              <div className="w-[1px] h-10 bg-gradient-to-b from-[#C9A227] to-transparent"></div>
+          <div className="hidden md:flex absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center animate-bounce">
+            <div className="relative flex flex-col items-center">
+              <span className="mb-2 text-[9px] text-white/80 uppercase tracking-[0.4em] font-sans font-medium px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/15">Scroll</span>
+              <div className="w-[1.5px] h-8 bg-gradient-to-b from-white via-white/50 to-transparent"></div>
             </div>
           </div>
         </Swiper>

@@ -222,7 +222,7 @@ const ReferenceLandingPage = () => {
               </div>
               <button 
                 onClick={() => setIsModalOpen(true)}
-                className="bg-white hover:bg-gray-200 text-black px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 transition-all animate-bounce"
+                className="bg-white hover:bg-gray-200 text-black px-6 py-3 rounded-full font-mirage uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 transition-all animate-bounce"
               >
                 {pageData?.floatingButtonText || 'Book Now'}
               </button>
@@ -248,7 +248,7 @@ const ReferenceLandingPage = () => {
         </button>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="px-6 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full font-oswald uppercase tracking-widest text-sm transition-all"
+          className="px-6 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full font-mirage uppercase tracking-widest text-sm transition-all"
         >
           {pageData?.floatingButtonText || 'Book Now'}
         </button>
@@ -283,10 +283,10 @@ const ReferenceLandingPage = () => {
         
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center pt-20">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut" }} className="flex flex-col items-center">
-            <h2 className="text-xs sm:text-sm font-oswald uppercase tracking-[0.3em] text-gray-400 mb-2 drop-shadow-md">
+            <h2 className="text-xs sm:text-sm font-mirage uppercase tracking-[0.3em] text-gray-400 mb-2 drop-shadow-md">
               {pageData?.heroSubheading || siteConfig.brand.name}
             </h2>
-            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-oswald uppercase tracking-tight leading-[1.1] mb-2 text-white drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-mirage uppercase tracking-tight leading-[1.1] mb-2 text-white drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
               <span style={{ whiteSpace: 'pre-line' }}>{pageData?.heroHeading || 'Beautiful Baby\nPhotography'}</span>
             </h1>
           </motion.div>
@@ -298,20 +298,20 @@ const ReferenceLandingPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.6 }} className="flex flex-col items-center w-full">
             
             <div className="w-full max-w-3xl border-y border-gray-500/30 py-3 mb-6">
-              <p className="text-xs md:text-sm font-oswald font-light text-gray-400 uppercase tracking-widest leading-relaxed">
+              <p className="text-xs md:text-sm font-mirage font-light text-gray-400 uppercase tracking-widest leading-relaxed">
                 {pageData?.heroDescription || 'Professional baby shoots with stunning themes and complete safety.'}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 mt-2">
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <span className="text-gray-400 font-oswald uppercase tracking-widest text-xs mb-1">{pageData?.heroPriceText || 'Packages Start From Just'}</span>
-                <span className="text-gray-200 font-oswald text-3xl sm:text-4xl">{pageData?.heroPriceAmount || '₹3,999/-'}</span>
+                <span className="text-gray-400 font-mirage uppercase tracking-widest text-xs mb-1">{pageData?.heroPriceText || 'Packages Start From Just'}</span>
+                <span className="text-gray-200 font-mirage text-3xl sm:text-4xl">{pageData?.heroPriceAmount || '₹3,999/-'}</span>
               </div>
               
               <button 
                 onClick={() => setIsModalOpen(true)}
-                className="px-10 py-4 bg-white text-black font-oswald uppercase tracking-widest hover:bg-gray-200 transition-all duration-300 rounded-full text-sm shadow-[0_0_20px_rgba(255,255,255,0.2)] animate-bounce"
+                className="px-10 py-4 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-all duration-300 rounded-full text-sm shadow-[0_0_20px_rgba(255,255,255,0.2)] animate-bounce"
               >
                 {pageData?.heroButtonText || 'Book Your Shoot Now'}
               </button>
@@ -354,7 +354,7 @@ const ReferenceLandingPage = () => {
 
       
       <section className="py-12 px-6 lg:px-12 max-w-5xl mx-auto flex flex-col text-center">
-        <h2 className="font-oswald font-light text-4xl md:text-5xl uppercase tracking-[0.1em] mb-4 text-white">
+        <h2 className="font-mirage font-light text-4xl md:text-5xl uppercase tracking-[0.1em] mb-4 text-white">
           {pageData?.approachHeading || "Our Approach"}
         </h2>
         <p className="font-sans font-light text-white/60 leading-[2] tracking-wide text-sm md:text-base mb-12">
@@ -365,8 +365,8 @@ const ReferenceLandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             {pageData.approachSections.map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="bg-black/50 border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all">
-                <div className="text-3xl font-oswald text-white/50 mb-4">0{i + 1}</div>
-                <h3 className="text-xl font-oswald uppercase tracking-widest mb-3">{item.heading}</h3>
+                <div className="text-3xl font-mirage text-white/50 mb-4">0{i + 1}</div>
+                <h3 className="text-xl font-mirage uppercase tracking-widest mb-3">{item.heading}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed font-sans">{item.description}</p>
               </motion.div>
             ))}
@@ -382,7 +382,7 @@ const ReferenceLandingPage = () => {
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-5xl font-oswald uppercase tracking-widest mb-4">{pageData?.serviceCardsHeading || "What We Do Best"}</h2>
+            <h2 className="text-3xl sm:text-5xl font-mirage uppercase tracking-widest mb-4">{pageData?.serviceCardsHeading || "What We Do Best"}</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-white to-transparent mx-auto"></div>
           </motion.div>
 
@@ -407,8 +407,8 @@ const ReferenceLandingPage = () => {
                   <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#111] to-transparent pointer-events-none" />
                 </div>
                 <div className="p-8 relative z-20 -mt-16">
-                  <span className="text-xs text-gray-400 font-oswald uppercase tracking-widest mb-2 block">{card.category}</span>
-                  <h3 className="text-2xl font-oswald uppercase tracking-wider mb-3">{card.title}</h3>
+                  <span className="text-xs text-gray-400 font-mirage uppercase tracking-widest mb-2 block">{card.category}</span>
+                  <h3 className="text-2xl font-mirage uppercase tracking-wider mb-3">{card.title}</h3>
                   <p className="text-gray-500 font-light leading-relaxed">{card.description}</p>
                 </div>
               </motion.div>
@@ -429,8 +429,8 @@ const ReferenceLandingPage = () => {
                 <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#111] to-transparent pointer-events-none" />
               </div>
               <div className="p-8 relative z-20 -mt-16">
-                <span className="text-xs text-gray-400 font-oswald uppercase tracking-widest mb-2 block">5-15 Days</span>
-                <h3 className="text-2xl font-oswald uppercase tracking-wider mb-3">Newborn Shoots</h3>
+                <span className="text-xs text-gray-400 font-mirage uppercase tracking-widest mb-2 block">5-15 Days</span>
+                <h3 className="text-2xl font-mirage uppercase tracking-wider mb-3">Newborn Shoots</h3>
                 <p className="text-gray-500 font-light leading-relaxed">Safe, sleepy, and beautiful poses.</p>
               </div>
             </motion.div>
@@ -448,8 +448,8 @@ const ReferenceLandingPage = () => {
                 <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#111] to-transparent pointer-events-none" />
               </div>
               <div className="p-8 relative z-20 -mt-16">
-                <span className="text-xs text-gray-400 font-oswald uppercase tracking-widest mb-2 block">1-12 Months</span>
-                <h3 className="text-2xl font-oswald uppercase tracking-wider mb-3">Milestone Shoots</h3>
+                <span className="text-xs text-gray-400 font-mirage uppercase tracking-widest mb-2 block">1-12 Months</span>
+                <h3 className="text-2xl font-mirage uppercase tracking-wider mb-3">Milestone Shoots</h3>
                 <p className="text-gray-500 font-light leading-relaxed">Capturing sitting up, crawling, and first teeth.</p>
               </div>
             </motion.div>
@@ -467,8 +467,8 @@ const ReferenceLandingPage = () => {
                 <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#111] to-transparent pointer-events-none" />
               </div>
               <div className="p-8 relative z-20 -mt-16">
-                <span className="text-xs text-gray-400 font-oswald uppercase tracking-widest mb-2 block">1 Year+</span>
-                <h3 className="text-2xl font-oswald uppercase tracking-wider mb-3">Toddler Shoots</h3>
+                <span className="text-xs text-gray-400 font-mirage uppercase tracking-widest mb-2 block">1 Year+</span>
+                <h3 className="text-2xl font-mirage uppercase tracking-wider mb-3">Toddler Shoots</h3>
                 <p className="text-gray-500 font-light leading-relaxed">Fun-filled first birthday and cake smash celebrations.</p>
               </div>
             </motion.div>
@@ -484,7 +484,7 @@ const ReferenceLandingPage = () => {
       <section className="py-12 px-6 max-w-5xl mx-auto">
         <div className="bg-[#111] border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[50px] rounded-full pointer-events-none" />
-          <h3 className="text-2xl font-oswald uppercase tracking-widest mb-8 text-white text-center">Book Your Shoot</h3>
+          <h3 className="text-2xl font-mirage uppercase tracking-widest mb-8 text-white text-center">Book Your Shoot</h3>
           
           {sessionStorage.getItem('portfolioMode') === 'true' ? (
             <div className="bg-white/5 border border-white/10 p-8 rounded-xl text-center">
@@ -523,7 +523,7 @@ const ReferenceLandingPage = () => {
               </div>
               
               <div className="md:col-span-2 mt-2">
-                <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-white hover:bg-gray-200 text-black font-oswald uppercase tracking-widest rounded-xl transition-colors disabled:opacity-50">
+                <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-white hover:bg-gray-200 text-black font-mirage uppercase tracking-widest rounded-xl transition-colors disabled:opacity-50">
                   {isSubmitting ? 'Submitting...' : 'Get Callback'}
                 </button>
               </div>
@@ -535,7 +535,7 @@ const ReferenceLandingPage = () => {
       {/* 4. OUR BEST CLICKS */}
       <section className="py-24 border-t border-white/5 overflow-hidden">
         <div className="px-6 lg:px-12 mb-12 flex flex-col items-center">
-            <h2 className="font-oswald font-light text-3xl md:text-4xl uppercase tracking-[0.2em] text-white">{pageData?.portfolioImagesHeading || "Our Best Clicks"}</h2>
+            <h2 className="font-mirage font-light text-3xl md:text-4xl uppercase tracking-[0.2em] text-white">{pageData?.portfolioImagesHeading || "Our Best Clicks"}</h2>
         </div>
         
         <div className="relative w-full px-6 lg:px-12 pb-8">
@@ -567,7 +567,7 @@ const ReferenceLandingPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-              <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl font-oswald uppercase tracking-widest mb-12 flex items-center gap-4">
+              <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl font-mirage uppercase tracking-widest mb-12 flex items-center gap-4">
                 <span className="w-8 h-1 bg-white"></span> {pageData?.whyChooseHeading || "Why Parents Love Our Studio"}
               </motion.h2>
               
@@ -576,7 +576,7 @@ const ReferenceLandingPage = () => {
                   <motion.div key={i} variants={fadeInUp} className="flex gap-4">
                     <div className="mt-1 w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center shrink-0">✓</div>
                     <div>
-                      <h4 className="text-lg font-oswald uppercase tracking-widest mb-1">{item.title}</h4>
+                      <h4 className="text-lg font-mirage uppercase tracking-widest mb-1">{item.title}</h4>
                       <p className="text-gray-400 font-light">{item.description || item.desc}</p>
                     </div>
                   </motion.div>
@@ -585,7 +585,7 @@ const ReferenceLandingPage = () => {
             </motion.div>
 
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-              <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl font-oswald uppercase tracking-widest mb-12 flex items-center gap-4 text-gray-300">
+              <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl font-mirage uppercase tracking-widest mb-12 flex items-center gap-4 text-gray-300">
                 <span className="w-8 h-1 bg-gray-300"></span> {pageData?.comfortHeading || "Pure Comfort for Mother & Baby"}
               </motion.h2>
               
@@ -601,7 +601,7 @@ const ReferenceLandingPage = () => {
                     <motion.div key={i} variants={fadeInUp} className="flex gap-6 items-start">
                       <div className="mt-1 w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center shrink-0">✓</div>
                       <div>
-                        <h4 className="text-lg font-oswald uppercase tracking-widest mb-1">{item.title}</h4>
+                        <h4 className="text-lg font-mirage uppercase tracking-widest mb-1">{item.title}</h4>
                         <p className="text-gray-400 font-light">{item.description || item.desc}</p>
                       </div>
                     </motion.div>
@@ -618,7 +618,7 @@ const ReferenceLandingPage = () => {
       {pageData?.showVideoGallery !== false && (
         <section className="py-24 border-t border-white/5 overflow-hidden">
           <div className="px-6 lg:px-12 mb-12 flex flex-col items-center">
-              <h2 className="font-oswald font-light text-3xl md:text-4xl uppercase tracking-[0.2em] text-white">{pageData?.portfolioVideosHeading || "Memorable Client Stories"}</h2>
+              <h2 className="font-mirage font-light text-3xl md:text-4xl uppercase tracking-[0.2em] text-white">{pageData?.portfolioVideosHeading || "Memorable Client Stories"}</h2>
           </div>
           
           <div className="relative w-full px-6 lg:px-12 pb-8">
@@ -661,7 +661,7 @@ const ReferenceLandingPage = () => {
         <section className="py-24 bg-[#050505] relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-5xl font-oswald uppercase tracking-widest mb-4">{pageData?.packagesHeading || "Investment"}</h2>
+              <h2 className="text-3xl sm:text-5xl font-mirage uppercase tracking-widest mb-4">{pageData?.packagesHeading || "Investment"}</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-white to-transparent mx-auto"></div>
               <p className="mt-6 text-gray-400 font-light max-w-2xl mx-auto">Transparent pricing for premium quality. Choose a package that suits your needs.</p>
             </div>
@@ -674,9 +674,9 @@ const ReferenceLandingPage = () => {
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                     className="bg-[#111] p-8 rounded-2xl border border-white/10 hover:border-white/40 transition-colors relative group"
                   >
-                    <h3 className="text-4xl font-oswald uppercase tracking-widest mb-4 text-white group-hover:scale-105 transition-transform origin-left">{pkg.name}</h3>
+                    <h3 className="text-4xl font-mirage uppercase tracking-widest mb-4 text-white group-hover:scale-105 transition-transform origin-left">{pkg.name}</h3>
                     {pkg.price && (
-                      <div className="text-xl font-oswald mb-6 text-gray-400">
+                      <div className="text-xl font-mirage mb-6 text-gray-400">
                         ₹{pkg.price}
                       </div>
                     )}
@@ -692,7 +692,7 @@ const ReferenceLandingPage = () => {
                     )}
                     <button 
                       onClick={() => { setFormData({...formData, interestedIn: pkg.name}); setIsModalOpen(true); }}
-                      className="w-full py-3 border border-white/20 hover:bg-white hover:text-black uppercase tracking-widest text-sm font-oswald transition-colors rounded-full"
+                      className="w-full py-3 border border-white/20 hover:bg-white hover:text-black uppercase tracking-widest text-sm font-mirage transition-colors rounded-full"
                     >
                       Select Package
                     </button>
@@ -717,8 +717,8 @@ const ReferenceLandingPage = () => {
           initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
           className={`relative z-10 max-w-3xl px-4 mx-auto text-${pageData?.parallaxFooter?.align || 'center'}`}
         >
-          <h2 className="text-4xl sm:text-6xl font-oswald uppercase tracking-widest mb-6">{pageData?.parallaxFooter?.heading || 'Affordable Premium Baby Shoot'}</h2>
-          <div className="text-3xl font-oswald text-gray-300 mb-8 border-y border-gray-500/30 py-6 inline-block">
+          <h2 className="text-4xl sm:text-6xl font-mirage uppercase tracking-widest mb-6">{pageData?.parallaxFooter?.heading || 'Affordable Premium Baby Shoot'}</h2>
+          <div className="text-3xl font-mirage text-gray-300 mb-8 border-y border-gray-500/30 py-6 inline-block">
             {pageData?.parallaxFooter?.subheading || 'Starts From Just ₹3,999/-'}
           </div>
           <p className="text-lg text-gray-400 font-light mb-12">
@@ -726,7 +726,7 @@ const ReferenceLandingPage = () => {
           </p>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="px-8 py-3 bg-white text-black font-oswald uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors rounded-full text-sm shadow-xl"
+            className="px-8 py-3 bg-white text-black font-mirage uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors rounded-full text-sm shadow-xl"
           >
             {pageData?.parallaxFooter?.buttonText || 'Claim Your Spot Now'}
           </button>
@@ -753,7 +753,7 @@ const ReferenceLandingPage = () => {
                 ✕
               </button>
               
-              <h3 className="text-2xl font-oswald uppercase tracking-widest mb-2 text-white">Book Your Shoot</h3>
+              <h3 className="text-2xl font-mirage uppercase tracking-widest mb-2 text-white">Book Your Shoot</h3>
               
               {sessionStorage.getItem('portfolioMode') === 'true' ? (
                 <div className="bg-white/5 border border-white/10 p-8 rounded-xl text-center max-w-md mx-auto my-12">
@@ -833,7 +833,7 @@ const ReferenceLandingPage = () => {
                 
                 <button 
                   type="submit" disabled={isSubmitting}
-                  className="w-full py-4 bg-white hover:bg-gray-200 text-black font-oswald uppercase tracking-widest rounded-xl transition-colors mt-4 disabled:opacity-50"
+                  className="w-full py-4 bg-white hover:bg-gray-200 text-black font-mirage uppercase tracking-widest rounded-xl transition-colors mt-4 disabled:opacity-50"
                 >
                   {isSubmitting ? 'Submitting...' : 'Get Callback'}
                 </button>

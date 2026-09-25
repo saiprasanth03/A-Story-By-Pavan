@@ -39,7 +39,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center font-oswald tracking-widest">VERIFYING ACCESS...</div>;
+    return <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center font-mirage tracking-widest">VERIFYING ACCESS...</div>;
   }
 
   if (!isAuthenticated) {

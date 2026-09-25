@@ -269,7 +269,7 @@ const ClientGalleryPage = () => {
         {/* Header */}
         <div className="text-center mb-6 md:mb-10">
           <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-8 md:h-10 mx-auto mb-4 md:mb-6 opacity-90" />
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-oswald font-bold uppercase tracking-widest text-white mb-2 md:mb-3">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-mirage font-bold uppercase tracking-widest text-white mb-2 md:mb-3">
             Client Photo Gallery
           </h1>
           <p className="text-gray-400 text-xs sm:text-sm tracking-wider max-w-lg mx-auto px-4">
@@ -359,7 +359,7 @@ const ClientGalleryPage = () => {
                     <span className="text-[10px] uppercase tracking-widest text-gray-500 block mb-1">
                       Event Gallery {galleries.length > 1 && `(${galleries.indexOf(gallery) + 1} of ${galleries.length})`}
                     </span>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-oswald font-bold uppercase tracking-widest text-white">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-mirage font-bold uppercase tracking-widest text-white">
                       {gallery.eventName}
                     </h2>
                     <p className="text-xs sm:text-sm text-gray-400 mt-0.5">{gallery.clientName}</p>

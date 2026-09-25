@@ -40,7 +40,7 @@ const OfferingsText = () => {
         <h4 className="font-sans text-[10px] text-gray-500 uppercase tracking-[0.4em] mb-4">
           Offerings
         </h4>
-        <h2 className="font-oswald font-bold text-4xl md:text-6xl text-white uppercase tracking-widest mb-8">
+        <h2 className="font-mirage font-bold text-4xl md:text-6xl text-white uppercase tracking-widest mb-8">
           {content.title || 'What We Offer'}
         </h2>
         

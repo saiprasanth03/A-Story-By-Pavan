@@ -276,7 +276,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
     } finally { setSaving(false); }
   };
 
-  const inputCls = 'w-full bg-[#111] border border-[#2a2a2a] px-3 py-2.5 text-white text-sm focus:border-[#C9A227]/50 outline-none transition rounded-sm placeholder:text-[#444]';
+  const inputCls = 'w-full bg-[#111] border border-[#2a2a2a] px-3 py-2.5 text-white text-sm focus:border-white/50 outline-none transition rounded-sm placeholder:text-[#444]';
   const labelCls = 'block text-[8px] text-gray-500 uppercase tracking-widest mb-1.5';
 
   return (
@@ -302,7 +302,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {/* ── STEP 1: COORDINATES ─────────────────────────────────────────── */}
           {step === 0 && (
             <div>
-              <h3 className="text-[#C9A227] text-[10px] tracking-widest uppercase font-bold mb-5">
+              <h3 className="text-white text-[10px] tracking-widest uppercase font-bold mb-5">
                 STEP 1: CLIENT COORDINATES
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -344,7 +344,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 1 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[#C9A227] text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
                   STEP 2: EVENTS & SERVICE CUSTOMIZATIONS
                 </h3>
                 <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
@@ -357,13 +357,13 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                   {[...PRIMARY_CATEGORIES, ...extraCats].map(cat => (
                     <button key={cat} type="button" onClick={() => setPrimaryCat(cat)}
                       className={`px-4 py-2 border text-xs tracking-widest uppercase transition rounded-sm
-                        ${primaryCat === cat ? 'bg-[#C9A227] border-[#C9A227] text-black font-bold' : 'border-[#333] text-gray-400 hover:border-[#555]'}`}>
+                        ${primaryCat === cat ? 'bg-white border-white text-black font-bold' : 'border-[#333] text-gray-400 hover:border-[#555]'}`}>
                       {cat}
                     </button>
                   ))}
                   <div className="flex gap-1">
                     <input value={newCatInput} onChange={e => setNewCatInput(e.target.value)} placeholder="+ Add Category" className="bg-transparent border border-[#333] px-3 py-2 text-xs text-white outline-none rounded-sm w-36 placeholder:text-[#444]" />
-                    <button type="button" onClick={() => { if (newCatInput.trim()) { setExtraCats(p => [...p, newCatInput.trim()]); setNewCatInput(''); } }} className="border border-[#C9A227] text-[#C9A227] px-2 text-xs hover:bg-[#C9A227] hover:text-black transition rounded-sm">+</button>
+                    <button type="button" onClick={() => { if (newCatInput.trim()) { setExtraCats(p => [...p, newCatInput.trim()]); setNewCatInput(''); } }} className="border border-white text-white px-2 text-xs hover:bg-white hover:text-black transition rounded-sm">+</button>
                   </div>
                 </div>
               </div>
@@ -376,8 +376,8 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                     const checked = selectedSubs.includes(sub);
                     return (
                       <label key={sub} className={`flex items-center gap-2 border px-3 py-2 cursor-pointer transition rounded-sm text-xs
-                        ${checked ? 'border-[#C9A227] bg-[#C9A227]/10 text-[#C9A227]' : 'border-[#2a2a2a] text-gray-500 hover:border-[#444]'}`}>
-                        <input type="checkbox" checked={checked} onChange={() => toggleSub(sub)} className="accent-[#C9A227] w-3 h-3 shrink-0" />
+                        ${checked ? 'border-white bg-white/10 text-white' : 'border-[#2a2a2a] text-gray-500 hover:border-[#444]'}`}>
+                        <input type="checkbox" checked={checked} onChange={() => toggleSub(sub)} className="accent-white w-3 h-3 shrink-0" />
                         {sub}
                       </label>
                     );
@@ -385,7 +385,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 </div>
                 <div className="flex gap-1">
                   <input value={newSubInput} onChange={e => setNewSubInput(e.target.value)} placeholder="+ Add Sub-Event" className="bg-transparent border border-[#333] px-3 py-1.5 text-xs text-white outline-none rounded-sm w-44 placeholder:text-[#444]" />
-                  <button type="button" onClick={() => { if (newSubInput.trim()) { setExtraSubs(p => [...p, newSubInput.trim()]); setNewSubInput(''); } }} className="border border-[#C9A227] text-[#C9A227] px-2 text-xs hover:bg-[#C9A227] hover:text-black transition rounded-sm">+ ADD</button>
+                  <button type="button" onClick={() => { if (newSubInput.trim()) { setExtraSubs(p => [...p, newSubInput.trim()]); setNewSubInput(''); } }} className="border border-white text-white px-2 text-xs hover:bg-white hover:text-black transition rounded-sm">+ ADD</button>
                 </div>
               </div>
 
@@ -405,7 +405,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                               {['half', 'full'].map(dur => (
                                 <button key={dur} type="button" onClick={() => updateSubConfig(sub, 'duration', dur)}
                                   className={`px-3 py-1 text-[9px] tracking-widest uppercase border transition rounded-sm
-                                    ${cfg.duration === dur ? 'bg-[#C9A227] border-[#C9A227] text-black font-bold' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
+                                    ${cfg.duration === dur ? 'bg-white border-white text-black font-bold' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
                                   {dur === 'half' ? 'Half Day' : 'Full Day'}
                                 </button>
                               ))}
@@ -432,7 +432,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                                 {(cfg.services || []).map((svc, idx) => (
                                   <tr key={idx} className="border-b border-[#1a1a1a]">
                                     <td className="py-2">
-                                      <input type="checkbox" checked={svc.enabled || false} onChange={() => toggleSubService(sub, idx)} className="accent-[#C9A227] w-3.5 h-3.5" />
+                                      <input type="checkbox" checked={svc.enabled || false} onChange={() => toggleSubService(sub, idx)} className="accent-white w-3.5 h-3.5" />
                                     </td>
                                     <td className="py-2 text-gray-300">{svc.name}</td>
                                     <td className="py-2 text-center">
@@ -452,7 +452,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                               </tbody>
                             </table>
                             <button type="button" onClick={() => addCustomService(sub)}
-                              className="mt-2 text-[#C9A227] text-[9px] border border-[#C9A227] px-3 py-1 hover:bg-[#C9A227] hover:text-black transition rounded-sm">
+                              className="mt-2 text-white text-[9px] border border-white px-3 py-1 hover:bg-white hover:text-black transition rounded-sm">
                               + ADD SERVICE OPTION
                             </button>
                           </div>
@@ -469,7 +469,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 2 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[#C9A227] text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
                   STEP 3: ALBUMS & DELIVERABLES SELECTION
                 </h3>
                 <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
@@ -478,21 +478,21 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
               {/* Three dropdowns */}
               <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="border border-[#252525] p-4">
-                  <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold mb-1">PRE-WEDDING STYLE</p>
+                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">PRE-WEDDING STYLE</p>
                   <p className={labelCls}>Style Package</p>
                   <select value={prewedStyle} onChange={e => setPrewedStyle(e.target.value)} className={inputCls + ' appearance-none'}>
                     {PREWEDDING_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
                   </select>
                 </div>
                 <div className="border border-[#252525] p-4">
-                  <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold mb-1">POST-PRODUCTION FILM STYLE</p>
+                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">POST-PRODUCTION FILM STYLE</p>
                   <p className={labelCls}>Video Editing Style</p>
                   <select value={postprodStyle} onChange={e => setPostprodStyle(e.target.value)} className={inputCls + ' appearance-none'}>
                     {POSTPROD_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
                   </select>
                 </div>
                 <div className="border border-[#252525] p-4">
-                  <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold mb-1">PRIMARY PHOTO ALBUM</p>
+                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">PRIMARY PHOTO ALBUM</p>
                   <p className={labelCls}>Album Quality / Style</p>
                   <select value={albumStyle} onChange={e => setAlbumStyle(e.target.value)} className={inputCls + ' appearance-none'}>
                     {ALBUM_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
@@ -503,9 +503,9 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
               {/* Extra albums */}
               <div className="border border-[#252525] p-4 mb-5">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold">ADDITIONAL / EXTRA PHOTO ALBUMS</p>
+                  <p className="text-white text-[8px] tracking-widest uppercase font-bold">ADDITIONAL / EXTRA PHOTO ALBUMS</p>
                   <button type="button" onClick={() => setExtraAlbums(p => [...p, { name: 'Custom Album', sheets: 30, price: 0 }])}
-                    className="border border-[#C9A227] text-[#C9A227] text-[9px] px-3 py-1 hover:bg-[#C9A227] hover:text-black transition rounded-sm">
+                    className="border border-white/30 text-white text-[9px] px-3 py-1 hover:bg-white hover:text-black transition rounded-sm">
                     + ADD EXTRA ALBUM
                   </button>
                 </div>
@@ -543,7 +543,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                     {ADDON_LIST.map(ao => (
                       <tr key={ao.id} className="border-b border-[#1a1a1a]">
                         <td className="py-2">
-                          <input type="checkbox" checked={addonSel[ao.id] || false} onChange={() => setAddonSel(p => ({ ...p, [ao.id]: !p[ao.id] }))} className="accent-[#C9A227] w-3.5 h-3.5" />
+                          <input type="checkbox" checked={addonSel[ao.id] || false} onChange={() => setAddonSel(p => ({ ...p, [ao.id]: !p[ao.id] }))} className="accent-white w-3.5 h-3.5" />
                         </td>
                         <td className="py-2 text-gray-300">{ao.name}</td>
                         <td className="py-2 text-center text-gray-500">
@@ -565,7 +565,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 3 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[#C9A227] text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
                   STEP 4: DELIVERABLES & COMPLIMENTARIES
                 </h3>
                 <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
@@ -574,14 +574,14 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 {/* Left: Deliverables */}
                 <div className="border border-[#252525] p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold">INCLUDED DELIVERABLES</p>
+                    <p className="text-white text-[8px] tracking-widest uppercase font-bold">INCLUDED DELIVERABLES</p>
                     <span className="text-gray-500 text-[8px] border border-[#333] px-2 py-0.5 rounded-sm">{deliverables.length} Items</span>
                   </div>
                   <p className="text-gray-600 text-[8px] mb-3">Final items and media handover promised to client.</p>
                   <div className="space-y-2 mb-3 max-h-52 overflow-y-auto pr-1">
                     {deliverables.map((d, i) => (
                       <div key={i} className="flex items-start gap-2 border border-[#252525] p-2 rounded-sm">
-                        <span className="text-[#C9A227] text-xs shrink-0 mt-0.5">•</span>
+                        <span className="text-white text-xs shrink-0 mt-0.5">•</span>
                         <p className="text-gray-300 text-[10px] leading-relaxed flex-1">{d}</p>
                         <button type="button" onClick={() => setDeliverables(p => p.filter((_, j) => j !== i))} className="text-gray-700 hover:text-red-400 transition shrink-0"><X size={10} /></button>
                       </div>
@@ -589,13 +589,13 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                   </div>
                   <div className="flex gap-1 mb-3">
                     <input value={newDeliv} onChange={e => setNewDeliv(e.target.value)} placeholder="e.g. 1-Minute Drone Teaser in 4K" className={inputCls + ' flex-1 text-xs'} />
-                    <button type="button" onClick={() => { if (newDeliv.trim()) { setDeliverables(p => [...p, newDeliv.trim()]); setNewDeliv(''); } }} className="bg-[#C9A227] text-black px-3 py-1 text-xs font-bold hover:bg-[#e0b82a] transition rounded-sm">ADD</button>
+                    <button type="button" onClick={() => { if (newDeliv.trim()) { setDeliverables(p => [...p, newDeliv.trim()]); setNewDeliv(''); } }} className="bg-white text-black px-3 py-1 text-xs font-bold hover:bg-gray-200 transition rounded-sm">ADD</button>
                   </div>
                   <p className="text-gray-600 text-[7px] tracking-widest uppercase mb-2">QUICK PRESETS</p>
                   <div className="flex flex-wrap gap-1">
                     {DELIVERABLE_PRESETS.map(p => (
                       <button key={p} type="button" onClick={() => !deliverables.includes(p) && setDeliverables(prev => [...prev, p])}
-                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-[#C9A227] hover:text-[#C9A227] transition rounded-sm">
+                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-white hover:text-white transition rounded-sm">
                         + {p.length > 30 ? p.slice(0, 28) + '…' : p}
                       </button>
                     ))}
@@ -605,14 +605,14 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 {/* Right: Gifts */}
                 <div className="border border-[#252525] p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold">COMPLIMENTARY GIFTS & BONUSES</p>
+                    <p className="text-white text-[8px] tracking-widest uppercase font-bold">COMPLIMENTARY GIFTS & BONUSES</p>
                     <span className="text-gray-500 text-[8px] border border-[#333] px-2 py-0.5 rounded-sm">{gifts.length} Gifts</span>
                   </div>
                   <p className="text-gray-600 text-[8px] mb-3">Free gifts and value additions provided to client.</p>
                   <div className="space-y-2 mb-3 max-h-52 overflow-y-auto pr-1">
                     {gifts.map((g, i) => (
                       <div key={i} className="flex items-center gap-2 border border-[#252525] p-2 rounded-sm">
-                        <span className="text-[#C9A227] text-xs shrink-0">🎁</span>
+                        <span className="text-white text-xs shrink-0">🎁</span>
                         <p className="text-gray-300 text-[10px] flex-1">{g}</p>
                         <button type="button" onClick={() => setGifts(p => p.filter((_, j) => j !== i))} className="text-gray-700 hover:text-red-400 transition shrink-0"><X size={10} /></button>
                       </div>
@@ -620,13 +620,13 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                   </div>
                   <div className="flex gap-1 mb-3">
                     <input value={newGift} onChange={e => setNewGift(e.target.value)} placeholder="e.g. Table Photo Calendar" className={inputCls + ' flex-1 text-xs'} />
-                    <button type="button" onClick={() => { if (newGift.trim()) { setGifts(p => [...p, newGift.trim()]); setNewGift(''); } }} className="bg-[#C9A227] text-black px-3 py-1 text-xs font-bold hover:bg-[#e0b82a] transition rounded-sm">ADD</button>
+                    <button type="button" onClick={() => { if (newGift.trim()) { setGifts(p => [...p, newGift.trim()]); setNewGift(''); } }} className="bg-white text-black px-3 py-1 text-xs font-bold hover:bg-gray-200 transition rounded-sm">ADD</button>
                   </div>
                   <p className="text-gray-600 text-[7px] tracking-widest uppercase mb-2">QUICK PRESETS</p>
                   <div className="flex flex-wrap gap-1">
                     {GIFT_PRESETS.map(p => (
                       <button key={p} type="button" onClick={() => !gifts.includes(p) && setGifts(prev => [...prev, p])}
-                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-[#C9A227] hover:text-[#C9A227] transition rounded-sm">
+                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-white hover:text-white transition rounded-sm">
                         + {p}
                       </button>
                     ))}
@@ -639,19 +639,19 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {/* ── STEP 5: FINANCIAL SUMMARY ────────────────────────────────────── */}
           {step === 4 && (
             <div>
-              <h3 className="text-[#C9A227] text-[10px] tracking-widest uppercase font-bold mb-5">
+              <h3 className="text-white text-[10px] tracking-widest uppercase font-bold mb-5">
                 STEP 5: DISCOUNT & FINANCIAL PROPOSAL SUMMARY
               </h3>
               <div className="grid grid-cols-2 gap-5">
                 {/* Discount panel */}
                 <div className="border border-[#252525] p-5">
-                  <p className="text-[#C9A227] text-[8px] tracking-widest uppercase font-bold mb-4">ADMINISTRATIVE DISCOUNT</p>
+                  <p className="text-white text-[8px] tracking-widest uppercase font-bold mb-4">ADMINISTRATIVE DISCOUNT</p>
                   <p className={labelCls}>Discount Type</p>
                   <div className="flex gap-0 mb-4">
                     {[['flat', 'FLAT AMOUNT (₹)'], ['percent', 'PERCENTAGE (%)']].map(([val, label]) => (
                       <button key={val} type="button" onClick={() => setDiscountType(val)}
                         className={`flex-1 py-2 text-[9px] tracking-widest uppercase border transition font-bold
-                          ${discountType === val ? 'bg-[#C9A227] border-[#C9A227] text-black' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
+                          ${discountType === val ? 'bg-white border-white text-black' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
                         {label}
                       </button>
                     ))}
@@ -675,12 +675,12 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                     {discountValue > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-400">Applied Discount:</span>
-                        <span className="text-red-400">-{fmt(discountValue)}</span>
+                        <span className="text-rose-400">-{fmt(discountValue)}</span>
                       </div>
                     )}
                     <div className="border-t border-[#252525] pt-3">
                       <p className="text-gray-500 text-[8px] uppercase tracking-widest mb-1">NEW FINAL ESTIMATE</p>
-                      <p className="text-[#C9A227] font-oswald text-3xl">{fmt(finalTotal)}</p>
+                      <p className="text-white font-mirage text-3xl">{fmt(finalTotal)}</p>
                     </div>
                   </div>
                 </div>
@@ -691,7 +691,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 <p className="text-gray-500 text-[9px] leading-relaxed">
                   <span className="text-gray-300">QUOTATION SUMMARY REVIEW: </span>
                   This action will create and file a new administrative quotation lead for{' '}
-                  <span className="text-[#C9A227]">{coords.name || 'the client'}</span>. You can choose to save the quotation directly or dispatch revised PDF proposal copies automatically via email.
+                  <span className="text-white font-semibold">{coords.name || 'the client'}</span>. You can choose to save the quotation directly or dispatch revised PDF proposal copies automatically via email.
                 </p>
               </div>
             </div>
@@ -715,17 +715,17 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
             </button>
             {step < 4 ? (
               <button type="button" onClick={() => setStep(s => s + 1)} disabled={step === 0 && (!coords.name || !coords.email || !coords.phone)}
-                className="bg-[#C9A227] text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-[#e0b82a] transition disabled:opacity-40 flex items-center gap-1.5 rounded-sm">
+                className="bg-white text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-neutral-200 transition disabled:opacity-40 flex items-center gap-1.5 rounded-sm">
                 NEXT <ChevronRight size={12} />
               </button>
             ) : (
               <>
                 <button type="button" onClick={() => handleSave(false)} disabled={saving}
-                  className="border border-[#C9A227] text-[#C9A227] px-4 py-2 text-xs tracking-widest uppercase hover:bg-[#C9A227]/10 transition flex items-center gap-1.5 rounded-sm">
+                  className="border border-white text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-white/10 transition flex items-center gap-1.5 rounded-sm">
                   <FileText size={11} /> SAVE QUOTE ONLY
                 </button>
                 <button type="button" onClick={() => handleSave(true)} disabled={saving}
-                  className="bg-[#C9A227] text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-[#e0b82a] transition flex items-center gap-1.5 disabled:opacity-40 rounded-sm">
+                  className="bg-white text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-neutral-200 transition flex items-center gap-1.5 disabled:opacity-40 rounded-sm">
                   {saving ? <Loader2 size={11} className="animate-spin" /> : <FileText size={11} />}
                   SAVE & EMAIL PDF
                 </button>
@@ -846,7 +846,7 @@ const QuotesPanel = () => {
         </div>
         <div className="flex gap-2">
           <button type="button" onClick={() => setShowCreate(true)}
-            className="flex items-center gap-1.5 border border-[#C9A227] text-[#C9A227] px-4 py-2 text-xs tracking-widest uppercase hover:bg-[#C9A227] hover:text-black transition rounded-sm font-bold">
+            className="flex items-center gap-1.5 border border-white text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-white hover:text-black transition rounded-sm font-bold">
             <Plus size={12} /> CREATE QUOTE
           </button>
           <button type="button" onClick={exportCsv}
@@ -865,14 +865,14 @@ const QuotesPanel = () => {
             placeholder="Search by client name or ID..."
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="w-full bg-[#0d0d0d] border border-[#252525] pl-8 pr-3 py-2.5 text-white text-xs focus:border-[#C9A227]/40 outline-none transition rounded-sm placeholder:text-[#444]"
+            className="w-full bg-[#0d0d0d] border border-[#252525] pl-8 pr-3 py-2.5 text-white text-xs focus:border-white/40 outline-none transition rounded-sm placeholder:text-[#444]"
           />
         </div>
         <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)}
-          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-[#C9A227]/40 outline-none transition rounded-sm" />
+          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-white/40 outline-none transition rounded-sm" />
         <span className="text-gray-600 text-xs">to</span>
         <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)}
-          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-[#C9A227]/40 outline-none transition rounded-sm" />
+          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-white/40 outline-none transition rounded-sm" />
       </div>
 
       {/* Table */}
@@ -892,7 +892,7 @@ const QuotesPanel = () => {
           <tbody>
             {loading ? (
               <tr><td colSpan={7} className="text-center py-12 text-gray-600">
-                <Loader2 size={20} className="animate-spin mx-auto mb-2 text-[#C9A227]" />
+                <Loader2 size={20} className="animate-spin mx-auto mb-2 text-white" />
                 <p className="text-xs">Loading quotes…</p>
               </td></tr>
             ) : quotes.length === 0 ? (
@@ -902,7 +902,7 @@ const QuotesPanel = () => {
             ) : quotes.map(q => (
               <tr key={q._id} className="border-b border-[#0f0f0f] hover:bg-white/[0.02] transition">
                 <td className="px-4 py-3">
-                  <span className="text-[#C9A227] text-[10px] font-mono">{shortId(q._id)}</span>
+                  <span className="text-white text-[10px] font-mono">{shortId(q._id)}</span>
                 </td>
                 <td className="px-4 py-3">
                   <p className="text-white text-[11px] font-medium">{q.clientName}</p>
@@ -912,7 +912,7 @@ const QuotesPanel = () => {
                   {q.eventDate ? new Date(q.eventDate).toLocaleDateString('en-IN') : '—'}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="text-[#C9A227] text-[9px] uppercase tracking-wide">
+                  <span className="text-white/80 text-[9px] uppercase tracking-wide">
                     {(q.events || []).map(e => e.eventType).join(', ').slice(0, 40) || '—'}
                     {(q.events || []).map(e => e.eventType).join(', ').length > 40 ? '…' : ''}
                   </span>
@@ -936,7 +936,7 @@ const QuotesPanel = () => {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
-                    <button title="Download PDF" onClick={() => downloadPdf(q._id)} className="text-gray-600 hover:text-[#C9A227] transition"><Download size={13} /></button>
+                    <button title="Download PDF" onClick={() => downloadPdf(q._id)} className="text-gray-600 hover:text-white transition"><Download size={13} /></button>
                     <button title="Delete" onClick={() => deleteQuote(q._id)} className="text-gray-600 hover:text-red-400 transition"><Trash2 size={13} /></button>
                   </div>
                 </td>

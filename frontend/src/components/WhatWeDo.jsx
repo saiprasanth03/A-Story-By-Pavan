@@ -27,25 +27,28 @@ const WhatWeDo = () => {
   if (items.length === 0) return null;
 
   return (
-    <section className="bg-[#050505] py-32 px-6 lg:px-12 text-white border-t border-white/10 relative z-10">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-[#050505] py-32 px-6 lg:px-12 text-white border-t border-white/10 relative z-10 overflow-hidden">
+      {/* Glow Accents */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-white/[0.02] blur-[140px] rounded-full pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-24"
         >
-          <span className="font-oswald text-xs text-[#C9A227] uppercase tracking-[0.5em] mb-4 block">
+          <span className="font-mirage text-xs text-gray-400 uppercase tracking-[0.6em] mb-4 block text-glow-subtle">
             Core Specialties
           </span>
-          <h2 className="font-oswald text-4xl sm:text-5xl md:text-6xl text-white tracking-[0.25em] uppercase font-bold">
+          <h2 className="font-mirage text-4xl sm:text-5xl md:text-7xl text-white tracking-[0.2em] uppercase font-bold drop-shadow-2xl">
             What We Do
           </h2>
-          <div className="w-16 h-[2px] bg-[#C9A227] mx-auto mt-6 shadow-[0_0_10px_rgba(201,162,39,0.8)]"></div>
+          <div className="w-20 h-[2px] bg-gradient-to-r from-transparent via-white/60 to-transparent mx-auto mt-6 shadow-[0_0_15px_rgba(255,255,255,0.4)]"></div>
         </motion.div>
 
         {/* CSS grid for Masonry/Variable width look */}
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="flex flex-wrap justify-center gap-8">
           {items.map((item, index) => (
             <motion.div 
               key={index}
@@ -53,19 +56,32 @@ const WhatWeDo = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className={`group relative flex flex-col justify-center items-center p-10 md:p-14 bg-[#0a0a0a] border border-white/5 hover:border-[#C9A227]/40 transition-all duration-700 cursor-pointer overflow-hidden ${
-                index < 2 ? 'w-full md:w-[calc(50%-0.75rem)]' : 'w-full md:w-[calc(33.333%-1rem)]'
+              className={`group relative flex flex-col justify-between p-10 md:p-14 bg-gradient-to-b from-white/[0.05] to-white/[0.01] backdrop-blur-2xl border border-white/10 hover:border-white/40 transition-all duration-700 rounded-3xl cursor-pointer overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.6)] hover:-translate-y-2 ${
+                index < 2 ? 'w-full md:w-[calc(50%-1rem)]' : 'w-full md:w-[calc(33.333%-1.35rem)]'
               }`}
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-[#C9A227]/5 rounded-full blur-2xl pointer-events-none group-hover:bg-[#C9A227]/15 transition-all duration-700"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none group-hover:bg-white/15 transition-all duration-700"></div>
               
-              <h3 className="font-oswald text-2xl md:text-3xl text-center mb-6 tracking-[0.2em] uppercase transition-colors duration-500 text-white group-hover:text-[#C9A227]">
-                {item.title}
-              </h3>
-              <div className="w-10 h-[1px] bg-[#C9A227]/40 mb-6 group-hover:w-20 transition-all duration-500"></div>
-              <p className="font-sans text-sm md:text-base text-center leading-relaxed font-light text-gray-400 group-hover:text-gray-200 transition-colors duration-500">
-                {item.description}
-              </p>
+              <div className="flex justify-between items-center mb-8">
+                <span className="font-mirage text-xs text-gray-500 uppercase tracking-[0.4em] font-medium border border-white/10 px-3 py-1 rounded-full bg-black/40">
+                  0{index + 1}
+                </span>
+                <div className="w-8 h-[1px] bg-white/30 group-hover:w-16 transition-all duration-500"></div>
+              </div>
+              
+              <div>
+                <h3 className="font-mirage text-2xl md:text-3xl text-left mb-5 tracking-[0.15em] uppercase transition-colors duration-500 text-white font-bold leading-tight">
+                  {item.title}
+                </h3>
+                <p className="font-sans text-sm md:text-base text-left leading-relaxed font-light text-gray-400 group-hover:text-gray-200 transition-colors duration-500">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-xs font-sans uppercase tracking-[0.25em] text-gray-400 group-hover:text-white transition-colors">
+                <span>Explore Experience</span>
+                <span className="group-hover:translate-x-2 transition-transform duration-300">&rarr;</span>
+              </div>
             </motion.div>
           ))}
         </div>

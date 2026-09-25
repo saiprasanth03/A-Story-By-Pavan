@@ -27,7 +27,7 @@ const TestimonialsPage = () => {
       <main className="flex-1 pt-32 pb-24 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
-            <h1 className="font-oswald uppercase tracking-widest text-white text-5xl md:text-6xl mb-6">Client Stories</h1>
+            <h1 className="font-mirage uppercase tracking-widest text-white text-5xl md:text-6xl mb-6">Client Stories</h1>
             <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed font-light">
               Don't just take our word for it. Hear from the beautiful couples who trusted us to immortalize their most cherished moments.
             </p>
@@ -76,7 +76,7 @@ const TestimonialsPage = () => {
                   </p>
 
                   <div className="border-t border-white/10 pt-6 flex justify-between items-center relative z-10">
-                    <h4 className="text-white font-oswald tracking-widest uppercase text-lg">{t.authorName}</h4>
+                    <h4 className="text-white font-mirage tracking-widest uppercase text-lg">{t.authorName}</h4>
                     {t.reviewDate && (
                       <span className="text-gray-600 text-xs font-sans">
                         {new Date(t.reviewDate).toLocaleDateString()}

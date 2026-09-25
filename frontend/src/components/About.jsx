@@ -62,7 +62,7 @@ const About = () => {
                 <span className="w-12 h-[1px] bg-gray-500"></span>
               </h4>
               
-              <h2 className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-[1.1] mb-10">
+              <h2 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-[1.1] mb-10">
                 {content?.title || "Crafting Timeless Narratives"}
               </h2>
             </motion.div>

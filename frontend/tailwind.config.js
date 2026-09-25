@@ -7,19 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0a0a0a',
-        surface: '#121212',
-        primary: '#D4AF37', // Luxury Soft gold
-        primaryDark: '#B5952F',
+        background: '#050505',
+        surface: '#0f0f12',
+        primary: '#ffffff', // Monochromatic High Luxury Crisp White
+        primaryDark: '#e5e5e5',
         textPrimary: '#ffffff',
         textSecondary: '#a3a3a3',
-        darkGray: '#1a1a1a'
+        darkGray: '#141417'
       },
       fontFamily: {
-        sans: ['Raleway', 'sans-serif'],
-        oswald: ['Oswald', 'sans-serif'],
-        playfair: ['Playfair Display', 'serif'],
-        cinzel: ['Cinzel', 'serif'],
+        mirage: ['"MADE Mirage"', 'Spectral', 'Georgia', 'serif'],
+        spectral: ['Spectral', 'Georgia', 'serif'],
+        lato: ['Lato', 'sans-serif'],
+        sans: ['Lato', 'sans-serif'],
+        oswald: ['"MADE Mirage"', 'Spectral', 'Georgia', 'serif'],
+        serif: ['Spectral', 'Georgia', 'serif'],
+        playfair: ['"MADE Mirage"', 'Spectral', 'Georgia', 'serif'],
+        cinzel: ['"MADE Mirage"', 'Spectral', 'Georgia', 'serif'],
+        display: ['"MADE Mirage"', 'Spectral', 'Georgia', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out',

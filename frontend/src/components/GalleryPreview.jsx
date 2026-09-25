@@ -39,7 +39,7 @@ const GalleryPreview = () => {
             className="flex flex-col items-center md:items-start"
           >
             <h2 className="font-sans text-[10px] text-gray-500 uppercase tracking-[0.4em] mb-4">Portfolio Highlights</h2>
-            <h3 className="font-oswald font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none">
+            <h3 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none">
               Cinematic<br className="hidden md:block"/> Gallery
             </h3>
           </motion.div>

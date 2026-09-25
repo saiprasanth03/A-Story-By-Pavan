@@ -1,18 +1,52 @@
-
+@import url('https://fonts.cdnfonts.com/css/made-mirage');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'MADE Mirage';
+  src: url('/fonts/MADEMirage-Regular.woff') format('woff'),
+       local('MADE Mirage'),
+       local('MADE Mirage Regular'),
+       local('MADEMirage-Regular');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MADE Mirage';
+  src: url('/fonts/MADEMirage-Medium.woff') format('woff'),
+       local('MADE Mirage Medium'),
+       local('MADEMirage-Medium');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MADE Mirage';
+  src: url('/fonts/MADEMirage-Bold.woff') format('woff'),
+       local('MADE Mirage Bold'),
+       local('MADEMirage-Bold');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family: 'Lato', sans-serif;
   }
   body {
     @apply bg-background text-textPrimary font-sans antialiased overflow-x-hidden;
+    font-family: 'Lato', sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair tracking-wide;
+    font-family: 'MADE Mirage', 'Spectral', 'Georgia', serif;
+    letter-spacing: 0.05em;
   }
 }
 
@@ -28,22 +62,35 @@
   }
 }
 
-/* Custom utilities */
+/* Custom luxury utilities */
 @layer utilities {
   .glass {
-    @apply bg-surface/80 backdrop-blur-xl border border-white/5;
+    @apply bg-black/60 backdrop-blur-2xl border border-white/10;
   }
   .glass-card {
-    @apply bg-surface/60 backdrop-blur-md border border-white/10 hover:border-primary/30 transition-all duration-300;
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/30 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
+  }
+  .glass-card-luxury {
+    @apply bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-2xl border border-white/15 hover:border-white/40 transition-all duration-500 shadow-[0_16px_48px_0_rgba(0,0,0,0.6)];
+  }
+  .glass-header {
+    @apply bg-black/70 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)];
   }
   .text-glow {
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+  }
+  .text-glow-subtle {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
   }
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-yellow-200;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400;
   }
   .text-stroke-white {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+    color: transparent;
+  }
+  .text-stroke-thick {
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
     color: transparent;
   }
   .no-scrollbar::-webkit-scrollbar {
@@ -52,6 +99,20 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
   }
 }
 

@@ -89,7 +89,7 @@ const FollowUpsCalendar = ({ leads, inquiries, setActiveTab, setLeadSearch, setL
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#111] p-4 rounded-xl border border-white/10">
-        <h3 className="text-lg font-oswald uppercase tracking-widest text-white">Follow-ups Calendar</h3>
+        <h3 className="text-lg font-mirage uppercase tracking-widest text-white">Follow-ups Calendar</h3>
         <div className="flex items-center gap-2 md:gap-4 self-center md:self-auto">
           <button onClick={prevMonth} className="text-white/50 hover:text-white px-2 md:px-3 py-1 bg-white/5 rounded border border-white/10 text-sm">← Prev</button>
           <span className="text-white font-medium uppercase tracking-widest min-w-[120px] md:min-w-[150px] text-center text-sm md:text-base">
@@ -124,7 +124,7 @@ const FollowUpsCalendar = ({ leads, inquiries, setActiveTab, setLeadSearch, setL
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#111] border border-emerald-500/20 rounded-2xl p-6 w-full max-w-md relative shadow-[0_0_30px_rgba(16,185,129,0.1)]">
             <button onClick={() => setSelectedFollowUp(null)} className="absolute top-4 right-4 text-gray-500 hover:text-white">&times;</button>
-            <h2 className="text-lg font-oswald text-white uppercase tracking-widest mb-4">Follow-up Details</h2>
+            <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-4">Follow-up Details</h2>
             
             <div className="mb-6 bg-white/5 rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-1">
