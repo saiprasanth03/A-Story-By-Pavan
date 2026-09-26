@@ -44,23 +44,23 @@ const ThankYou = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 flex items-center justify-center relative overflow-hidden">
-      {/* Decorative Blur */}
-      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none"></div>
+    <div className="min-h-screen bg-white pt-32 pb-20 flex items-center justify-center relative overflow-hidden">
+      {/* Decorative Light Glow */}
+      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-neutral-100 blur-[120px] rounded-full pointer-events-none"></div>
 
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center relative z-10 px-6">
-        <div className="w-24 h-24 bg-gradient-to-tr from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-[0_0_40px_rgba(255,255,255,0.4)]">
-          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center relative z-10 px-6 max-w-lg mx-auto bg-[#fafafa] p-10 sm:p-12 rounded-3xl border border-black/10 shadow-xl">
+        <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-md">
+          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
         </div>
-        <h2 className="font-mirage font-bold text-4xl sm:text-5xl text-white uppercase tracking-widest mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <h2 className="font-mirage font-bold text-3xl sm:text-4xl text-[#0f0f12] uppercase tracking-widest mb-4">
           {heading}
         </h2>
-        <p className="font-sans text-xs sm:text-sm text-gray-400 font-light leading-relaxed max-w-md mx-auto mb-16 tracking-wide">
+        <p className="font-sans text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed max-w-md mx-auto mb-10 tracking-wide">
           {message}
         </p>
         <Link 
           to={backLink}
-          className="inline-block text-[10px] sm:text-xs font-sans text-black bg-white px-8 py-4 rounded-full uppercase tracking-[0.3em] hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)] font-bold"
+          className="inline-block text-[11px] font-sans text-white bg-black hover:bg-neutral-800 px-8 py-4 rounded-full uppercase tracking-[0.25em] transition-all duration-300 shadow-md font-semibold"
         >
           {backText}
         </Link>

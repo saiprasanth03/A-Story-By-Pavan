@@ -27,7 +27,7 @@ const GalleryPreview = () => {
   }, []);
 
   return (
-    <section className="py-32 bg-black overflow-hidden relative border-t border-white/5">
+    <section className="py-28 bg-white text-[#0f0f12] overflow-hidden relative border-t border-black/10">
       <div className="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
         
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end text-center md:text-left mb-16 md:mb-20">
@@ -38,8 +38,8 @@ const GalleryPreview = () => {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center md:items-start"
           >
-            <h2 className="font-sans text-[10px] text-gray-500 uppercase tracking-[0.4em] mb-4">Portfolio Highlights</h2>
-            <h3 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none">
+            <h2 className="font-sans text-[10px] text-neutral-500 uppercase tracking-[0.4em] mb-4 font-bold">Portfolio Highlights</h2>
+            <h3 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-[#0f0f12] uppercase tracking-widest leading-none">
               Cinematic<br className="hidden md:block"/> Gallery
             </h3>
           </motion.div>
@@ -50,7 +50,7 @@ const GalleryPreview = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="mt-8 md:mt-0 flex justify-center md:justify-end"
           >
-            <Link to="/gallery" className="font-sans text-[10px] text-white hover:text-gray-400 uppercase tracking-[0.4em] transition-colors border-b border-white/30 hover:border-white pb-2 flex items-center gap-4">
+            <Link to="/gallery" className="font-sans text-[10px] text-[#0f0f12] hover:text-neutral-600 uppercase tracking-[0.4em] transition-colors border-b border-black/30 hover:border-black pb-2 flex items-center gap-4 font-semibold">
               View Entire Collection <span className="text-sm">→</span>
             </Link>
           </motion.div>

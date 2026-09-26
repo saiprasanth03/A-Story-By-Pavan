@@ -77,36 +77,36 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#111] border border-white/10 rounded-2xl p-8 shadow-2xl">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 text-[#0f0f12]">
+      <div className="w-full max-w-md bg-white border border-black/10 rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-mirage text-white uppercase tracking-widest mb-2">{siteConfig.brand.shortName}</h1>
-          <p className="text-gray-500 font-sans text-xs uppercase tracking-widest">Admin Portal Access</p>
+          <h1 className="text-3xl font-mirage text-[#0f0f12] uppercase tracking-widest mb-2 font-bold">{siteConfig.brand.shortName}</h1>
+          <p className="text-neutral-500 font-sans text-xs uppercase tracking-widest font-semibold">Admin Portal Access</p>
         </div>
 
-        {error && <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center rounded">{error}</div>}
-        {message && <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs text-center rounded">{message}</div>}
+        {error && <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 text-xs text-center rounded-xl font-medium">{error}</div>}
+        {message && <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs text-center rounded-xl font-medium">{message}</div>}
 
         {mode === 'login' && (
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email</label>
-              <input type="email" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">Email</label>
+              <input type="email" required className="w-full bg-neutral-50 border border-black/20 text-[#0f0f12] px-4 py-3 rounded-xl outline-none focus:border-black focus:bg-white transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Password</label>
-              <input type="password" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={password} onChange={e => setPassword(e.target.value)} />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">Password</label>
+              <input type="password" required className="w-full bg-neutral-50 border border-black/20 text-[#0f0f12] px-4 py-3 rounded-xl outline-none focus:border-black focus:bg-white transition-colors" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <button 
               type="submit" 
               disabled={isSubmitting} 
-              className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50"
+              className="w-full py-3.5 mt-2 bg-black text-white font-sans font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors rounded-xl disabled:opacity-50 shadow-md text-xs"
             >
               {isSubmitting ? 'Logging in...' : 'Login'}
             </button>
 
             <div className="text-center pt-4">
-              <button type="button" onClick={() => { setMode('forgot'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Forgot Password?</button>
+              <button type="button" onClick={() => { setMode('forgot'); setError(''); setMessage(''); }} className="text-xs text-neutral-500 hover:text-black font-semibold transition-colors">Forgot Password?</button>
             </div>
           </form>
         )}
@@ -114,14 +114,14 @@ const AdminLogin = () => {
         {mode === 'forgot' && (
           <form onSubmit={handleForgot} className="space-y-4">
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email</label>
-              <input type="email" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">Email</label>
+              <input type="email" required className="w-full bg-neutral-50 border border-black/20 text-[#0f0f12] px-4 py-3 rounded-xl outline-none focus:border-black focus:bg-white transition-colors" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="w-full py-3.5 mt-2 bg-black text-white font-sans font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors rounded-xl disabled:opacity-50 shadow-md text-xs">
               {isSubmitting ? 'Sending...' : 'Send OTP'}
             </button>
             <div className="text-center pt-4">
-              <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Back to Login</button>
+              <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-neutral-500 hover:text-black font-semibold transition-colors">Back to Login</button>
             </div>
           </form>
         )}
@@ -129,22 +129,22 @@ const AdminLogin = () => {
         {mode === 'otp' && (
           <form onSubmit={handleReset} className="space-y-4">
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email</label>
-              <input type="email" required readOnly className="w-full bg-black/50 border border-white/10 text-gray-500 px-4 py-3 rounded outline-none cursor-not-allowed" value={email} />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">Email</label>
+              <input type="email" required readOnly className="w-full bg-neutral-100 border border-black/10 text-neutral-500 px-4 py-3 rounded-xl outline-none cursor-not-allowed" value={email} />
             </div>
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">OTP</label>
-              <input type="text" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors tracking-widest text-center" value={otp} onChange={e => setOtp(e.target.value)} placeholder="000000" />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">OTP</label>
+              <input type="text" required className="w-full bg-neutral-50 border border-black/20 text-[#0f0f12] px-4 py-3 rounded-xl outline-none focus:border-black focus:bg-white transition-colors tracking-widest text-center font-bold" value={otp} onChange={e => setOtp(e.target.value)} placeholder="000000" />
             </div>
             <div>
-              <label className="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">New Password</label>
-              <input type="password" required className="w-full bg-black/50 border border-white/10 text-white px-4 py-3 rounded outline-none focus:border-white/30 transition-colors" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
+              <label className="block text-[10px] text-neutral-600 uppercase tracking-widest mb-1 font-bold">New Password</label>
+              <input type="password" required className="w-full bg-neutral-50 border border-black/20 text-[#0f0f12] px-4 py-3 rounded-xl outline-none focus:border-black focus:bg-white transition-colors" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full py-3 mt-2 bg-white text-black font-mirage uppercase tracking-widest hover:bg-gray-200 transition-colors rounded disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="w-full py-3.5 mt-2 bg-black text-white font-sans font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors rounded-xl disabled:opacity-50 shadow-md text-xs">
               {isSubmitting ? 'Resetting...' : 'Reset Password'}
             </button>
             <div className="text-center pt-4">
-              <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-gray-500 hover:text-white transition-colors">Back to Login</button>
+              <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="text-xs text-neutral-500 hover:text-black font-semibold transition-colors">Back to Login</button>
             </div>
           </form>
         )}

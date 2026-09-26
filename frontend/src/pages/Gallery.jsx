@@ -120,8 +120,8 @@ const Gallery = () => {
   };
 
   return (
-    <div className="bg-[#050505] min-h-screen text-white pt-32 pb-24">
-      <div className="max-w-7xl mx-auto px-2 md:px-6 lg:px-8">
+    <div className="bg-white min-h-screen text-[#0f0f12] pt-32 pb-24">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -129,30 +129,30 @@ const Gallery = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="font-mirage text-xs text-white/60 uppercase tracking-[0.5em] mb-4 block">Portfolio</span>
-          <h1 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+          <span className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 block">Portfolio</span>
+          <h1 className="font-mirage font-bold text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-widest leading-none">
             Cinematic Gallery
           </h1>
-          <div className="w-16 h-[2px] bg-white/40 mx-auto mt-6 mb-12"></div>
+          <div className="w-16 h-[2px] bg-black/20 mx-auto mt-6 mb-12"></div>
           
           {/* Media Type Toggles */}
           <div className="flex justify-center gap-4 mb-8">
             <button 
               onClick={() => { setActiveMediaType('image'); setLightboxIndex(null); }}
-              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
+              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border rounded-full ${
                 activeMediaType === 'image' 
-                ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
-                : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
+                ? 'bg-black text-white font-bold border-black shadow-lg scale-105' 
+                : 'bg-neutral-100 border-black/10 text-neutral-600 hover:text-black hover:bg-neutral-200'
               }`}
             >
               Images
             </button>
             <button 
               onClick={() => { setActiveMediaType('video'); setLightboxIndex(null); }}
-              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
+              className={`px-8 py-2.5 font-mirage text-xs tracking-[0.25em] uppercase transition-all duration-300 border rounded-full ${
                 activeMediaType === 'video' 
-                ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
-                : 'bg-black/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
+                ? 'bg-black text-white font-bold border-black shadow-lg scale-105' 
+                : 'bg-neutral-100 border-black/10 text-neutral-600 hover:text-black hover:bg-neutral-200'
               }`}
             >
               Videos
@@ -165,10 +165,10 @@ const Gallery = () => {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-5 py-2 font-sans text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                className={`px-5 py-2 font-sans text-[11px] tracking-[0.2em] uppercase transition-all duration-300 rounded-full ${
                   filter === cat 
-                  ? 'bg-white text-black font-semibold shadow-md' 
-                  : 'bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                  ? 'bg-black text-white font-semibold shadow-md' 
+                  : 'bg-neutral-100 border border-black/10 text-neutral-600 hover:text-black hover:bg-neutral-200'
                 }`}
               >
                 {cat}
@@ -179,7 +179,7 @@ const Gallery = () => {
 
         {isLoading ? (
           <div className="flex justify-center py-32">
-            <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
           <motion.div layout className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
@@ -192,7 +192,7 @@ const Gallery = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="relative group overflow-hidden bg-[#111] border border-white/5 break-inside-avoid shadow-2xl mb-6 cursor-pointer"
+                  className="relative group overflow-hidden bg-neutral-50 border border-black/10 break-inside-avoid shadow-sm hover:shadow-xl mb-6 cursor-pointer rounded-sm"
                   onClick={() => img.type !== 'video' && setLightboxIndex(index)}
                 >
                   {img.type === 'video' ? (
@@ -210,7 +210,7 @@ const Gallery = () => {
                       src={optimizeCloudinaryUrl(img.url, true)} 
                       alt={img.category} 
                       loading="lazy"
-                      className="w-full h-auto object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out" 
+                      className="w-full h-auto object-cover opacity-95 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out" 
                     />
                   )}
                   
@@ -230,7 +230,7 @@ const Gallery = () => {
         )}
         
         {!isLoading && filteredImages.length === 0 && (
-          <div className="text-center py-32 text-gray-400 font-sans text-sm tracking-widest uppercase border border-white/10 rounded-2xl bg-white/5">
+          <div className="text-center py-32 text-neutral-500 font-sans text-sm tracking-widest uppercase border border-black/10 rounded-2xl bg-neutral-50">
             No {activeMediaType === 'video' ? 'videos' : 'images'} found in this category.
           </div>
         )}

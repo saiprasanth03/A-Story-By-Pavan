@@ -18,24 +18,33 @@ let driveAuth = null;
 let drive = null;
 
 if (fs.existsSync(KEYFILEPATH)) {
-  driveAuth = new google.auth.GoogleAuth({
-    keyFile: KEYFILEPATH,
-    scopes: SCOPES,
-  });
-  drive = google.drive({ version: 'v3', auth: driveAuth });
-} else if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
   try {
-    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
     driveAuth = new google.auth.GoogleAuth({
-      credentials,
+      keyFile: KEYFILEPATH,
       scopes: SCOPES,
     });
     drive = google.drive({ version: 'v3', auth: driveAuth });
   } catch (e) {
-    console.error('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', e);
+    console.error('Failed to initialize Google Drive API from google-credentials.json:', e.message);
+  }
+} else if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+  const rawCreds = process.env.GOOGLE_SERVICE_ACCOUNT_JSON.trim();
+  if (rawCreds.startsWith('{')) {
+    try {
+      const credentials = JSON.parse(rawCreds);
+      driveAuth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: SCOPES,
+      });
+      drive = google.drive({ version: 'v3', auth: driveAuth });
+    } catch (e) {
+      console.error('Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON:', e.message);
+    }
+  } else {
+    console.warn('⚠️ GOOGLE_SERVICE_ACCOUNT_JSON in .env contains a URL instead of Service Account JSON credentials object.');
   }
 } else {
-  console.warn('google-credentials.json or GOOGLE_SERVICE_ACCOUNT_JSON env var not found! Google Drive API will not work.');
+  console.warn('⚠️ google-credentials.json or GOOGLE_SERVICE_ACCOUNT_JSON env var not found! Google Drive API features will return configured instructions.');
 }
 
 function extractFolderId(link) {
@@ -59,7 +68,10 @@ router.post('/', async (req, res) => {
     const { clientEmail, clientName, eventName, folderLink } = req.body;
     
     if (!drive) {
-      return res.status(500).json({ error: 'Google Drive API is not configured on the server.' });
+      return res.status(500).json({ 
+        error: 'Google Drive API is not configured on the server.',
+        message: 'Place your Google Service Account JSON file in backend/google-credentials.json OR paste the raw Service Account JSON key string into GOOGLE_SERVICE_ACCOUNT_JSON in backend/.env'
+      });
     }
 
     const folderId = extractFolderId(folderLink);
@@ -143,7 +155,10 @@ router.get('/:id/export', async (req, res) => {
 router.get('/download-all-selections', async (req, res) => {
   try {
     if (!drive) {
-      return res.status(500).json({ error: 'Google Drive API is not configured on the server.' });
+      return res.status(500).json({ 
+        error: 'Google Drive API is not configured on the server.',
+        message: 'Place your Google Service Account JSON file in backend/google-credentials.json OR paste the raw Service Account JSON key string into GOOGLE_SERVICE_ACCOUNT_JSON in backend/.env'
+      });
     }
 
     const galleries = await ClientGallery.find({ status: 'Submitted' });
@@ -206,7 +221,10 @@ router.get('/download-all-selections', async (req, res) => {
 router.get('/download-email/:email', async (req, res) => {
   try {
     if (!drive) {
-      return res.status(500).json({ error: 'Google Drive API is not configured on the server.' });
+      return res.status(500).json({ 
+        error: 'Google Drive API is not configured on the server.',
+        message: 'Place your Google Service Account JSON file in backend/google-credentials.json OR paste the raw Service Account JSON key string into GOOGLE_SERVICE_ACCOUNT_JSON in backend/.env'
+      });
     }
 
     const email = req.params.email.toLowerCase().trim();
@@ -269,7 +287,10 @@ router.get('/download-email/:email', async (req, res) => {
 router.get('/:id/download-selections', async (req, res) => {
   try {
     if (!drive) {
-      return res.status(500).json({ error: 'Google Drive API is not configured on the server.' });
+      return res.status(500).json({ 
+        error: 'Google Drive API is not configured on the server.',
+        message: 'Place your Google Service Account JSON file in backend/google-credentials.json OR paste the raw Service Account JSON key string into GOOGLE_SERVICE_ACCOUNT_JSON in backend/.env'
+      });
     }
 
     const gallery = await ClientGallery.findById(req.params.id);
@@ -321,7 +342,10 @@ router.get('/:id/download-selections', async (req, res) => {
 router.put('/:id/sync', async (req, res) => {
   try {
     if (!drive) {
-      return res.status(500).json({ error: 'Google Drive API is not configured on the server.' });
+      return res.status(500).json({ 
+        error: 'Google Drive API is not configured on the server.',
+        message: 'Place your Google Service Account JSON file in backend/google-credentials.json OR paste the raw Service Account JSON key string into GOOGLE_SERVICE_ACCOUNT_JSON in backend/.env'
+      });
     }
 
     const gallery = await ClientGallery.findById(req.params.id);

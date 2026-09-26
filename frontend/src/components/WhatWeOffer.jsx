@@ -59,7 +59,7 @@ const WhatWeOffer = () => {
   };
 
   return (
-    <section ref={sectionRef} id="experiences" className="bg-[#020202] pt-32 pb-48 lg:pb-64 px-6 lg:px-12 text-white relative z-10 overflow-hidden">
+    <section ref={sectionRef} id="experiences" className="bg-white pt-24 pb-32 px-6 lg:px-12 text-[#0f0f12] relative z-10 overflow-hidden border-t border-black/10">
       <div className="max-w-[90rem] mx-auto relative z-10">
         
         <motion.div 
@@ -67,16 +67,16 @@ const WhatWeOffer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center flex flex-col items-center justify-center w-full mb-16 md:mb-24"
+          className="text-center flex flex-col items-center justify-center w-full mb-16 md:mb-20"
         >
-          <div className="mb-8">
-            <span className="font-mirage text-xs text-gray-400 uppercase tracking-[0.5em] mb-4 block">
+          <div className="mb-4">
+            <span className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 block">
               Curated Offerings
             </span>
-            <h2 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest leading-none mb-6">
+            <h2 className="font-mirage font-bold text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-widest leading-none mb-6">
               Signature<br className="hidden md:block" /> Experiences
             </h2>
-            <div className="w-16 h-[2px] bg-white/40 mx-auto mt-6 shadow-[0_0_10px_rgba(255,255,255,0.4)]"></div>
+            <div className="w-16 h-[2px] bg-black/40 mx-auto mt-6"></div>
           </div>
         </motion.div>
 

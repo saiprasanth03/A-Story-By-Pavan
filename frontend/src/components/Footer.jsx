@@ -28,53 +28,59 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
   }, []);
 
   return (
-    <footer className="bg-[#030303] text-white relative overflow-hidden pt-14 pb-8 border-t border-white/10 bg-cover bg-center" style={{ backgroundImage: `url('${siteConfig.brand.logoBackgroundUrl}')` }}>
+    <footer className="bg-white text-[#0f0f12] relative overflow-hidden pt-16 pb-12 border-t border-black/10">
       
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/95 via-[#080808]/98 to-[#030303] pointer-events-none"></div>
-
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col items-center">
 
         {/* Brand Header Badge */}
-        <div className="text-center mb-8 flex flex-col items-center">
-          <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-20 md:h-24 w-auto object-contain mx-auto mb-4 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.35)] transition-transform duration-500 hover:scale-105" />
-          <div className="w-16 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto"></div>
+        <div className="text-center mb-12 flex flex-col items-center">
+          <img 
+            src={siteConfig.brand.logoUrl} 
+            alt={siteConfig.brand.name} 
+            className="h-20 md:h-24 w-auto object-contain mx-auto mb-4 transition-transform duration-500 hover:scale-105" 
+            style={{ filter: 'brightness(0)' }}
+          />
+          <div className="w-16 h-[2px] bg-black mx-auto"></div>
         </div>
 
         {/* Footer Top Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8 text-center md:text-left border-b border-white/10 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-10 text-center md:text-left border-b border-black/10 pb-12">
           
-          <div className="flex flex-col items-center md:items-start bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:border-white/20 transition-all duration-500 shadow-xl">
-            <h3 className="font-mirage text-xs text-gray-400 uppercase tracking-[0.5em] mb-3 font-bold">Studio Address</h3>
+          {/* Card 1: Studio Address */}
+          <div className="flex flex-col items-center md:items-start bg-[#fafafa] border border-black/10 rounded-2xl p-7 hover:border-black/25 transition-all duration-500 shadow-sm">
+            <h3 className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.4em] mb-3 font-bold">Studio Address</h3>
             <a 
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.footerStudioAddress || siteConfig.contact.address)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-sans text-gray-300 tracking-widest leading-relaxed whitespace-pre-line text-center md:text-left hover:text-white transition-colors"
+              className="text-xs font-sans text-[#0f0f12] tracking-widest leading-relaxed whitespace-pre-line text-center md:text-left hover:text-neutral-600 transition-colors font-medium"
             >
               {contact.footerStudioAddress || siteConfig.contact.address}
             </a>
           </div>
 
-          <div className="flex flex-col items-center bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:border-white/20 transition-all duration-500 shadow-xl">
-            <h3 className="font-mirage text-xs text-gray-400 uppercase tracking-[0.5em] mb-3 font-bold">Locations</h3>
-            <div className="flex flex-wrap gap-2 justify-center">
+          {/* Card 2: Locations */}
+          <div className="flex flex-col items-center bg-[#fafafa] border border-black/10 rounded-2xl p-7 hover:border-black/25 transition-all duration-500 shadow-sm">
+            <h3 className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.4em] mb-4 font-bold">Locations</h3>
+            <div className="flex flex-wrap gap-2.5 justify-center">
               {(contact.footerLocations || siteConfig.contact.locations).map(city => (
-                <Link key={city} to={`/location/${city.toLowerCase()}`} className="text-xs font-sans text-gray-300 tracking-[0.25em] uppercase hover:text-white px-3.5 py-1 bg-white/5 rounded-full border border-white/10 hover:border-white/30 transition-all">
+                <Link key={city} to={`/location/${city.toLowerCase()}`} className="text-xs font-sans text-white font-semibold tracking-[0.2em] uppercase bg-black hover:bg-neutral-800 px-4 py-2 rounded-full transition-all shadow-sm">
                   {city}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="flex flex-col items-center md:items-end bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-5 hover:border-white/20 transition-all duration-500 shadow-xl">
-            <h3 className="font-mirage text-xs text-gray-400 uppercase tracking-[0.5em] mb-3 font-bold">Socials</h3>
-            <div className="flex flex-wrap gap-2 justify-center md:justify-end">
+          {/* Card 3: Socials */}
+          <div className="flex flex-col items-center md:items-end bg-[#fafafa] border border-black/10 rounded-2xl p-7 hover:border-black/25 transition-all duration-500 shadow-sm">
+            <h3 className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.4em] mb-4 font-bold">Socials</h3>
+            <div className="flex flex-wrap gap-2.5 justify-center md:justify-end">
               {(contact.footerSocials || [
                 { platform: 'Instagram', link: '#' },
                 { platform: 'Facebook', link: '#' },
                 { platform: 'Pinterest', link: '#' }
               ]).map((social, idx) => (
-                <a key={idx} href={social.link} target="_blank" rel="noopener noreferrer" className="text-xs font-sans text-gray-300 tracking-[0.2em] uppercase hover:text-white px-3.5 py-1 bg-white/5 rounded-full border border-white/10 hover:border-white/30 transition-all">
+                <a key={idx} href={social.link} target="_blank" rel="noopener noreferrer" className="text-xs font-sans text-white font-semibold tracking-[0.2em] uppercase bg-black hover:bg-neutral-800 px-4 py-2 rounded-full transition-all shadow-sm">
                   {social.platform}
                 </a>
               ))}
@@ -84,13 +90,13 @@ const Footer = ({ isLandingPage = false, hideInquiries = false }) => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-center pt-1">
-          <p className="text-[11px] font-sans text-gray-500 uppercase tracking-[0.3em] mb-3 md:mb-0">
+        <div className="w-full flex flex-col md:flex-row justify-between items-center pt-2">
+          <p className="text-[11px] font-sans text-neutral-500 uppercase tracking-[0.25em] mb-3 md:mb-0 font-medium">
             &copy; {new Date().getFullYear()} {siteConfig.brand.name}. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-[11px] font-sans text-gray-500 uppercase tracking-[0.3em] hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-[11px] font-sans text-gray-500 uppercase tracking-[0.3em] hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="text-[11px] font-sans text-neutral-500 uppercase tracking-[0.25em] hover:text-black transition-colors font-semibold">Privacy Policy</a>
+            <a href="#" className="text-[11px] font-sans text-neutral-500 uppercase tracking-[0.25em] hover:text-black transition-colors font-semibold">Terms of Service</a>
           </div>
         </div>
 

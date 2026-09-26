@@ -153,8 +153,8 @@ const ServicePortfolio = () => {
 
   if (loading || !serviceData || !activeData) {
     return (
-      <div className="min-h-screen bg-[#020202] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -164,7 +164,7 @@ const ServicePortfolio = () => {
     : `/packages?service=${encodeURIComponent(serviceSlug)}`;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-white text-[#0f0f12]">
       <section className="relative h-[80vh] md:h-[90vh] w-full flex items-center justify-center overflow-hidden transition-all duration-1000">
         <div 
           className="absolute inset-0 bg-cover bg-center scale-105 hidden md:block transition-all duration-1000"
@@ -175,7 +175,7 @@ const ServicePortfolio = () => {
           style={{ backgroundImage: `url(${optimizeCloudinaryUrl(activeData.mobileHeroImage, true)})` }}
         />
         
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[#0a0a0a]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
         
         <div className="relative z-10 w-full max-w-[90rem] mx-auto px-6 lg:px-12 pt-20 flex flex-col md:flex-row items-center md:items-end justify-end md:justify-between h-full pb-10 md:pb-20 gap-8 md:gap-0">
           <motion.div 
@@ -183,24 +183,24 @@ const ServicePortfolio = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center md:text-left max-w-2xl"
+            className="text-center md:text-left max-w-2xl text-white"
           >
             <button 
               onClick={() => navigate('/')}
-              className="flex items-center gap-2 text-[10px] text-gray-400 uppercase tracking-[0.3em] hover:text-white transition-colors mb-6 mx-auto md:mx-0 absolute top-28 left-6 md:static md:top-auto md:left-auto"
+              className="flex items-center gap-2 text-[10px] text-gray-300 uppercase tracking-[0.3em] hover:text-white transition-colors mb-6 mx-auto md:mx-0 absolute top-28 left-6 md:static md:top-auto md:left-auto"
             >
               <span>←</span> BACK TO HOME
             </button>
-            <h1 className="font-mirage font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-widest leading-none mb-4 md:mb-6 drop-shadow-2xl">
+            <h1 className="font-mirage font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-widest leading-none mb-4 md:mb-6 drop-shadow-2xl text-white">
               {activeData.name}
             </h1>
             {activeData.tagline && (
-              <p className="font-serif italic text-xl md:text-2xl text-gray-300 mb-8 drop-shadow-md">
+              <p className="font-serif italic text-xl md:text-2xl text-gray-200 mb-8 drop-shadow-md">
                 "{activeData.tagline}"
               </p>
             )}
             {activeData.description && (
-              <p className="font-sans text-xs md:text-sm text-gray-300 tracking-wider leading-relaxed max-w-xl drop-shadow-md">
+              <p className="font-sans text-xs md:text-sm text-gray-200 tracking-wider leading-relaxed max-w-xl drop-shadow-md">
                 {activeData.description}
               </p>
             )}
@@ -214,7 +214,7 @@ const ServicePortfolio = () => {
           >
             <a 
               href={viewDetailsLink}
-              className="inline-flex items-center justify-center border border-white/30 bg-black/30 backdrop-blur-md px-10 py-4 md:py-5 font-sans text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 rounded-sm mt-8 md:mt-0"
+              className="inline-flex items-center justify-center border border-white/50 bg-black/40 backdrop-blur-md px-10 py-4 md:py-5 font-sans text-xs uppercase tracking-[0.3em] text-white hover:bg-white hover:text-black transition-all duration-500 rounded-sm mt-8 md:mt-0"
             >
               View Packages
             </a>
@@ -222,14 +222,14 @@ const ServicePortfolio = () => {
         </div>
       </section>
 
-      <section className="py-20 px-6 lg:px-12 max-w-[90rem] mx-auto">
+      <section className="py-20 px-6 lg:px-12 max-w-[90rem] mx-auto bg-white">
         
         {/* Sub-Service Pills */}
         {serviceData.subServices && serviceData.subServices.length > 0 && (
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-16">
             <button 
               onClick={() => handleSubChange('ALL')}
-              className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeSub === 'ALL' ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.4)] scale-105' : 'bg-transparent border border-white/20 text-gray-400 hover:border-white/50 hover:text-white hover:bg-white/5'}`}
+              className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeSub === 'ALL' ? 'bg-black text-white shadow-xl scale-105' : 'bg-neutral-100 border border-black/10 text-neutral-600 hover:border-black/30 hover:text-black hover:bg-neutral-200'}`}
             >
               ALL
             </button>
@@ -237,7 +237,7 @@ const ServicePortfolio = () => {
               <button 
                 key={sub.slug}
                 onClick={() => handleSubChange(sub.slug)}
-                className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeSub === sub.slug ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.4)] scale-105' : 'bg-transparent border border-white/20 text-gray-400 hover:border-white/50 hover:text-white hover:bg-white/5'}`}
+                className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeSub === sub.slug ? 'bg-black text-white shadow-xl scale-105' : 'bg-neutral-100 border border-black/10 text-neutral-600 hover:border-black/30 hover:text-black hover:bg-neutral-200'}`}
               >
                 {sub.name}
               </button>
@@ -249,14 +249,14 @@ const ServicePortfolio = () => {
         <div className="flex justify-center gap-4 md:gap-6 mb-16">
           <button 
             onClick={() => setActiveTab('images')}
-            className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeTab === 'images' ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.4)] scale-105' : 'bg-transparent border border-white/20 text-gray-400 hover:border-white/50 hover:text-white hover:bg-white/5'}`}
+            className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeTab === 'images' ? 'bg-black text-white shadow-xl scale-105' : 'bg-neutral-100 border border-black/10 text-neutral-600 hover:border-black/30 hover:text-black hover:bg-neutral-200'}`}
           >
             IMAGES ({activeData.images.length})
           </button>
           {activeData.showVideoGallery && (
             <button 
               onClick={() => setActiveTab('videos')}
-              className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeTab === 'videos' ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.4)] scale-105' : 'bg-transparent border border-white/20 text-gray-400 hover:border-white/50 hover:text-white hover:bg-white/5'}`}
+              className={`px-8 py-3 rounded-full font-sans text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-500 ${activeTab === 'videos' ? 'bg-black text-white shadow-xl scale-105' : 'bg-neutral-100 border border-black/10 text-neutral-600 hover:border-black/30 hover:text-black hover:bg-neutral-200'}`}
             >
               VIDEOS ({activeData.videos.length})
             </button>
@@ -278,7 +278,7 @@ const ServicePortfolio = () => {
                 activeData.images.map((img, i) => (
                   <div 
                     key={i} 
-                    className="relative group overflow-hidden rounded-sm bg-black break-inside-avoid shadow-2xl cursor-pointer mb-6"
+                    className="relative group overflow-hidden rounded-sm bg-neutral-100 break-inside-avoid shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer mb-6 border border-black/10"
                     onClick={() => setSelectedImageIndex(i)}
                   >
                     <img 
@@ -287,7 +287,7 @@ const ServicePortfolio = () => {
                       className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                       <span className="text-white text-3xl drop-shadow-lg">+</span>
                     </div>
@@ -295,7 +295,7 @@ const ServicePortfolio = () => {
                 ))
               ) : (
                 <div className="col-span-full py-20 text-center w-full">
-                  <p className="text-gray-600 font-sans text-xs uppercase tracking-[0.2em]">No images available for this category.</p>
+                  <p className="text-neutral-500 font-sans text-xs uppercase tracking-[0.2em]">No images available for this category.</p>
                 </div>
               )}
             </motion.div>
@@ -310,7 +310,7 @@ const ServicePortfolio = () => {
             >
               {activeData.videos.length > 0 ? (
                 activeData.videos.map((vid, i) => (
-                  <div key={i} className="aspect-video w-full rounded-sm overflow-hidden bg-white/5 border border-white/5">
+                  <div key={i} className="aspect-video w-full rounded-sm overflow-hidden bg-neutral-100 border border-black/10 shadow-sm">
                     <iframe 
                       src={getYouTubeEmbedUrl(vid.url)} 
                       title={`${activeData.name} video`}
@@ -323,7 +323,7 @@ const ServicePortfolio = () => {
                 ))
               ) : (
                 <div className="col-span-full py-20 text-center w-full">
-                  <p className="text-gray-600 font-sans text-xs uppercase tracking-[0.2em]">No videos available for this category.</p>
+                  <p className="text-neutral-500 font-sans text-xs uppercase tracking-[0.2em]">No videos available for this category.</p>
                 </div>
               )}
             </motion.div>

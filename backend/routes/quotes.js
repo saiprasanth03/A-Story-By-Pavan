@@ -49,64 +49,67 @@ router.post('/', async (req, res) => {
       specialRequests,
     });
 
-    // ── Generate PDF in background and email it ──────────────────────────────
-    try {
-      const settings = await Settings.findOne();
-      const bizName  = settings?.businessName || process.env.APP_NAME || 'Studio';
-      const adminEmail = settings?.contactEmail || process.env.EMAIL_USER || process.env.ADMIN_EMAIL;
-
-      const pdfBuffer = await generateQuotePdf(quote.toObject());
-
-      const filename = `Quote_${bizName.replace(/\s+/g, '_')}_${quote._id}.pdf`;
-
-      // Email to client
-      if (email) {
-        await sendEmail({
-          to:      email,
-          subject: `Your Quote from ${bizName}`,
-          html: `
-            <div style="font-family:sans-serif;color:#111;max-width:600px;margin:auto;">
-              <h2 style="border-bottom:2px solid #C9A227;padding-bottom:8px;">Thank you, ${clientName}!</h2>
-              <p>We've prepared a personalised quote based on your selections. Please find your proposal attached.</p>
-              <p>Our team will be in touch within <strong>24–48 hours</strong> to discuss the details.</p>
-              <p style="color:#888;font-size:12px;">— Team ${bizName}</p>
-            </div>
-          `,
-          attachments: [{
-            filename,
-            content: pdfBuffer,
-          }],
-        });
-      }
-
-      // Email copy to admin
-      if (adminEmail) {
-        await sendEmail({
-          to:      adminEmail,
-          subject: `New Quote Request — ${clientName} (${email})`,
-          html: `
-            <div style="font-family:sans-serif;color:#111;max-width:600px;margin:auto;">
-              <h2>New Quote Request</h2>
-              <p><strong>Client:</strong> ${clientName}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Event Date:</strong> ${eventDate || 'Not specified'}</p>
-              <p><strong>Total:</strong> ₹${Number(total).toLocaleString('en-IN')}</p>
-              <p>Full quote attached.</p>
-            </div>
-          `,
-          attachments: [{
-            filename,
-            content: pdfBuffer,
-          }],
-        });
-      }
-    } catch (mailErr) {
-      // Non-fatal — log but don't fail the request
-      console.error('[Quote] Email/PDF error:', mailErr.message);
-    }
-
+    // Send HTTP response immediately so the UI modal closes without hanging
     res.status(201).json({ success: true, quoteId: quote._id });
+
+    // ── Generate PDF and send email asynchronously in background ──────────────
+    if (_sendEmail !== false) {
+      (async () => {
+        try {
+          const settings = await Settings.findOne();
+          const bizName  = settings?.businessName || process.env.APP_NAME || 'Studio';
+          const adminEmail = settings?.contactEmail || process.env.EMAIL_USER || process.env.ADMIN_EMAIL;
+
+          const pdfBuffer = await generateQuotePdf(quote.toObject());
+          const filename = `Quote_${bizName.replace(/\s+/g, '_')}_${quote._id}.pdf`;
+
+          // Email to client
+          if (email) {
+            await sendEmail({
+              to:      email,
+              subject: `Your Quote from ${bizName}`,
+              html: `
+                <div style="font-family:sans-serif;color:#111;max-width:600px;margin:auto;">
+                  <h2 style="border-bottom:2px solid #C9A227;padding-bottom:8px;">Thank you, ${clientName}!</h2>
+                  <p>We've prepared a personalised quote based on your selections. Please find your proposal attached.</p>
+                  <p>Our team will be in touch within <strong>24–48 hours</strong> to discuss the details.</p>
+                  <p style="color:#888;font-size:12px;">— Team ${bizName}</p>
+                </div>
+              `,
+              attachments: [{
+                filename,
+                content: pdfBuffer,
+              }],
+            }).catch(e => console.error('[Quote] Client email failed:', e.message));
+          }
+
+          // Email copy to admin
+          if (adminEmail) {
+            await sendEmail({
+              to:      adminEmail,
+              subject: `New Quote Request — ${clientName} (${email})`,
+              html: `
+                <div style="font-family:sans-serif;color:#111;max-width:600px;margin:auto;">
+                  <h2>New Quote Request</h2>
+                  <p><strong>Client:</strong> ${clientName}</p>
+                  <p><strong>Email:</strong> ${email}</p>
+                  <p><strong>Phone:</strong> ${phone}</p>
+                  <p><strong>Event Date:</strong> ${eventDate || 'Not specified'}</p>
+                  <p><strong>Total:</strong> ₹${Number(total).toLocaleString('en-IN')}</p>
+                  <p>Full quote attached.</p>
+                </div>
+              `,
+              attachments: [{
+                filename,
+                content: pdfBuffer,
+              }],
+            }).catch(e => console.error('[Quote] Admin email failed:', e.message));
+          }
+        } catch (mailErr) {
+          console.error('[Quote] Background Email/PDF error:', mailErr.message);
+        }
+      })();
+    }
   } catch (err) {
     console.error('[Quote] POST error:', err);
     res.status(500).json({ message: 'Failed to save quote request.' });

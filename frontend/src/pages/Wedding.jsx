@@ -20,7 +20,7 @@ const Wedding = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-white text-[#0f0f12] overflow-x-hidden selection:bg-black/10">
       <Helmet>
         <title>{settings?.weddingHeroHeading || 'Wedding'} | {siteConfig.brand.name}</title>
         <meta name="description" content={settings?.weddingHeroDescription || 'Premium Wedding Photography'} />
@@ -34,7 +34,7 @@ const Wedding = () => {
           style={{ backgroundImage: `url('${settings?.weddingHeroBackground || '/images/studio.jpeg'}')` }}
         />
         <div className="absolute inset-0 z-0 bg-black/60" />
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -62,7 +62,7 @@ const Wedding = () => {
             href={settings?.weddingHeroButtonLink || siteConfig.parentCompany.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+            className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-xl"
           >
             <span className="relative z-10 font-mirage uppercase tracking-[0.2em] font-bold text-sm">
               {settings?.weddingHeroButtonText || (siteConfig.parentCompany.enabled ? `Visit ${siteConfig.parentCompany.name}` : 'Learn More')}
@@ -70,7 +70,6 @@ const Wedding = () => {
             <span className="relative z-10 group-hover:translate-x-2 transition-transform duration-300">
               →
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
           )}
         </motion.div>

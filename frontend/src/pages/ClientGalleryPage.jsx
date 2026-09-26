@@ -258,32 +258,27 @@ const ClientGalleryPage = () => {
   const displayedGalleries = galleries.filter(g => g._id === activeEventTab);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20 pb-28 md:pb-16">
-      {/* Background ambient glow */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[80vw] md:w-[60vw] h-[80vw] md:h-[60vw] rounded-full bg-purple-900/20 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[70vw] md:w-[50vw] h-[70vw] md:h-[50vw] rounded-full bg-blue-900/20 blur-[120px]" />
-      </div>
+    <div className="min-h-screen bg-white text-[#0f0f12] pb-28 md:pb-16">
 
       <div className="relative z-10 px-3 sm:px-6 py-8 md:py-16 max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 md:mb-10">
-          <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-8 md:h-10 mx-auto mb-4 md:mb-6 opacity-90" />
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-mirage font-bold uppercase tracking-widest text-white mb-2 md:mb-3">
+          <img src={siteConfig.brand.logoUrl} alt={siteConfig.brand.name} className="h-8 md:h-10 mx-auto mb-4 md:mb-6 opacity-90 filter invert" />
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-mirage font-bold uppercase tracking-widest text-[#0f0f12] mb-2 md:mb-3">
             Client Photo Gallery
           </h1>
-          <p className="text-gray-400 text-xs sm:text-sm tracking-wider max-w-lg mx-auto px-4">
+          <p className="text-neutral-600 text-xs sm:text-sm tracking-wider max-w-lg mx-auto px-4">
             Select your favourite images and submit them to the studio.
           </p>
 
           {verified && (
             <div className="mt-4 flex items-center justify-center gap-3">
-              <span className="text-[11px] text-gray-300 font-mono bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+              <span className="text-[11px] text-neutral-700 font-mono bg-neutral-100 border border-black/10 px-3 py-1 rounded-full">
                 👤 {email}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-white underline underline-offset-4 transition-colors"
+                className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-black underline underline-offset-4 transition-colors"
               >
                 Change Email
               </button>
@@ -294,23 +289,23 @@ const ClientGalleryPage = () => {
         {/* Email Verification Card */}
         {!verified && (
           <div className="max-w-md mx-auto px-2">
-            <form onSubmit={handleVerifySubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-              <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2">Your Email Address</label>
+            <form onSubmit={handleVerifySubmit} className="bg-[#fafafa] border border-black/10 rounded-2xl p-6 md:p-8 shadow-sm">
+              <label className="block text-[10px] uppercase tracking-widest text-neutral-600 mb-2">Your Email Address</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 focus:border-white/40 focus:outline-none transition-all mb-4"
+                className="w-full bg-white border border-black/15 rounded-xl px-4 py-3.5 text-sm text-[#0f0f12] placeholder-neutral-400 focus:border-black focus:outline-none transition-all mb-4 shadow-sm"
               />
               {verifyError && (
-                <p className="text-red-400 text-xs mb-4 tracking-wider leading-relaxed">{verifyError}</p>
+                <p className="text-red-600 text-xs mb-4 tracking-wider leading-relaxed">{verifyError}</p>
               )}
               <button
                 type="submit"
                 disabled={isVerifying}
-                className="w-full py-3.5 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-gray-200 active:scale-[0.99] transition-all disabled:opacity-50 shadow-lg"
+                className="w-full py-3.5 bg-black text-white font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-neutral-800 active:scale-[0.99] transition-all disabled:opacity-50 shadow-md"
               >
                 {isVerifying ? 'Verifying...' : 'Access My Gallery →'}
               </button>
@@ -327,13 +322,13 @@ const ClientGalleryPage = () => {
                 onClick={() => setActiveEventTab(g._id)}
                 className={`px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
                   activeEventTab === g._id
-                    ? 'bg-white text-black shadow-lg scale-105'
-                    : 'bg-white/5 text-gray-400 hover:text-white border border-white/10'
+                    ? 'bg-black text-white shadow-md scale-105'
+                    : 'bg-neutral-100 text-neutral-600 hover:text-black border border-black/10'
                 }`}
               >
                 <span>{g.eventName}</span>
                 <span className={`text-[10px] px-2 py-0.5 rounded-md font-mono ${
-                  activeEventTab === g._id ? 'bg-black/15 text-black font-bold' : 'bg-white/10 text-gray-300'
+                  activeEventTab === g._id ? 'bg-white/20 text-white font-bold' : 'bg-black/5 text-neutral-600'
                 }`}>
                   {g.images.length}
                 </span>
@@ -353,33 +348,33 @@ const ClientGalleryPage = () => {
           return (
             <div key={gallery._id} className="mb-12 md:mb-16">
               {/* Gallery Header Card */}
-              <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-6 mb-6">
+              <div className="bg-[#fafafa] border border-black/10 rounded-2xl p-4 md:p-6 mb-6 shadow-sm">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest text-gray-500 block mb-1">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-500 block mb-1">
                       Event Gallery {galleries.length > 1 && `(${galleries.indexOf(gallery) + 1} of ${galleries.length})`}
                     </span>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-mirage font-bold uppercase tracking-widest text-white">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-mirage font-bold uppercase tracking-widest text-[#0f0f12]">
                       {gallery.eventName}
                     </h2>
-                    <p className="text-xs sm:text-sm text-gray-400 mt-0.5">{gallery.clientName}</p>
+                    <p className="text-xs sm:text-sm text-neutral-600 mt-0.5">{gallery.clientName}</p>
                   </div>
 
                   {/* Desktop Action Buttons */}
                   <div className="hidden md:flex items-center gap-3">
                     {isSubmitted ? (
-                      <span className="px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs uppercase tracking-widest font-bold flex items-center gap-1.5">
+                      <span className="px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs uppercase tracking-widest font-bold flex items-center gap-1.5">
                         <span>✓</span> Selections Submitted ({selectedCount} photos)
                       </span>
                     ) : (
                       <>
-                        <span className="text-xs text-gray-400 tracking-wider">
-                          <strong className="text-white font-semibold">{selectedCount}</strong> of {gallery.images.length} selected
+                        <span className="text-xs text-neutral-600 tracking-wider">
+                          <strong className="text-black font-semibold">{selectedCount}</strong> of {gallery.images.length} selected
                         </span>
                         <button
                           onClick={() => handleSubmit(gallery._id)}
                           disabled={isSubmittingThis || selectedCount === 0}
-                          className="px-6 py-2.5 bg-white text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-gray-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-lg"
+                          className="px-6 py-2.5 bg-black text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-neutral-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
                         >
                           {isSubmittingThis ? 'Submitting...' : `Submit Selection (${selectedCount})`}
                         </button>
@@ -389,9 +384,9 @@ const ClientGalleryPage = () => {
                 </div>
 
                 {isSubmitted && (
-                  <div className="mt-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-center">
-                    <p className="text-emerald-400 text-xs sm:text-sm tracking-wider">
-                      ✓ Your selection of {selectedCount} images for <strong className="text-white">{gallery.eventName}</strong> has been submitted to the studio!
+                  <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
+                    <p className="text-emerald-700 text-xs sm:text-sm tracking-wider">
+                      ✓ Your selection of {selectedCount} images for <strong className="text-black">{gallery.eventName}</strong> has been submitted to the studio!
                     </p>
                   </div>
                 )}

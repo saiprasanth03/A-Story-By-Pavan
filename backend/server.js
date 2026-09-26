@@ -91,7 +91,7 @@ const startServer = async () => {
           email: adminEmail,
           password: hashedPassword,
           isSuperAdmin: true,
-          permissions: ['dashboard', 'leads', 'inquiries', 'bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'teamAccess']
+          permissions: ['dashboard', 'leads', 'quotes', 'inquiries', 'bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'teamAccess']
         });
         await newAdmin.save();
         console.log(`Super Admin "${adminEmail}" initialized successfully.`);

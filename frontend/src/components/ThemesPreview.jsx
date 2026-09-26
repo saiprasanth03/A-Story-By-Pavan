@@ -34,7 +34,7 @@ const ThemesPreview = () => {
   };
 
   return (
-    <section id="themes" className="bg-[#050505] text-white w-full overflow-hidden py-24 relative selection:bg-white/20 border-t border-white/5">
+    <section id="themes" className="bg-[#fcfcfc] text-[#0f0f12] w-full overflow-hidden py-24 relative selection:bg-black/10 border-t border-black/10">
       <div className="max-w-[90rem] mx-auto px-6 lg:px-12 text-center relative z-10">
         <div className="flex flex-col justify-center items-center mb-16 text-center">
           <motion.div 
@@ -43,8 +43,8 @@ const ThemesPreview = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-mirage text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
-            <h3 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+            <h2 className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 font-bold">Curated Setups</h2>
+            <h3 className="font-mirage font-bold text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-widest leading-none">
               Theme Catalog
             </h3>
           </motion.div>

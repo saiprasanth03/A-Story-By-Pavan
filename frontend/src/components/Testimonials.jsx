@@ -20,15 +20,15 @@ const Testimonials = () => {
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="relative w-full py-32 bg-[#050505] text-white border-t border-white/10 flex flex-col items-center overflow-hidden">
+    <section id="testimonials" className="relative w-full py-28 bg-[#f9fafb] text-[#0f0f12] border-t border-black/10 flex flex-col items-center overflow-hidden">
       <div className="text-center mb-16">
-        <span className="font-mirage text-xs text-white/60 uppercase tracking-[0.5em] mb-4 block">
+        <span className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 block font-bold">
           Client Praise
         </span>
-        <h2 className="font-mirage font-bold uppercase text-white text-4xl md:text-6xl tracking-[0.25em]">
+        <h2 className="font-mirage font-bold uppercase text-[#0f0f12] text-4xl md:text-6xl tracking-[0.25em]">
           Testimonials
         </h2>
-        <div className="w-16 h-[2px] bg-white/40 mx-auto mt-6"></div>
+        <div className="w-16 h-[2px] bg-black/40 mx-auto mt-6"></div>
       </div>
 
       <div className="w-full max-w-4xl mx-auto px-8 relative flex items-center justify-center">
@@ -47,19 +47,19 @@ const Testimonials = () => {
           className="w-full min-h-[260px]"
         >
           {testimonials.map((current, i) => (
-            <SwiperSlide key={i} className="flex flex-col items-center justify-center text-center">
-              <div className="text-3xl text-white/60 font-serif mb-4">“</div>
-              <p className="font-sans text-base md:text-lg text-gray-300 mb-8 leading-relaxed font-light max-w-2xl mx-auto">
+            <SwiperSlide key={i} className="flex flex-col items-center justify-center text-center p-6 bg-white border border-black/10 rounded-3xl shadow-lg">
+              <div className="text-3xl text-neutral-400 font-serif mb-2">“</div>
+              <p className="font-sans text-base md:text-lg text-neutral-800 mb-6 leading-relaxed font-light max-w-2xl mx-auto">
                 {current.reviewText}
               </p>
               
-              <div className="flex text-white mb-4 text-xs gap-2 justify-center">
+              <div className="flex text-amber-500 mb-3 text-xs gap-1.5 justify-center">
                 {[...Array(current.rating || 5)].map((_, idx) => (
                   <span key={idx}>★</span>
                 ))}
               </div>
               
-              <h3 className="font-mirage text-white uppercase tracking-[0.25em] text-sm md:text-base font-bold mb-2 text-center">
+              <h3 className="font-mirage text-[#0f0f12] uppercase tracking-[0.25em] text-sm md:text-base font-bold mb-2 text-center">
                 {current.authorName}
               </h3>
 
@@ -68,7 +68,7 @@ const Testimonials = () => {
                   href={current.googleReviewUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex items-center justify-center gap-2 text-white/60 hover:text-white transition-colors text-[9px] uppercase tracking-[0.3em] font-sans font-medium mt-1"
+                  className="flex items-center justify-center gap-2 text-neutral-500 hover:text-black transition-colors text-[9px] uppercase tracking-[0.3em] font-sans font-semibold mt-1"
                 >
                   <span>Verified Google Review</span> &#8599;
                 </a>
@@ -78,11 +78,11 @@ const Testimonials = () => {
         </Swiper>
 
         {/* Custom Navigation */}
-        <button className="swiper-button-prev-testimonial absolute left-0 text-white/40 hover:text-white transition-colors text-4xl font-light z-10">
+        <button className="swiper-button-prev-testimonial absolute left-0 text-black/40 hover:text-black transition-colors text-4xl font-light z-10">
           &#8249;
         </button>
         
-        <button className="swiper-button-next-testimonial absolute right-0 text-white/40 hover:text-white transition-colors text-4xl font-light z-10">
+        <button className="swiper-button-next-testimonial absolute right-0 text-black/40 hover:text-black transition-colors text-4xl font-light z-10">
           &#8250;
         </button>
 

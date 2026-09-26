@@ -17,10 +17,10 @@ const shortId = (id = '') => id.toString().slice(-6).toUpperCase();
 
 const STATUS_OPTIONS = ['new', 'contacted', 'converted', 'closed'];
 const STATUS_COLORS = {
-  new:       'text-sky-400 border-sky-500/40',
-  contacted: 'text-blue-400 border-blue-500/40',
-  converted: 'text-emerald-400 border-emerald-500/40',
-  closed:    'text-rose-400 border-rose-500/40',
+  new:       'text-sky-700 bg-sky-50 border-sky-300 font-semibold',
+  contacted: 'text-blue-700 bg-blue-50 border-blue-300 font-semibold',
+  converted: 'text-emerald-700 bg-emerald-50 border-emerald-300 font-semibold',
+  closed:    'text-rose-700 bg-rose-50 border-rose-300 font-semibold',
 };
 
 // ─── 5-step Admin Create Quote Wizard data ────────────────────────────────────
@@ -88,18 +88,18 @@ const WizardProgress = ({ step }) => (
       const active = i === step;
       return (
         <React.Fragment key={i}>
-          <div className="flex items-center gap-1.5 shrink-0">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all
-              ${done ? 'bg-primary border-primary text-black' : active ? 'border-primary bg-transparent text-primary' : 'border-white/20 bg-transparent text-gray-500'}`}>
-              {done ? <Check size={10} /> : i + 1}
+          <div className="flex items-center gap-2 shrink-0">
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border transition-all shadow-xs
+              ${done ? 'bg-black border-black text-white' : active ? 'border-black bg-black text-white' : 'border-black/20 bg-neutral-100 text-neutral-500'}`}>
+              {done ? <Check size={12} /> : i + 1}
             </div>
-            <span className={`text-[8px] leading-tight tracking-widest uppercase whitespace-pre-line font-medium
-              ${active ? 'text-primary font-semibold' : done ? 'text-primary/70' : 'text-gray-500'}`}>
+            <span className={`text-[9px] leading-tight tracking-widest uppercase whitespace-pre-line font-bold
+              ${active ? 'text-[#0f0f12]' : done ? 'text-neutral-700' : 'text-neutral-400'}`}>
               {label}
             </span>
           </div>
           {i < WIZARD_STEPS.length - 1 && (
-            <div className={`h-px mx-2 transition-colors shrink-0 ${done ? 'bg-primary' : 'bg-white/10'}`} style={{ width: 20 }} />
+            <div className={`h-px mx-3 transition-colors shrink-0 ${done || active ? 'bg-black' : 'bg-black/10'}`} style={{ width: 24 }} />
           )}
         </React.Fragment>
       );
@@ -124,7 +124,6 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
   const [selectedSubs, setSelectedSubs]   = useState([]);
   const [extraSubs, setExtraSubs]         = useState([]);
   const [newSubInput, setNewSubInput]     = useState('');
-  // perSubConfig: { [subEvent]: { duration, remarks, services: [{enabled, name, qty, unitPrice}] } }
   const [perSubConfig, setPerSubConfig]   = useState({});
 
   // Step 3: Albums & Extras
@@ -276,23 +275,23 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
     } finally { setSaving(false); }
   };
 
-  const inputCls = 'w-full bg-[#111] border border-[#2a2a2a] px-3 py-2.5 text-white text-sm focus:border-white/50 outline-none transition rounded-sm placeholder:text-[#444]';
-  const labelCls = 'block text-[8px] text-gray-500 uppercase tracking-widest mb-1.5';
+  const inputCls = 'w-full bg-neutral-50 border border-black/15 px-3.5 py-2.5 text-[#0f0f12] text-xs font-medium focus:bg-white focus:border-black outline-none transition rounded-xl placeholder:text-neutral-400 [color-scheme:light] shadow-xs';
+  const labelCls = 'block text-[10px] text-neutral-600 font-bold uppercase tracking-widest mb-1.5';
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#0d0d0d] border border-[#252525] rounded-lg w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl">
+    <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="bg-white border border-black/10 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl text-[#0f0f12]">
         {/* Header */}
-        <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-[#1a1a1a]">
+        <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-black/10">
           <div>
-            <h2 className="text-white text-xl font-light">Create Custom Quotation</h2>
-            <p className="text-gray-600 text-[9px] tracking-widest uppercase mt-0.5">ADMINISTRATIVE QUOTATION WIZARD</p>
+            <h2 className="text-[#0f0f12] text-xl font-mirage font-bold uppercase tracking-widest">Create Custom Quotation</h2>
+            <p className="text-neutral-500 text-[10px] tracking-widest uppercase mt-0.5 font-bold">ADMINISTRATIVE QUOTATION WIZARD</p>
           </div>
-          <button type="button" onClick={onClose} className="text-gray-600 hover:text-white transition mt-1"><X size={16} /></button>
+          <button type="button" onClick={onClose} className="text-neutral-400 hover:text-black transition p-1.5 rounded-xl hover:bg-neutral-100"><X size={18} /></button>
         </div>
 
         {/* Progress */}
-        <div className="px-6 pt-4">
+        <div className="px-6 pt-5">
           <WizardProgress step={step} />
         </div>
 
@@ -302,7 +301,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {/* ── STEP 1: COORDINATES ─────────────────────────────────────────── */}
           {step === 0 && (
             <div>
-              <h3 className="text-white text-[10px] tracking-widest uppercase font-bold mb-5">
+              <h3 className="text-[#0f0f12] text-xs tracking-widest uppercase font-bold mb-5">
                 STEP 1: CLIENT COORDINATES
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -329,7 +328,7 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 <div>
                   <label className={labelCls}>Delivery Timeline</label>
                   <select value={coords.delivery} onChange={e => setCoords(p => ({ ...p, delivery: e.target.value }))} className={inputCls + ' appearance-none'}>
-                    {DELIVERY_OPTIONS.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
+                    {DELIVERY_OPTIONS.map(o => <option key={o} className="bg-white text-[#0f0f12]">{o}</option>)}
                   </select>
                 </div>
                 <div className="col-span-2">
@@ -344,10 +343,10 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 1 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-[#0f0f12] text-xs tracking-widest uppercase font-bold">
                   STEP 2: EVENTS & SERVICE CUSTOMIZATIONS
                 </h3>
-                <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
+                <span className="text-neutral-500 text-[10px] font-bold uppercase tracking-wider">BASE PRICE: {fmt(basePrice)}</span>
               </div>
 
               {/* Primary category */}
@@ -356,14 +355,14 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 <div className="flex flex-wrap gap-2">
                   {[...PRIMARY_CATEGORIES, ...extraCats].map(cat => (
                     <button key={cat} type="button" onClick={() => setPrimaryCat(cat)}
-                      className={`px-4 py-2 border text-xs tracking-widest uppercase transition rounded-sm
-                        ${primaryCat === cat ? 'bg-white border-white text-black font-bold' : 'border-[#333] text-gray-400 hover:border-[#555]'}`}>
+                      className={`px-4 py-2 border text-xs tracking-widest uppercase transition rounded-xl
+                        ${primaryCat === cat ? 'bg-black border-black text-white font-bold shadow-xs' : 'border-black/15 bg-neutral-50 text-neutral-700 hover:border-black/40 font-medium'}`}>
                       {cat}
                     </button>
                   ))}
                   <div className="flex gap-1">
-                    <input value={newCatInput} onChange={e => setNewCatInput(e.target.value)} placeholder="+ Add Category" className="bg-transparent border border-[#333] px-3 py-2 text-xs text-white outline-none rounded-sm w-36 placeholder:text-[#444]" />
-                    <button type="button" onClick={() => { if (newCatInput.trim()) { setExtraCats(p => [...p, newCatInput.trim()]); setNewCatInput(''); } }} className="border border-white text-white px-2 text-xs hover:bg-white hover:text-black transition rounded-sm">+</button>
+                    <input value={newCatInput} onChange={e => setNewCatInput(e.target.value)} placeholder="+ Add Category" className="bg-neutral-50 border border-black/15 px-3 py-2 text-xs text-[#0f0f12] outline-none rounded-xl w-36 placeholder:text-neutral-400" />
+                    <button type="button" onClick={() => { if (newCatInput.trim()) { setExtraCats(p => [...p, newCatInput.trim()]); setNewCatInput(''); } }} className="border border-black bg-black text-white px-3 text-xs hover:bg-neutral-800 font-bold transition rounded-xl shadow-xs">+</button>
                   </div>
                 </div>
               </div>
@@ -371,21 +370,21 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
               {/* Sub-events */}
               <div className="mb-5">
                 <p className={labelCls}>Select Sub-Events / Celebrations ({primaryCat})</p>
-                <div className="grid grid-cols-4 gap-2 mb-2">
+                <div className="grid grid-cols-4 gap-2 mb-3">
                   {[...ALL_SUB_EVENTS, ...extraSubs].map(sub => {
                     const checked = selectedSubs.includes(sub);
                     return (
-                      <label key={sub} className={`flex items-center gap-2 border px-3 py-2 cursor-pointer transition rounded-sm text-xs
-                        ${checked ? 'border-white bg-white/10 text-white' : 'border-[#2a2a2a] text-gray-500 hover:border-[#444]'}`}>
-                        <input type="checkbox" checked={checked} onChange={() => toggleSub(sub)} className="accent-white w-3 h-3 shrink-0" />
+                      <label key={sub} className={`flex items-center gap-2 border px-3 py-2 cursor-pointer transition rounded-xl text-xs
+                        ${checked ? 'border-black bg-black/5 text-[#0f0f12] font-bold shadow-xs' : 'border-black/15 bg-neutral-50 text-neutral-600 hover:border-black/30'}`}>
+                        <input type="checkbox" checked={checked} onChange={() => toggleSub(sub)} className="accent-black w-3.5 h-3.5 shrink-0" />
                         {sub}
                       </label>
                     );
                   })}
                 </div>
                 <div className="flex gap-1">
-                  <input value={newSubInput} onChange={e => setNewSubInput(e.target.value)} placeholder="+ Add Sub-Event" className="bg-transparent border border-[#333] px-3 py-1.5 text-xs text-white outline-none rounded-sm w-44 placeholder:text-[#444]" />
-                  <button type="button" onClick={() => { if (newSubInput.trim()) { setExtraSubs(p => [...p, newSubInput.trim()]); setNewSubInput(''); } }} className="border border-white text-white px-2 text-xs hover:bg-white hover:text-black transition rounded-sm">+ ADD</button>
+                  <input value={newSubInput} onChange={e => setNewSubInput(e.target.value)} placeholder="+ Add Sub-Event" className="bg-neutral-50 border border-black/15 px-3 py-2 text-xs text-[#0f0f12] outline-none rounded-xl w-44 placeholder:text-neutral-400" />
+                  <button type="button" onClick={() => { if (newSubInput.trim()) { setExtraSubs(p => [...p, newSubInput.trim()]); setNewSubInput(''); } }} className="border border-black bg-black text-white px-3 py-2 text-xs hover:bg-neutral-800 font-bold transition rounded-xl shadow-xs">+ ADD</button>
                 </div>
               </div>
 
@@ -397,15 +396,15 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                     {selectedSubs.map(sub => {
                       const cfg = perSubConfig[sub] || { duration: 'half', remarks: '', services: [] };
                       return (
-                        <div key={sub} className="border border-[#252525] rounded-sm">
+                        <div key={sub} className="border border-black/10 rounded-2xl overflow-hidden bg-neutral-50/50 shadow-xs">
                           {/* Sub-event header */}
-                          <div className="flex items-center justify-between px-4 py-2 bg-[#111] border-b border-[#252525]">
-                            <span className="text-white text-xs font-medium tracking-wider">• {sub.toUpperCase()}</span>
+                          <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-100/80 border-b border-black/10">
+                            <span className="text-[#0f0f12] text-xs font-bold tracking-wider uppercase">• {sub}</span>
                             <div className="flex gap-1">
                               {['half', 'full'].map(dur => (
                                 <button key={dur} type="button" onClick={() => updateSubConfig(sub, 'duration', dur)}
-                                  className={`px-3 py-1 text-[9px] tracking-widest uppercase border transition rounded-sm
-                                    ${cfg.duration === dur ? 'bg-white border-white text-black font-bold' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
+                                  className={`px-3 py-1 text-[9px] tracking-widest uppercase border transition rounded-lg font-bold
+                                    ${cfg.duration === dur ? 'bg-black border-black text-white' : 'border-black/20 bg-white text-neutral-600 hover:border-black/40'}`}>
                                   {dur === 'half' ? 'Half Day' : 'Full Day'}
                                 </button>
                               ))}
@@ -419,40 +418,40 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                             <p className={labelCls}>Select Photography & Videography Coverage</p>
                             <table className="w-full text-xs">
                               <thead>
-                                <tr className="text-gray-600 text-[8px] uppercase tracking-widest border-b border-[#252525]">
-                                  <th className="py-1.5 text-left w-8">Enable</th>
-                                  <th className="py-1.5 text-left">Service Name</th>
-                                  <th className="py-1.5 text-center w-12">Qty</th>
-                                  <th className="py-1.5 text-right w-24">Unit Price (₹)</th>
-                                  <th className="py-1.5 text-right w-20">Subtotal</th>
+                                <tr className="text-neutral-500 text-[9px] uppercase tracking-widest border-b border-black/10 font-bold">
+                                  <th className="py-2 text-left w-8">Enable</th>
+                                  <th className="py-2 text-left">Service Name</th>
+                                  <th className="py-2 text-center w-14">Qty</th>
+                                  <th className="py-2 text-right w-28">Unit Price (₹)</th>
+                                  <th className="py-2 text-right w-24">Subtotal</th>
                                   <th className="w-6" />
                                 </tr>
                               </thead>
                               <tbody>
                                 {(cfg.services || []).map((svc, idx) => (
-                                  <tr key={idx} className="border-b border-[#1a1a1a]">
+                                  <tr key={idx} className="border-b border-black/5 text-[#0f0f12]">
                                     <td className="py-2">
-                                      <input type="checkbox" checked={svc.enabled || false} onChange={() => toggleSubService(sub, idx)} className="accent-white w-3.5 h-3.5" />
+                                      <input type="checkbox" checked={svc.enabled || false} onChange={() => toggleSubService(sub, idx)} className="accent-black w-3.5 h-3.5" />
                                     </td>
-                                    <td className="py-2 text-gray-300">{svc.name}</td>
+                                    <td className="py-2 font-medium text-neutral-800">{svc.name}</td>
                                     <td className="py-2 text-center">
-                                      <input type="number" min="0" value={svc.qty || 0} onChange={e => updateSubService(sub, idx, 'qty', Number(e.target.value))}
-                                        className="w-10 bg-[#111] border border-[#2a2a2a] text-white text-center text-xs py-0.5 outline-none rounded-sm" />
+                                      <input type="number" min="0" value={svc.qty === 0 || svc.qty === '0' || !svc.qty ? '' : svc.qty} placeholder="0" onChange={e => updateSubService(sub, idx, 'qty', e.target.value === '' ? 0 : Number(e.target.value))}
+                                        className="w-12 bg-white border border-black/20 text-[#0f0f12] text-center text-xs py-1 outline-none rounded-lg font-semibold shadow-xs" />
                                     </td>
                                     <td className="py-2 text-right">
-                                      <input type="number" min="0" value={svc.unitPrice || 0} onChange={e => updateSubService(sub, idx, 'unitPrice', Number(e.target.value))}
-                                        className="w-20 bg-[#111] border border-[#2a2a2a] text-white text-right text-xs py-0.5 outline-none rounded-sm pr-1" />
+                                      <input type="number" min="0" value={svc.unitPrice === 0 || svc.unitPrice === '0' || !svc.unitPrice ? '' : svc.unitPrice} placeholder="0" onChange={e => updateSubService(sub, idx, 'unitPrice', e.target.value === '' ? 0 : Number(e.target.value))}
+                                        className="w-24 bg-white border border-black/20 text-[#0f0f12] text-right text-xs py-1 outline-none rounded-lg pr-2 font-semibold shadow-xs" />
                                     </td>
-                                    <td className="py-2 text-right text-gray-400">{fmt((svc.qty || 0) * (svc.unitPrice || 0))}</td>
+                                    <td className="py-2 text-right font-bold text-[#0f0f12]">{fmt((svc.qty || 0) * (svc.unitPrice || 0))}</td>
                                     <td className="py-2 text-right">
-                                      <button type="button" onClick={() => removeService(sub, idx)} className="text-gray-700 hover:text-red-400 transition"><Trash2 size={11} /></button>
+                                      <button type="button" onClick={() => removeService(sub, idx)} className="text-neutral-400 hover:text-rose-600 transition"><Trash2 size={13} /></button>
                                     </td>
                                   </tr>
                                 ))}
                               </tbody>
                             </table>
                             <button type="button" onClick={() => addCustomService(sub)}
-                              className="mt-2 text-white text-[9px] border border-white px-3 py-1 hover:bg-white hover:text-black transition rounded-sm">
+                              className="mt-3 text-[#0f0f12] text-[10px] font-bold uppercase border border-black/20 bg-white px-3 py-1.5 hover:bg-neutral-100 transition rounded-xl shadow-xs">
                               + ADD SERVICE OPTION
                             </button>
                           </div>
@@ -469,49 +468,49 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 2 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-[#0f0f12] text-xs tracking-widest uppercase font-bold">
                   STEP 3: ALBUMS & DELIVERABLES SELECTION
                 </h3>
-                <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
+                <span className="text-neutral-500 text-[10px] font-bold uppercase tracking-wider">BASE PRICE: {fmt(basePrice)}</span>
               </div>
 
               {/* Three dropdowns */}
               <div className="grid grid-cols-3 gap-3 mb-5">
-                <div className="border border-[#252525] p-4">
-                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">PRE-WEDDING STYLE</p>
+                <div className="border border-black/10 bg-neutral-50 p-4 rounded-2xl shadow-xs">
+                  <p className="text-neutral-800 text-[9px] tracking-widest uppercase font-bold mb-1">PRE-WEDDING STYLE</p>
                   <p className={labelCls}>Style Package</p>
                   <select value={prewedStyle} onChange={e => setPrewedStyle(e.target.value)} className={inputCls + ' appearance-none'}>
-                    {PREWEDDING_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
+                    {PREWEDDING_STYLES.map(o => <option key={o} className="bg-white text-[#0f0f12]">{o}</option>)}
                   </select>
                 </div>
-                <div className="border border-[#252525] p-4">
-                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">POST-PRODUCTION FILM STYLE</p>
+                <div className="border border-black/10 bg-neutral-50 p-4 rounded-2xl shadow-xs">
+                  <p className="text-neutral-800 text-[9px] tracking-widest uppercase font-bold mb-1">POST-PRODUCTION FILM STYLE</p>
                   <p className={labelCls}>Video Editing Style</p>
                   <select value={postprodStyle} onChange={e => setPostprodStyle(e.target.value)} className={inputCls + ' appearance-none'}>
-                    {POSTPROD_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
+                    {POSTPROD_STYLES.map(o => <option key={o} className="bg-white text-[#0f0f12]">{o}</option>)}
                   </select>
                 </div>
-                <div className="border border-[#252525] p-4">
-                  <p className="text-white/80 text-[8px] tracking-widest uppercase font-bold mb-1">PRIMARY PHOTO ALBUM</p>
+                <div className="border border-black/10 bg-neutral-50 p-4 rounded-2xl shadow-xs">
+                  <p className="text-neutral-800 text-[9px] tracking-widest uppercase font-bold mb-1">PRIMARY PHOTO ALBUM</p>
                   <p className={labelCls}>Album Quality / Style</p>
                   <select value={albumStyle} onChange={e => setAlbumStyle(e.target.value)} className={inputCls + ' appearance-none'}>
-                    {ALBUM_STYLES.map(o => <option key={o} className="bg-[#111]">{o}</option>)}
+                    {ALBUM_STYLES.map(o => <option key={o} className="bg-white text-[#0f0f12]">{o}</option>)}
                   </select>
                 </div>
               </div>
 
               {/* Extra albums */}
-              <div className="border border-[#252525] p-4 mb-5">
+              <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs mb-5">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-white text-[8px] tracking-widest uppercase font-bold">ADDITIONAL / EXTRA PHOTO ALBUMS</p>
+                  <p className="text-[#0f0f12] text-[9px] tracking-widest uppercase font-bold">ADDITIONAL / EXTRA PHOTO ALBUMS</p>
                   <button type="button" onClick={() => setExtraAlbums(p => [...p, { name: 'Custom Album', sheets: 30, price: 0 }])}
-                    className="border border-white/30 text-white text-[9px] px-3 py-1 hover:bg-white hover:text-black transition rounded-sm">
+                    className="border border-black/20 bg-white text-[#0f0f12] font-bold text-[10px] px-3 py-1.5 hover:bg-neutral-100 transition rounded-xl shadow-xs">
                     + ADD EXTRA ALBUM
                   </button>
                 </div>
-                <p className="text-gray-600 text-[9px] mb-2">Add extra parent albums, mini photo books, or guest albums.</p>
+                <p className="text-neutral-500 text-[10px] mb-3 font-medium">Add extra parent albums, mini photo books, or guest albums.</p>
                 {extraAlbums.length === 0 ? (
-                  <p className="text-center text-gray-700 text-[9px] py-4 border border-dashed border-[#252525] rounded-sm">
+                  <p className="text-center text-neutral-400 text-xs py-4 border border-dashed border-black/20 rounded-xl bg-white font-medium">
                     No extra albums added yet. Click + Add Extra Album to include additional photo albums.
                   </p>
                 ) : (
@@ -519,8 +518,8 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                     {extraAlbums.map((a, i) => (
                       <div key={i} className="flex gap-2 items-center">
                         <input value={a.name} onChange={e => setExtraAlbums(p => p.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} className={inputCls + ' flex-1'} />
-                        <input type="number" value={a.price} onChange={e => setExtraAlbums(p => p.map((x, j) => j === i ? { ...x, price: Number(e.target.value) } : x))} className={inputCls + ' w-28'} placeholder="Price ₹" />
-                        <button type="button" onClick={() => setExtraAlbums(p => p.filter((_, j) => j !== i))} className="text-gray-600 hover:text-red-400 transition"><X size={14} /></button>
+                        <input type="number" value={a.price || ''} placeholder="Price ₹" onChange={e => setExtraAlbums(p => p.map((x, j) => j === i ? { ...x, price: e.target.value === '' ? 0 : Number(e.target.value) } : x))} className={inputCls + ' w-32'} />
+                        <button type="button" onClick={() => setExtraAlbums(p => p.filter((_, j) => j !== i))} className="text-neutral-400 hover:text-rose-600 transition p-1"><X size={16} /></button>
                       </div>
                     ))}
                   </div>
@@ -528,31 +527,31 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
               </div>
 
               {/* Add-ons table */}
-              <div>
+              <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs">
                 <p className={labelCls}>Luxury Event Extras & Add-Ons</p>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="text-gray-600 text-[8px] uppercase tracking-widest border-b border-[#252525]">
-                      <th className="py-1.5 text-left w-8">Enable</th>
-                      <th className="py-1.5 text-left">Add-On Deliverable</th>
-                      <th className="py-1.5 text-center w-16">Quantity</th>
-                      <th className="py-1.5 text-right w-28">Package Cost (₹)</th>
+                    <tr className="text-neutral-500 text-[9px] uppercase tracking-widest border-b border-black/10 font-bold">
+                      <th className="py-2 text-left w-8">Enable</th>
+                      <th className="py-2 text-left">Add-On Deliverable</th>
+                      <th className="py-2 text-center w-20">Quantity</th>
+                      <th className="py-2 text-right w-32">Package Cost (₹)</th>
                     </tr>
                   </thead>
                   <tbody>
                     {ADDON_LIST.map(ao => (
-                      <tr key={ao.id} className="border-b border-[#1a1a1a]">
-                        <td className="py-2">
-                          <input type="checkbox" checked={addonSel[ao.id] || false} onChange={() => setAddonSel(p => ({ ...p, [ao.id]: !p[ao.id] }))} className="accent-white w-3.5 h-3.5" />
+                      <tr key={ao.id} className="border-b border-black/5 text-[#0f0f12]">
+                        <td className="py-2.5">
+                          <input type="checkbox" checked={addonSel[ao.id] || false} onChange={() => setAddonSel(p => ({ ...p, [ao.id]: !p[ao.id] }))} className="accent-black w-3.5 h-3.5" />
                         </td>
-                        <td className="py-2 text-gray-300">{ao.name}</td>
-                        <td className="py-2 text-center text-gray-500">
+                        <td className="py-2.5 font-medium text-neutral-800">{ao.name}</td>
+                        <td className="py-2.5 text-center text-neutral-500">
                           {ao.defaultQty ? (
-                            <input type="number" min={ao.defaultQty} value={addonQtys[ao.id] || ao.defaultQty} onChange={e => setAddonQtys(p => ({ ...p, [ao.id]: Number(e.target.value) }))}
-                              className="w-12 bg-[#111] border border-[#2a2a2a] text-white text-center text-xs py-0.5 outline-none rounded-sm" />
+                            <input type="number" min={ao.defaultQty} value={addonQtys[ao.id] || ''} placeholder={String(ao.defaultQty)} onChange={e => setAddonQtys(p => ({ ...p, [ao.id]: e.target.value === '' ? 0 : Number(e.target.value) }))}
+                              className="w-14 bg-white border border-black/20 text-[#0f0f12] text-center text-xs py-1 outline-none rounded-lg font-semibold shadow-xs" />
                           ) : '—'}
                         </td>
-                        <td className="py-2 text-right text-gray-400">{ao.price.toLocaleString('en-IN')}</td>
+                        <td className="py-2.5 text-right font-bold text-[#0f0f12]">{ao.price.toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -565,37 +564,37 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {step === 3 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white text-[10px] tracking-widest uppercase font-bold">
+                <h3 className="text-[#0f0f12] text-xs tracking-widest uppercase font-bold">
                   STEP 4: DELIVERABLES & COMPLIMENTARIES
                 </h3>
-                <span className="text-gray-500 text-[9px]">BASE PRICE: {fmt(basePrice)}</span>
+                <span className="text-neutral-500 text-[10px] font-bold uppercase tracking-wider">BASE PRICE: {fmt(basePrice)}</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {/* Left: Deliverables */}
-                <div className="border border-[#252525] p-4">
+                <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-white text-[8px] tracking-widest uppercase font-bold">INCLUDED DELIVERABLES</p>
-                    <span className="text-gray-500 text-[8px] border border-[#333] px-2 py-0.5 rounded-sm">{deliverables.length} Items</span>
+                    <p className="text-[#0f0f12] text-[9px] tracking-widest uppercase font-bold">INCLUDED DELIVERABLES</p>
+                    <span className="text-neutral-600 text-[9px] bg-white border border-black/15 px-2.5 py-0.5 rounded-lg font-bold shadow-xs">{deliverables.length} Items</span>
                   </div>
-                  <p className="text-gray-600 text-[8px] mb-3">Final items and media handover promised to client.</p>
+                  <p className="text-neutral-500 text-[10px] mb-3 font-medium">Final items and media handover promised to client.</p>
                   <div className="space-y-2 mb-3 max-h-52 overflow-y-auto pr-1">
                     {deliverables.map((d, i) => (
-                      <div key={i} className="flex items-start gap-2 border border-[#252525] p-2 rounded-sm">
-                        <span className="text-white text-xs shrink-0 mt-0.5">•</span>
-                        <p className="text-gray-300 text-[10px] leading-relaxed flex-1">{d}</p>
-                        <button type="button" onClick={() => setDeliverables(p => p.filter((_, j) => j !== i))} className="text-gray-700 hover:text-red-400 transition shrink-0"><X size={10} /></button>
+                      <div key={i} className="flex items-start gap-2 border border-black/10 bg-white p-2.5 rounded-xl shadow-xs">
+                        <span className="text-black font-bold text-xs shrink-0 mt-0.5">•</span>
+                        <p className="text-neutral-800 text-[11px] leading-relaxed flex-1 font-medium">{d}</p>
+                        <button type="button" onClick={() => setDeliverables(p => p.filter((_, j) => j !== i))} className="text-neutral-400 hover:text-rose-600 transition shrink-0 p-0.5"><X size={12} /></button>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-1 mb-3">
+                  <div className="flex gap-1.5 mb-3">
                     <input value={newDeliv} onChange={e => setNewDeliv(e.target.value)} placeholder="e.g. 1-Minute Drone Teaser in 4K" className={inputCls + ' flex-1 text-xs'} />
-                    <button type="button" onClick={() => { if (newDeliv.trim()) { setDeliverables(p => [...p, newDeliv.trim()]); setNewDeliv(''); } }} className="bg-white text-black px-3 py-1 text-xs font-bold hover:bg-gray-200 transition rounded-sm">ADD</button>
+                    <button type="button" onClick={() => { if (newDeliv.trim()) { setDeliverables(p => [...p, newDeliv.trim()]); setNewDeliv(''); } }} className="bg-black text-white px-3.5 py-2 text-xs font-bold hover:bg-neutral-800 transition rounded-xl shadow-xs uppercase">ADD</button>
                   </div>
-                  <p className="text-gray-600 text-[7px] tracking-widest uppercase mb-2">QUICK PRESETS</p>
+                  <p className="text-neutral-500 text-[8px] tracking-widest uppercase font-bold mb-2">QUICK PRESETS</p>
                   <div className="flex flex-wrap gap-1">
                     {DELIVERABLE_PRESETS.map(p => (
                       <button key={p} type="button" onClick={() => !deliverables.includes(p) && setDeliverables(prev => [...prev, p])}
-                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-white hover:text-white transition rounded-sm">
+                        className="text-[9px] border border-black/15 bg-white text-neutral-700 px-2.5 py-1 hover:border-black hover:text-black transition rounded-lg font-medium shadow-xs">
                         + {p.length > 30 ? p.slice(0, 28) + '…' : p}
                       </button>
                     ))}
@@ -603,30 +602,30 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
                 </div>
 
                 {/* Right: Gifts */}
-                <div className="border border-[#252525] p-4">
+                <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-white text-[8px] tracking-widest uppercase font-bold">COMPLIMENTARY GIFTS & BONUSES</p>
-                    <span className="text-gray-500 text-[8px] border border-[#333] px-2 py-0.5 rounded-sm">{gifts.length} Gifts</span>
+                    <p className="text-[#0f0f12] text-[9px] tracking-widest uppercase font-bold">COMPLIMENTARY GIFTS & BONUSES</p>
+                    <span className="text-neutral-600 text-[9px] bg-white border border-black/15 px-2.5 py-0.5 rounded-lg font-bold shadow-xs">{gifts.length} Gifts</span>
                   </div>
-                  <p className="text-gray-600 text-[8px] mb-3">Free gifts and value additions provided to client.</p>
+                  <p className="text-neutral-500 text-[10px] mb-3 font-medium">Free gifts and value additions provided to client.</p>
                   <div className="space-y-2 mb-3 max-h-52 overflow-y-auto pr-1">
                     {gifts.map((g, i) => (
-                      <div key={i} className="flex items-center gap-2 border border-[#252525] p-2 rounded-sm">
-                        <span className="text-white text-xs shrink-0">🎁</span>
-                        <p className="text-gray-300 text-[10px] flex-1">{g}</p>
-                        <button type="button" onClick={() => setGifts(p => p.filter((_, j) => j !== i))} className="text-gray-700 hover:text-red-400 transition shrink-0"><X size={10} /></button>
+                      <div key={i} className="flex items-center gap-2 border border-black/10 bg-white p-2.5 rounded-xl shadow-xs">
+                        <span className="text-xs shrink-0">🎁</span>
+                        <p className="text-neutral-800 text-[11px] flex-1 font-medium">{g}</p>
+                        <button type="button" onClick={() => setGifts(p => p.filter((_, j) => j !== i))} className="text-neutral-400 hover:text-rose-600 transition shrink-0 p-0.5"><X size={12} /></button>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-1 mb-3">
+                  <div className="flex gap-1.5 mb-3">
                     <input value={newGift} onChange={e => setNewGift(e.target.value)} placeholder="e.g. Table Photo Calendar" className={inputCls + ' flex-1 text-xs'} />
-                    <button type="button" onClick={() => { if (newGift.trim()) { setGifts(p => [...p, newGift.trim()]); setNewGift(''); } }} className="bg-white text-black px-3 py-1 text-xs font-bold hover:bg-gray-200 transition rounded-sm">ADD</button>
+                    <button type="button" onClick={() => { if (newGift.trim()) { setGifts(p => [...p, newGift.trim()]); setNewGift(''); } }} className="bg-black text-white px-3.5 py-2 text-xs font-bold hover:bg-neutral-800 transition rounded-xl shadow-xs uppercase">ADD</button>
                   </div>
-                  <p className="text-gray-600 text-[7px] tracking-widest uppercase mb-2">QUICK PRESETS</p>
+                  <p className="text-neutral-500 text-[8px] tracking-widest uppercase font-bold mb-2">QUICK PRESETS</p>
                   <div className="flex flex-wrap gap-1">
                     {GIFT_PRESETS.map(p => (
                       <button key={p} type="button" onClick={() => !gifts.includes(p) && setGifts(prev => [...prev, p])}
-                        className="text-[8px] border border-[#333] text-gray-500 px-2 py-0.5 hover:border-white hover:text-white transition rounded-sm">
+                        className="text-[9px] border border-black/15 bg-white text-neutral-700 px-2.5 py-1 hover:border-black hover:text-black transition rounded-lg font-medium shadow-xs">
                         + {p}
                       </button>
                     ))}
@@ -639,59 +638,59 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
           {/* ── STEP 5: FINANCIAL SUMMARY ────────────────────────────────────── */}
           {step === 4 && (
             <div>
-              <h3 className="text-white text-[10px] tracking-widest uppercase font-bold mb-5">
+              <h3 className="text-[#0f0f12] text-xs tracking-widest uppercase font-bold mb-5">
                 STEP 5: DISCOUNT & FINANCIAL PROPOSAL SUMMARY
               </h3>
               <div className="grid grid-cols-2 gap-5">
                 {/* Discount panel */}
-                <div className="border border-[#252525] p-5">
-                  <p className="text-white text-[8px] tracking-widest uppercase font-bold mb-4">ADMINISTRATIVE DISCOUNT</p>
+                <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs">
+                  <p className="text-[#0f0f12] text-[9px] tracking-widest uppercase font-bold mb-4">ADMINISTRATIVE DISCOUNT</p>
                   <p className={labelCls}>Discount Type</p>
-                  <div className="flex gap-0 mb-4">
+                  <div className="flex gap-1 mb-4">
                     {[['flat', 'FLAT AMOUNT (₹)'], ['percent', 'PERCENTAGE (%)']].map(([val, label]) => (
                       <button key={val} type="button" onClick={() => setDiscountType(val)}
-                        className={`flex-1 py-2 text-[9px] tracking-widest uppercase border transition font-bold
-                          ${discountType === val ? 'bg-white border-white text-black' : 'border-[#333] text-gray-500 hover:border-[#555]'}`}>
+                        className={`flex-1 py-2 text-[9px] tracking-widest uppercase border transition rounded-xl font-bold
+                          ${discountType === val ? 'bg-black border-black text-white shadow-xs' : 'border-black/15 bg-white text-neutral-600 hover:border-black/30'}`}>
                         {label}
                       </button>
                     ))}
                   </div>
                   <p className={labelCls}>Discount Amount {discountType === 'flat' ? '(₹)' : '(%)'}</p>
-                  <div className="flex items-center border border-[#2a2a2a] rounded-sm overflow-hidden">
-                    <span className="px-3 text-gray-600 text-sm">{discountType === 'flat' ? '₹' : '%'}</span>
-                    <input type="number" min="0" value={discountAmount} onChange={e => setDiscountAmount(e.target.value)} placeholder="e.g. 20000" className="flex-1 bg-[#111] py-2.5 text-white text-sm outline-none pr-3" />
+                  <div className="flex items-center border border-black/20 bg-white rounded-xl overflow-hidden shadow-xs">
+                    <span className="px-3.5 text-neutral-500 font-bold text-sm">{discountType === 'flat' ? '₹' : '%'}</span>
+                    <input type="number" min="0" value={discountAmount || ''} onChange={e => setDiscountAmount(e.target.value)} placeholder="e.g. 20000" className="flex-1 py-2.5 text-[#0f0f12] font-semibold text-sm outline-none pr-3 bg-transparent" />
                   </div>
-                  <p className="text-gray-600 text-[8px] mt-2 leading-relaxed">Add discounts directly inside the wizard. Both the client and the admin will receive the updated estimate in the generated proposal PDF.</p>
+                  <p className="text-neutral-500 text-[10px] mt-3 leading-relaxed font-medium">Add discounts directly inside the wizard. Both the client and the admin will receive the updated estimate in the generated proposal PDF.</p>
                 </div>
 
                 {/* Summary panel */}
-                <div className="border border-[#252525] p-5">
-                  <p className="text-white text-[9px] tracking-widest uppercase font-bold mb-4">FINANCIAL BREAKDOWN SUMMARY</p>
+                <div className="border border-black/10 bg-neutral-50 p-5 rounded-2xl shadow-xs">
+                  <p className="text-[#0f0f12] text-[9px] tracking-widest uppercase font-bold mb-4">FINANCIAL BREAKDOWN SUMMARY</p>
                   <div className="space-y-3 mb-5">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Base Package Subtotal:</span>
-                      <span className="text-white">{fmt(basePrice)}</span>
+                      <span className="text-neutral-600 font-medium">Base Package Subtotal:</span>
+                      <span className="text-[#0f0f12] font-bold">{fmt(basePrice)}</span>
                     </div>
                     {discountValue > 0 && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Applied Discount:</span>
-                        <span className="text-rose-400">-{fmt(discountValue)}</span>
+                        <span className="text-neutral-600 font-medium">Applied Discount:</span>
+                        <span className="text-rose-600 font-bold">-{fmt(discountValue)}</span>
                       </div>
                     )}
-                    <div className="border-t border-[#252525] pt-3">
-                      <p className="text-gray-500 text-[8px] uppercase tracking-widest mb-1">NEW FINAL ESTIMATE</p>
-                      <p className="text-white font-mirage text-3xl">{fmt(finalTotal)}</p>
+                    <div className="border-t border-black/10 pt-3">
+                      <p className="text-neutral-500 text-[9px] uppercase tracking-widest mb-1 font-bold">NEW FINAL ESTIMATE</p>
+                      <p className="text-[#0f0f12] font-mirage text-3xl font-bold">{fmt(finalTotal)}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Summary note */}
-              <div className="border border-[#252525] p-4 mt-4">
-                <p className="text-gray-500 text-[9px] leading-relaxed">
-                  <span className="text-gray-300">QUOTATION SUMMARY REVIEW: </span>
+              <div className="border border-black/10 bg-neutral-100/60 p-4 rounded-2xl mt-4">
+                <p className="text-neutral-600 text-xs leading-relaxed font-medium">
+                  <span className="text-neutral-900 font-bold uppercase tracking-wider text-[10px]">QUOTATION SUMMARY REVIEW: </span>
                   This action will create and file a new administrative quotation lead for{' '}
-                  <span className="text-white font-semibold">{coords.name || 'the client'}</span>. You can choose to save the quotation directly or dispatch revised PDF proposal copies automatically via email.
+                  <span className="text-black font-bold">{coords.name || 'the client'}</span>. You can choose to save the quotation directly or dispatch revised PDF proposal copies automatically via email.
                 </p>
               </div>
             </div>
@@ -699,34 +698,34 @@ const CreateQuoteModal = ({ onClose, onSaved }) => {
         </div>
 
         {/* Footer Buttons */}
-        <div className="border-t border-[#1a1a1a] px-6 py-4 flex items-center justify-between">
+        <div className="border-t border-black/10 px-6 py-4 flex items-center justify-between bg-neutral-50/50 rounded-b-3xl">
           <div className="flex gap-2">
             {step > 0 && (
               <button type="button" onClick={() => setStep(s => s - 1)}
-                className="flex items-center gap-1.5 border border-[#333] text-gray-400 hover:text-white px-4 py-2 text-xs tracking-widest uppercase hover:border-[#555] transition rounded-sm">
-                <ChevronLeft size={12} /> BACK
+                className="flex items-center gap-1.5 border border-black/20 bg-white text-[#0f0f12] hover:bg-neutral-100 px-4 py-2.5 text-xs tracking-widest uppercase font-bold transition rounded-xl shadow-xs">
+                <ChevronLeft size={14} /> BACK
               </button>
             )}
           </div>
           <div className="flex gap-2">
             <button type="button" onClick={onClose}
-              className="border border-[#333] text-gray-400 hover:text-white px-4 py-2 text-xs tracking-widest uppercase hover:border-[#555] transition rounded-sm">
+              className="border border-black/20 bg-white text-[#0f0f12] hover:bg-neutral-100 px-4 py-2.5 text-xs tracking-widest uppercase font-bold transition rounded-xl shadow-xs">
               CANCEL
             </button>
             {step < 4 ? (
               <button type="button" onClick={() => setStep(s => s + 1)} disabled={step === 0 && (!coords.name || !coords.email || !coords.phone)}
-                className="bg-white text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-neutral-200 transition disabled:opacity-40 flex items-center gap-1.5 rounded-sm">
-                NEXT <ChevronRight size={12} />
+                className="bg-black text-white hover:bg-neutral-800 px-6 py-2.5 text-xs tracking-widest uppercase font-bold transition disabled:opacity-40 flex items-center gap-1.5 rounded-xl shadow-xs">
+                NEXT <ChevronRight size={14} />
               </button>
             ) : (
               <>
                 <button type="button" onClick={() => handleSave(false)} disabled={saving}
-                  className="border border-white text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-white/10 transition flex items-center gap-1.5 rounded-sm">
-                  <FileText size={11} /> SAVE QUOTE ONLY
+                  className="border border-black bg-white text-[#0f0f12] hover:bg-neutral-100 px-5 py-2.5 text-xs tracking-widest uppercase font-bold transition flex items-center gap-1.5 rounded-xl shadow-xs">
+                  <FileText size={13} /> SAVE QUOTE ONLY
                 </button>
                 <button type="button" onClick={() => handleSave(true)} disabled={saving}
-                  className="bg-white text-black px-5 py-2 text-xs tracking-widest uppercase font-bold hover:bg-neutral-200 transition flex items-center gap-1.5 disabled:opacity-40 rounded-sm">
-                  {saving ? <Loader2 size={11} className="animate-spin" /> : <FileText size={11} />}
+                  className="bg-black text-white hover:bg-neutral-800 px-6 py-2.5 text-xs tracking-widest uppercase font-bold transition flex items-center gap-1.5 disabled:opacity-40 rounded-xl shadow-xs">
+                  {saving ? <Loader2 size={13} className="animate-spin" /> : <FileText size={13} />}
                   SAVE & EMAIL PDF
                 </button>
               </>
@@ -837,20 +836,20 @@ const QuotesPanel = () => {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between bg-white p-6 rounded-2xl border border-black/10 shadow-xs gap-4">
         <div>
-          <h2 className="text-white text-xl font-light">Quote Inquiries</h2>
-          <p className="text-gray-500 text-xs mt-0.5">Review and manage incoming leads from your Quote Wizard.</p>
+          <h2 className="text-[#0f0f12] text-xl font-mirage uppercase tracking-widest font-bold">Quote Inquiries</h2>
+          <p className="text-neutral-500 text-xs mt-1 font-sans font-medium">Review and manage incoming leads from your Quote Wizard.</p>
         </div>
         <div className="flex gap-2">
           <button type="button" onClick={() => setShowCreate(true)}
-            className="flex items-center gap-1.5 border border-white text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-white hover:text-black transition rounded-sm font-bold">
+            className="flex items-center gap-1.5 bg-black text-white px-4 py-2.5 text-xs tracking-widest uppercase hover:bg-neutral-800 transition rounded-xl font-bold shadow-xs">
             <Plus size={12} /> CREATE QUOTE
           </button>
           <button type="button" onClick={exportCsv}
-            className="flex items-center gap-1.5 border border-[#333] text-gray-400 px-4 py-2 text-xs tracking-widest uppercase hover:border-[#555] hover:text-white transition rounded-sm">
+            className="flex items-center gap-1.5 border border-black/20 bg-white text-[#0f0f12] px-4 py-2.5 text-xs tracking-widest font-bold uppercase hover:bg-neutral-100 transition rounded-xl shadow-xs">
             <Download size={12} /> EXPORT CSV
           </button>
         </div>
@@ -859,85 +858,85 @@ const QuotesPanel = () => {
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative flex-1 min-w-52">
-          <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             type="text"
             placeholder="Search by client name or ID..."
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="w-full bg-[#0d0d0d] border border-[#252525] pl-8 pr-3 py-2.5 text-white text-xs focus:border-white/40 outline-none transition rounded-sm placeholder:text-[#444]"
+            className="w-full bg-white border border-black/20 pl-9 pr-3 py-2.5 text-[#0f0f12] text-xs focus:border-black outline-none transition rounded-xl placeholder:text-neutral-400 [color-scheme:light] shadow-xs font-medium"
           />
         </div>
         <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)}
-          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-white/40 outline-none transition rounded-sm" />
-        <span className="text-gray-600 text-xs">to</span>
+          className="bg-white border border-black/20 px-3 py-2.5 text-[#0f0f12] text-xs focus:border-black outline-none transition rounded-xl [color-scheme:light] shadow-xs font-semibold" />
+        <span className="text-neutral-500 text-xs font-bold uppercase">to</span>
         <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)}
-          className="bg-[#0d0d0d] border border-[#252525] px-3 py-2.5 text-gray-400 text-xs focus:border-white/40 outline-none transition rounded-sm" />
+          className="bg-white border border-black/20 px-3 py-2.5 text-[#0f0f12] text-xs focus:border-black outline-none transition rounded-xl [color-scheme:light] shadow-xs font-semibold" />
       </div>
 
       {/* Table */}
-      <div className="border border-[#1a1a1a] rounded-sm overflow-hidden">
+      <div className="border border-black/10 bg-white rounded-2xl overflow-hidden shadow-xs">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1a1a1a] text-gray-600 text-[9px] uppercase tracking-widest">
-              <th className="px-4 py-3 text-left">Lead ID</th>
-              <th className="px-4 py-3 text-left">Client Name</th>
-              <th className="px-4 py-3 text-left">Event Date</th>
-              <th className="px-4 py-3 text-left">Selected Events</th>
-              <th className="px-4 py-3 text-right">Estimate</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-right">Action</th>
+            <tr className="border-b border-black/10 text-neutral-500 text-[10px] uppercase tracking-widest font-bold bg-neutral-50">
+              <th className="px-4 py-3.5 text-left">Lead ID</th>
+              <th className="px-4 py-3.5 text-left">Client Name</th>
+              <th className="px-4 py-3.5 text-left">Event Date</th>
+              <th className="px-4 py-3.5 text-left">Selected Events</th>
+              <th className="px-4 py-3.5 text-right">Estimate</th>
+              <th className="px-4 py-3.5 text-left">Status</th>
+              <th className="px-4 py-3.5 text-right">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-black/5 text-[#0f0f12]">
             {loading ? (
-              <tr><td colSpan={7} className="text-center py-12 text-gray-600">
-                <Loader2 size={20} className="animate-spin mx-auto mb-2 text-white" />
-                <p className="text-xs">Loading quotes…</p>
+              <tr><td colSpan={7} className="text-center py-12 text-neutral-500">
+                <Loader2 size={20} className="animate-spin mx-auto mb-2 text-black" />
+                <p className="text-xs font-bold uppercase tracking-widest">Loading quotes…</p>
               </td></tr>
             ) : quotes.length === 0 ? (
-              <tr><td colSpan={7} className="text-center py-12 text-gray-600 text-xs">
+              <tr><td colSpan={7} className="text-center py-12 text-neutral-400 text-xs font-bold uppercase tracking-widest">
                 No quote inquiries yet. Create one or share the public wizard link.
               </td></tr>
             ) : quotes.map(q => (
-              <tr key={q._id} className="border-b border-[#0f0f0f] hover:bg-white/[0.02] transition">
-                <td className="px-4 py-3">
-                  <span className="text-white text-[10px] font-mono">{shortId(q._id)}</span>
+              <tr key={q._id} className="border-b border-black/5 hover:bg-neutral-50/80 transition text-[#0f0f12]">
+                <td className="px-4 py-3.5">
+                  <span className="text-[#0f0f12] text-[11px] font-mono font-bold bg-neutral-100 px-2 py-1 rounded-lg border border-black/10">{shortId(q._id)}</span>
                 </td>
-                <td className="px-4 py-3">
-                  <p className="text-white text-[11px] font-medium">{q.clientName}</p>
-                  <p className="text-gray-600 text-[9px]">{new Date(q.createdAt).toLocaleDateString('en-IN')} {new Date(q.createdAt).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })}</p>
+                <td className="px-4 py-3.5">
+                  <p className="text-[#0f0f12] text-xs font-bold">{q.clientName}</p>
+                  <p className="text-neutral-500 text-[10px] font-medium">{new Date(q.createdAt).toLocaleDateString('en-IN')} {new Date(q.createdAt).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })}</p>
                 </td>
-                <td className="px-4 py-3 text-gray-400 text-[10px]">
+                <td className="px-4 py-3.5 text-neutral-700 text-xs font-semibold">
                   {q.eventDate ? new Date(q.eventDate).toLocaleDateString('en-IN') : '—'}
                 </td>
-                <td className="px-4 py-3">
-                  <span className="text-white/80 text-[9px] uppercase tracking-wide">
+                <td className="px-4 py-3.5">
+                  <span className="text-neutral-700 text-xs font-medium uppercase tracking-wide">
                     {(q.events || []).map(e => e.eventType).join(', ').slice(0, 40) || '—'}
                     {(q.events || []).map(e => e.eventType).join(', ').length > 40 ? '…' : ''}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right text-white text-[11px] font-medium">
+                <td className="px-4 py-3.5 text-right text-[#0f0f12] text-xs font-bold font-mono">
                   {fmt(q.total)}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3.5">
                   <div className="relative inline-block">
                     <select
                       value={q.status || 'new'}
                       onChange={e => updateStatus(q._id, e.target.value)}
                       disabled={updatingId === q._id}
-                      className={`appearance-none border px-3 pr-6 py-1 text-[9px] tracking-widest uppercase bg-transparent cursor-pointer outline-none transition rounded-sm
-                        ${STATUS_COLORS[q.status] || 'text-gray-400 border-gray-500/40'}`}
+                      className={`appearance-none border px-3 pr-7 py-1 text-[10px] tracking-widest uppercase cursor-pointer outline-none transition rounded-lg font-bold shadow-xs
+                        ${STATUS_COLORS[q.status] || 'text-neutral-600 bg-neutral-100 border-neutral-300'}`}
                     >
-                      {STATUS_OPTIONS.map(s => <option key={s} value={s} className="bg-[#111] text-white">{s.toUpperCase()}</option>)}
+                      {STATUS_OPTIONS.map(s => <option key={s} value={s} className="bg-white text-[#0f0f12]">{s.toUpperCase()}</option>)}
                     </select>
-                    <ChevronDown size={8} className="absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-current" />
+                    <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-current" />
                   </div>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3.5">
                   <div className="flex items-center justify-end gap-2">
-                    <button title="Download PDF" onClick={() => downloadPdf(q._id)} className="text-gray-600 hover:text-white transition"><Download size={13} /></button>
-                    <button title="Delete" onClick={() => deleteQuote(q._id)} className="text-gray-600 hover:text-red-400 transition"><Trash2 size={13} /></button>
+                    <button title="Download PDF" onClick={() => downloadPdf(q._id)} className="text-neutral-500 hover:text-black transition p-1.5 rounded-lg hover:bg-neutral-100"><Download size={14} /></button>
+                    <button title="Delete" onClick={() => deleteQuote(q._id)} className="text-neutral-500 hover:text-rose-600 transition p-1.5 rounded-lg hover:bg-neutral-100"><Trash2 size={14} /></button>
                   </div>
                 </td>
               </tr>
@@ -948,17 +947,17 @@ const QuotesPanel = () => {
 
       {/* Pagination */}
       {pages > 1 && (
-        <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="flex items-center justify-between text-xs text-neutral-500 font-medium">
           <span>{total} total quotes</span>
-          <div className="flex gap-1">
+          <div className="flex gap-1.5 items-center">
             <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-              className="border border-[#252525] p-1.5 hover:border-[#555] transition disabled:opacity-30 rounded-sm">
-              <ChevronLeft size={12} />
+              className="border border-black/15 bg-white text-[#0f0f12] p-2 hover:bg-neutral-100 transition disabled:opacity-30 rounded-xl shadow-xs">
+              <ChevronLeft size={14} />
             </button>
-            <span className="border border-[#252525] px-3 py-1 text-white rounded-sm">{page} / {pages}</span>
+            <span className="border border-black/15 bg-white text-[#0f0f12] font-bold px-3.5 py-1.5 rounded-xl shadow-xs text-xs">{page} / {pages}</span>
             <button onClick={() => setPage(p => Math.min(pages, p + 1))} disabled={page === pages}
-              className="border border-[#252525] p-1.5 hover:border-[#555] transition disabled:opacity-30 rounded-sm">
-              <ChevronRight size={12} />
+              className="border border-black/15 bg-white text-[#0f0f12] p-2 hover:bg-neutral-100 transition disabled:opacity-30 rounded-xl shadow-xs">
+              <ChevronRight size={14} />
             </button>
           </div>
         </div>

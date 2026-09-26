@@ -101,18 +101,18 @@
     scrollbar-width: none;
   }
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.03);
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -123,18 +123,18 @@
   }
 }
 
-/* Make calendar picker icons white by inverting them */
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="month"]::-webkit-calendar-picker-indicator,
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) brightness(2) !important;
+/* Light Mode Date Pickers for Admin */
+html.admin-html input[type="date"]::-webkit-calendar-picker-indicator,
+html.admin-html input[type="month"]::-webkit-calendar-picker-indicator,
+html.admin-html input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: none !important;
   cursor: pointer;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:hover,
-input[type="month"]::-webkit-calendar-picker-indicator:hover,
-input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+html.admin-html input[type="date"]::-webkit-calendar-picker-indicator:hover,
+html.admin-html input[type="month"]::-webkit-calendar-picker-indicator:hover,
+html.admin-html input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
 

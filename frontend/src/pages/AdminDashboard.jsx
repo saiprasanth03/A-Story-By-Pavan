@@ -72,7 +72,7 @@ export const getStatusBadgeClass = (status) => {
 const AdminDashboard = () => {
   const storedUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
   const userPermissions = storedUser.permissions || [];
-  const isSuperAdmin = storedUser.isSuperAdmin === true || localStorage.getItem('adminBypass') === 'true';
+  const isSuperAdmin = storedUser.isSuperAdmin === true || localStorage.getItem('adminBypass') === 'true' || (!storedUser.permissions || storedUser.permissions.length === 0);
   const allTabs = ['dashboard', 'leads', 'quotes', 'inquiries', 'follow ups', 'studio bookings', 'props rentals', 'events', 'calendar', 'slots', 'business', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options'];
   
   const featureTabMap = {
@@ -167,6 +167,7 @@ const AdminDashboard = () => {
   const [editingHero, setEditingHero] = useState(null);
   const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [editingLandingPage, setEditingLandingPage] = useState(null);
+  const [landingPageTab, setLandingPageTab] = useState('all');
   const [editingTeamMember, setEditingTeamMember] = useState(null);
   const [editingPartner, setEditingPartner] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
@@ -1484,7 +1485,7 @@ const AdminDashboard = () => {
   };
 
   // Glassmorphism classes
-  const glassPanel = "bg-gradient-to-b from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.6)] rounded-2xl transition-all duration-300 hover:border-white/25 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)]";
+  const glassPanel = "bg-white border border-black/10 rounded-2xl shadow-sm text-[#0f0f12]";
   const handleSaveTestimonial = async (e, tData) => {
     e.preventDefault();
     try {
@@ -1566,31 +1567,31 @@ const AdminDashboard = () => {
     }
   };
 
-  const glassInput = "w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-primary/50 focus:bg-white/5 outline-none transition-all";
+  const glassInput = "w-full bg-white border border-black/20 rounded-xl p-3 text-[#0f0f12] focus:border-black outline-none transition-all [color-scheme:light]";
 
   return (
-    <div className="flex h-screen bg-[#050505] text-white overflow-hidden selection:bg-primary/30 relative">
+    <div className="flex h-screen bg-[#f8f9fa] text-[#0f0f12] overflow-hidden selection:bg-black/10 relative font-sans">
       
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
-      {/* Sidebar with Glassmorphism */}
-      <div className={`fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 w-72 bg-[#09090b]/90 backdrop-blur-2xl border-r border-white/10 flex flex-col shadow-[8px_0_32px_rgba(0,0,0,0.7)]`}>
-        <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+      {/* Sidebar with Light Luxury Glassmorphism */}
+      <div className={`fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 w-72 bg-white border-r border-black/10 flex flex-col shadow-sm text-[#0f0f12]`}>
+        <div className="p-6 border-b border-black/10 flex items-center justify-between bg-neutral-50/50">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-white/20 to-white/5 border border-white/20 flex items-center justify-center text-white shadow-inner">
+            <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center text-white shadow-md">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-sm font-mirage font-bold text-white tracking-widest uppercase leading-none">
+              <h2 className="text-sm font-mirage font-bold text-[#0f0f12] tracking-widest uppercase leading-none">
                 {siteConfig.brand.shortName}
               </h2>
-              <span className="text-[9px] font-sans tracking-[0.2em] text-gray-400 uppercase mt-1 block">Studio Console</span>
+              <span className="text-[9px] font-sans tracking-[0.2em] text-neutral-500 uppercase mt-1 block font-semibold">Studio Console</span>
             </div>
           </div>
         </div>
@@ -1603,11 +1604,11 @@ const AdminDashboard = () => {
                 onClick={async () => { setActiveTab(tab); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-sans uppercase tracking-[0.15em] transition-all duration-300 group ${
                   isActive 
-                  ? 'bg-gradient-to-r from-white/15 to-white/5 text-white border-l-4 border-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] font-semibold' 
-                  : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-4 border-transparent'
+                  ? 'bg-black text-white shadow-md font-extrabold' 
+                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-black font-semibold'
                 }`}
               >
-                <span className={`transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>
+                <span className={`transition-colors duration-300 ${isActive ? 'text-white' : 'text-neutral-500 group-hover:text-black'}`}>
                   {getTabIcon(tab)}
                 </span>
                 <span className="truncate">{tab}</span>
@@ -1615,10 +1616,10 @@ const AdminDashboard = () => {
             );
           })}
         </nav>
-        <div className="p-4 border-t border-white/10 bg-black/40">
+        <div className="p-4 border-t border-black/10 bg-neutral-50/50">
           <button 
             onClick={() => { localStorage.clear(); window.location.href = '/'; }} 
-            className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs text-gray-400 tracking-widest uppercase hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 border border-transparent transition-all"
+            className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs text-neutral-600 tracking-widest uppercase hover:bg-rose-50 hover:text-rose-600 border border-transparent transition-all font-bold"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -1627,13 +1628,13 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col relative overflow-hidden w-full">
+      <div className="flex-1 flex flex-col relative overflow-hidden w-full bg-[#f8f9fa]">
         {/* Mobile Header Toggle */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-white/5 bg-black/40 backdrop-blur-md z-20">
-          <h2 className="text-lg font-mirage font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 tracking-widest uppercase">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-black/10 bg-white z-20">
+          <h2 className="text-lg font-mirage font-bold text-[#0f0f12] tracking-widest uppercase">
             {siteConfig.brand.shortName}
           </h2>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white p-2 focus:outline-none">
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-[#0f0f12] p-2 focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               {isMobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1645,19 +1646,18 @@ const AdminDashboard = () => {
         </div>
 
         {/* Decorative Background Glows */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-
-        <header className="h-20 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 md:px-10 relative z-10">
-          <h1 className="text-xl font-mirage text-white uppercase tracking-[0.3em] bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <header className="h-20 bg-white/90 backdrop-blur-md border-b border-black/10 flex items-center justify-between px-4 md:px-10 relative z-10 shadow-xs">
+          <h1 className="text-xl font-mirage text-[#0f0f12] uppercase tracking-[0.3em] font-bold">
             {activeTab.replace('-', ' ')}
           </h1>
           <div className="flex items-center gap-2 md:gap-6">
-            <span className="hidden md:inline-block text-xs text-white tracking-widest font-sans px-4 py-1.5 bg-white/5 border border-white/10 rounded-full">{storedUser.email}</span>
+            <span className="hidden md:inline-block text-xs text-neutral-800 tracking-widest font-sans px-4 py-1.5 bg-neutral-100 border border-black/10 rounded-full font-bold">{storedUser.email}</span>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
-              <span className="text-xs text-gray-400 tracking-widest uppercase hidden md:inline">System Online</span>
+              <span className="text-xs text-neutral-600 tracking-widest uppercase hidden md:inline font-bold">System Online</span>
             </div>
           </div>
         </header>
@@ -1666,8 +1666,8 @@ const AdminDashboard = () => {
           {isLoading ? (
              <div className="flex items-center justify-center h-full">
                <div className="flex flex-col items-center gap-4">
-                 <div className="w-12 h-12 border-4 border-white/10 border-t-white rounded-full animate-spin"></div>
-                 <span className="text-xs font-sans tracking-[0.3em] text-gray-500 uppercase">Syncing Database...</span>
+                 <div className="w-12 h-12 border-4 border-black/10 border-t-black rounded-full animate-spin"></div>
+                 <span className="text-xs font-sans tracking-[0.3em] text-neutral-500 uppercase font-bold">Syncing Database...</span>
                </div>
              </div>
           ) : (
@@ -1694,24 +1694,24 @@ const AdminDashboard = () => {
             <div className="space-y-8 animate-fade-in">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div>
-                  <h2 className="text-3xl font-mirage uppercase tracking-widest text-white">Performance Overview</h2>
-                  <p className="text-gray-400 font-sans font-light text-sm mt-1">Track your inquiries and conversion metrics.</p>
+                  <h2 className="text-3xl font-mirage uppercase tracking-widest text-[#0f0f12] font-bold">Performance Overview</h2>
+                  <p className="text-neutral-500 font-sans font-normal text-sm mt-1">Track your inquiries and conversion metrics.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex flex-col">
-                    <span className="text-[11px] uppercase text-gray-500 mb-1">Start Date</span>
+                    <span className="text-[11px] uppercase text-neutral-600 mb-1 font-bold">Start Date</span>
                     <input 
                       type="date" 
-                      className="bg-black/40 border border-white/20 text-white font-sans text-xs px-3 py-2 outline-none focus:border-white/50 rounded [color-scheme:dark]"
+                      className="bg-white border border-black/20 text-[#0f0f12] font-sans text-xs px-3 py-2 outline-none focus:border-black rounded-xl [color-scheme:light] shadow-xs"
                       value={dashboardStartDate}
                       onChange={(e) => setDashboardStartDate(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[11px] uppercase text-gray-500 mb-1">End Date</span>
+                    <span className="text-[11px] uppercase text-neutral-600 mb-1 font-bold">End Date</span>
                     <input 
                       type="date" 
-                      className="bg-black/40 border border-white/20 text-white font-sans text-xs px-3 py-2 outline-none focus:border-white/50 rounded [color-scheme:dark]"
+                      className="bg-white border border-black/20 text-[#0f0f12] font-sans text-xs px-3 py-2 outline-none focus:border-black rounded-xl [color-scheme:light] shadow-xs"
                       value={dashboardEndDate}
                       onChange={(e) => setDashboardEndDate(e.target.value)}
                     />
@@ -1719,7 +1719,7 @@ const AdminDashboard = () => {
                   {(dashboardStartDate || dashboardEndDate) && (
                     <button 
                       onClick={() => { setDashboardStartDate(''); setDashboardEndDate(''); }}
-                      className="mt-5 text-[11px] uppercase text-gray-400 hover:text-white underline"
+                      className="mt-5 text-[11px] uppercase text-neutral-500 hover:text-black underline font-bold"
                     >
                       Clear
                     </button>
@@ -1732,14 +1732,14 @@ const AdminDashboard = () => {
                 {siteConfig.features.booking && (
                 <div className={glassPanel + " p-6 flex flex-col relative group"}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Bookings</div>
-                    <select className="bg-transparent border border-white/10 text-gray-400 text-[9px] uppercase outline-none focus:border-white/30 rounded py-0.5 px-1" value={filterBookings} onChange={(e) => setFilterBookings(e.target.value)}>
-                      <option value="all" className="bg-black">All</option>
-                      <option value="today" className="bg-black">Today</option>
-                      <option value="past7" className="bg-black">Past 7 Days</option>
+                    <div className="text-neutral-500 font-sans text-[11px] uppercase tracking-widest font-bold">Total Bookings</div>
+                    <select className="bg-white border border-black/15 text-[#0f0f12] text-[9px] uppercase outline-none focus:border-black rounded px-1.5 py-0.5 font-semibold shadow-xs" value={filterBookings} onChange={(e) => setFilterBookings(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="past7">Past 7 Days</option>
                     </select>
                   </div>
-                  <div className="text-5xl font-mirage text-white mb-4">
+                  <div className="text-5xl font-mirage text-[#0f0f12] font-bold mb-4">
                     {(() => {
                       const now = new Date();
                       return dashboardFilteredBookings.filter(b => {
@@ -1749,22 +1749,22 @@ const AdminDashboard = () => {
                       }).length;
                     })()}
                   </div>
-                  <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">All scheduled shoots</div>
+                  <div className="text-emerald-600 font-sans text-[11px] tracking-widest mt-auto font-bold">All scheduled shoots</div>
                 </div>
                 )}
 
                 {/* Total Leads */}
                 {siteConfig.features.leads && (
-                <div className={glassPanel + " p-6 flex flex-col relative group"}>
+                <div className={glassPanel + " p-6 flex flex-col relative group shadow-xs"}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Leads</div>
-                    <select className="bg-transparent border border-white/10 text-gray-400 text-[9px] uppercase outline-none focus:border-white/30 rounded py-0.5 px-1" value={filterLeads} onChange={(e) => setFilterLeads(e.target.value)}>
-                      <option value="all" className="bg-black">All</option>
-                      <option value="today" className="bg-black">Today</option>
-                      <option value="past7" className="bg-black">Past 7 Days</option>
+                    <div className="text-neutral-500 font-sans text-[11px] uppercase tracking-widest font-bold">Total Leads</div>
+                    <select className="bg-white border border-black/15 text-[#0f0f12] text-[9px] uppercase outline-none focus:border-black rounded px-1.5 py-0.5 font-semibold shadow-xs" value={filterLeads} onChange={(e) => setFilterLeads(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="past7">Past 7 Days</option>
                     </select>
                   </div>
-                  <div className="text-5xl font-mirage text-white mb-4">
+                  <div className="text-5xl font-mirage text-[#0f0f12] font-bold mb-4">
                     {(() => {
                       const now = new Date();
                       return dashboardFilteredLeads.filter(l => {
@@ -1774,22 +1774,22 @@ const AdminDashboard = () => {
                       }).length;
                     })()}
                   </div>
-                  <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">Landing page inquiries</div>
+                  <div className="text-emerald-600 font-sans text-[11px] tracking-widest mt-auto font-bold">Landing page inquiries</div>
                 </div>
                 )}
 
                 {/* Total Inquiries */}
                 {(siteConfig.features.contact || siteConfig.features.getQuote) && (
-                <div className={glassPanel + " p-6 flex flex-col relative group"}>
+                <div className={glassPanel + " p-6 flex flex-col relative group shadow-xs"}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Total Inquiries</div>
-                    <select className="bg-transparent border border-white/10 text-gray-400 text-[9px] uppercase outline-none focus:border-white/30 rounded py-0.5 px-1" value={filterInquiries} onChange={(e) => setFilterInquiries(e.target.value)}>
-                      <option value="all" className="bg-black">All</option>
-                      <option value="today" className="bg-black">Today</option>
-                      <option value="past7" className="bg-black">Past 7 Days</option>
+                    <div className="text-neutral-500 font-sans text-[11px] uppercase tracking-widest font-bold">Total Inquiries</div>
+                    <select className="bg-white border border-black/15 text-[#0f0f12] text-[9px] uppercase outline-none focus:border-black rounded px-1.5 py-0.5 font-semibold shadow-xs" value={filterInquiries} onChange={(e) => setFilterInquiries(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="past7">Past 7 Days</option>
                     </select>
                   </div>
-                  <div className="text-5xl font-mirage text-white mb-4">
+                  <div className="text-5xl font-mirage text-[#0f0f12] font-bold mb-4">
                     {(() => {
                       const now = new Date();
                       return dashboardFilteredInquiries.filter(i => {
@@ -1799,21 +1799,21 @@ const AdminDashboard = () => {
                       }).length;
                     })()}
                   </div>
-                  <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">General inquiries</div>
+                  <div className="text-emerald-600 font-sans text-[11px] tracking-widest mt-auto font-bold">General inquiries</div>
                 </div>
                 )}
 
                 {/* Pending */}
-                <div className={glassPanel + " p-6 flex flex-col relative group"}>
+                <div className={glassPanel + " p-6 flex flex-col relative group shadow-xs"}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Pending</div>
-                    <select className="bg-transparent border border-white/10 text-gray-400 text-[9px] uppercase outline-none focus:border-white/30 rounded py-0.5 px-1" value={filterPending} onChange={(e) => setFilterPending(e.target.value)}>
-                      <option value="all" className="bg-black">All</option>
-                      <option value="today" className="bg-black">Today</option>
-                      <option value="past7" className="bg-black">Past 7 Days</option>
+                    <div className="text-neutral-500 font-sans text-[11px] uppercase tracking-widest font-bold">Pending</div>
+                    <select className="bg-white border border-black/15 text-[#0f0f12] text-[9px] uppercase outline-none focus:border-black rounded px-1.5 py-0.5 font-semibold shadow-xs" value={filterPending} onChange={(e) => setFilterPending(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="past7">Past 7 Days</option>
                     </select>
                   </div>
-                  <div className="text-5xl font-mirage text-white mb-4">
+                  <div className="text-5xl font-mirage text-[#0f0f12] font-bold mb-4">
                     {(() => {
                       const now = new Date();
                       const filterFunc = (item) => {
@@ -1826,20 +1826,20 @@ const AdminDashboard = () => {
                              dashboardFilteredBookings.filter(b => (b.status === 'PENDING' || b.status === 'Pending') && filterFunc(b)).length;
                     })()}
                   </div>
-                  <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">Needs review (Combined)</div>
+                  <div className="text-amber-600 font-sans text-[11px] tracking-widest mt-auto font-bold">Needs review (Combined)</div>
                 </div>
 
                 {/* Confirmed */}
-                <div className={glassPanel + " p-6 flex flex-col relative group"}>
+                <div className={glassPanel + " p-6 flex flex-col relative group shadow-xs"}>
                   <div className="flex justify-between items-start mb-2">
-                    <div className="text-gray-500 font-sans text-[11px] uppercase tracking-widest">Confirmed</div>
-                    <select className="bg-transparent border border-white/10 text-gray-400 text-[9px] uppercase outline-none focus:border-white/30 rounded py-0.5 px-1" value={filterConfirmed} onChange={(e) => setFilterConfirmed(e.target.value)}>
-                      <option value="all" className="bg-black">All</option>
-                      <option value="today" className="bg-black">Today</option>
-                      <option value="past7" className="bg-black">Past 7 Days</option>
+                    <div className="text-neutral-500 font-sans text-[11px] uppercase tracking-widest font-bold">Confirmed</div>
+                    <select className="bg-white border border-black/15 text-[#0f0f12] text-[9px] uppercase outline-none focus:border-black rounded px-1.5 py-0.5 font-semibold shadow-xs" value={filterConfirmed} onChange={(e) => setFilterConfirmed(e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="past7">Past 7 Days</option>
                     </select>
                   </div>
-                  <div className="text-5xl font-mirage text-white mb-4">
+                  <div className="text-5xl font-mirage text-[#0f0f12] font-bold mb-4">
                     {(() => {
                       const now = new Date();
                       const filterFunc = (item) => {
@@ -1852,56 +1852,56 @@ const AdminDashboard = () => {
                              dashboardFilteredBookings.filter(b => (b.status === 'CONFIRMED' || b.status === 'Confirmed' || b.status === 'COMPLETED') && filterFunc(b)).length;
                     })()}
                   </div>
-                  <div className="text-emerald-500 font-sans text-[11px] tracking-widest mt-auto">Converted (Combined)</div>
+                  <div className="text-emerald-600 font-sans text-[11px] tracking-widest mt-auto font-bold">Converted (Combined)</div>
                 </div>
               </div>
               <div className={glassPanel + " p-8 mt-8"}>
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                  <h3 className="text-xl font-mirage uppercase tracking-widest text-white">Recent Inquiries</h3>
+                  <h3 className="text-xl font-mirage uppercase tracking-widest text-[#0f0f12] font-bold">Recent Inquiries</h3>
                   <div className="flex flex-wrap items-center gap-2 md:gap-4 w-full md:w-auto">
                     <select 
-                      className="bg-[#121212] border border-white/20 text-white font-sans text-[11px] uppercase tracking-widest px-2 md:px-4 py-2 outline-none focus:border-white/50 rounded cursor-pointer flex-1 md:flex-none"
+                      className="bg-white border border-black/20 text-[#0f0f12] font-sans text-[11px] uppercase tracking-widest px-3 py-2 outline-none focus:border-black rounded-xl font-semibold shadow-xs cursor-pointer flex-1 md:flex-none"
                       value={dashboardDateFilter}
                       onChange={(e) => setDashboardDateFilter(e.target.value)}
                     >
-                      <option value="all" className="bg-[#121212] text-white">All Time</option>
-                      <option value="today" className="bg-[#121212] text-white">Today</option>
-                      <option value="thisWeek" className="bg-[#121212] text-white">Past 7 Days</option>
+                      <option value="all" className="bg-white text-[#0f0f12]">All Time</option>
+                      <option value="today" className="bg-white text-[#0f0f12]">Today</option>
+                      <option value="thisWeek" className="bg-white text-[#0f0f12]">Past 7 Days</option>
                     </select>
                     <select 
-                      className="bg-[#121212] border border-white/20 text-white font-sans text-[11px] uppercase tracking-widest px-2 md:px-4 py-2 outline-none focus:border-white/50 rounded cursor-pointer flex-1 md:flex-none"
+                      className="bg-white border border-black/20 text-[#0f0f12] font-sans text-[11px] uppercase tracking-widest px-3 py-2 outline-none focus:border-black rounded-xl font-semibold shadow-xs cursor-pointer flex-1 md:flex-none"
                       value={dashboardTypeFilter}
                       onChange={(e) => setDashboardTypeFilter(e.target.value)}
                     >
-                      <option value="all" className="bg-[#121212] text-white">All Types</option>
-                      <option value="bookings" className="bg-[#121212] text-white">Bookings Only</option>
-                      <option value="leads" className="bg-[#121212] text-white">Leads Only</option>
-                      <option value="inquiries" className="bg-[#121212] text-white">Inquiries Only</option>
+                      <option value="all" className="bg-white text-[#0f0f12]">All Types</option>
+                      <option value="bookings" className="bg-white text-[#0f0f12]">Bookings Only</option>
+                      <option value="leads" className="bg-white text-[#0f0f12]">Leads Only</option>
+                      <option value="inquiries" className="bg-white text-[#0f0f12]">Inquiries Only</option>
                     </select>
-                    <button onClick={() => setActiveTab('inquiries')} className="text-[11px] uppercase tracking-widest border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-colors rounded text-white whitespace-nowrap">View All</button>
+                    <button onClick={() => setActiveTab('inquiries')} className="text-[11px] uppercase tracking-widest border border-black/20 bg-white text-[#0f0f12] hover:bg-neutral-100 font-bold px-4 py-2 transition-all rounded-xl shadow-xs whitespace-nowrap">View All</button>
                   </div>
                 </div>
                 <div className="overflow-x-auto custom-scrollbar">
                   <table className="w-full text-left font-sans text-sm min-w-[600px]">
                     <thead>
-                      <tr className="border-b border-white/10 text-gray-500 text-[11px] uppercase tracking-widest">
-                        <th className="py-4 px-2 font-normal">Type</th>
-                        <th className="py-4 px-2 font-normal">Client Name</th>
-                        <th className="py-4 px-2 font-normal">Event Date</th>
-                        <th className="py-4 px-2 font-normal">Details</th>
-                        <th className="py-4 px-2 font-normal">Status</th>
-                        <th className="py-4 px-2 font-normal">Action</th>
+                      <tr className="border-b border-black/10 text-neutral-500 text-[11px] uppercase tracking-widest font-bold">
+                        <th className="py-4 px-2 font-bold">Type</th>
+                        <th className="py-4 px-2 font-bold">Client Name</th>
+                        <th className="py-4 px-2 font-bold">Event Date</th>
+                        <th className="py-4 px-2 font-bold">Details</th>
+                        <th className="py-4 px-2 font-bold">Status</th>
+                        <th className="py-4 px-2 font-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {combinedRecent.map((item, idx) => (
-                        <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                          <td className="py-4"><span className={`text-[9px] uppercase tracking-widest border px-2 py-1 rounded font-semibold ${getTypeBadgeClass(item.isType)}`}>{item.isType}</span></td>
-                          <td className="py-4 text-white">{item.name}</td>
-                          <td className="py-4 text-gray-400">{item.eventDate || item.date || 'N/A'}</td>
-                          <td className="py-4 text-gray-400">{item.interestedIn || item.package || item.service || 'N/A'}</td>
-                          <td className="py-4"><span className={`text-[9px] uppercase tracking-widest border px-2 py-1 rounded font-semibold ${getStatusBadgeClass(item.status)}`}>{item.status}</span></td>
-                          <td className="py-4"><button onClick={() => setActiveTab(item.isType === 'LEAD' ? 'leads' : item.isType === 'BOOKING' ? 'studio bookings' : 'inquiries')} className="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors">Review</button></td>
+                        <tr key={idx} className="border-b border-black/10 hover:bg-neutral-50 transition-colors">
+                          <td className="py-4 px-2"><span className={`text-[9px] uppercase tracking-widest border px-2 py-1 rounded-md font-bold ${getTypeBadgeClass(item.isType)}`}>{item.isType}</span></td>
+                          <td className="py-4 px-2 text-[#0f0f12] font-semibold">{item.name}</td>
+                          <td className="py-4 px-2 text-neutral-700 font-medium">{item.eventDate || item.date || 'N/A'}</td>
+                          <td className="py-4 px-2 text-neutral-700 font-medium">{item.interestedIn || item.package || item.service || 'N/A'}</td>
+                          <td className="py-4 px-2"><span className={`text-[9px] uppercase tracking-widest border px-2 py-1 rounded-md font-bold ${getStatusBadgeClass(item.status)}`}>{item.status}</span></td>
+                          <td className="py-4 px-2"><button onClick={() => setActiveTab(item.isType === 'LEAD' ? 'leads' : item.isType === 'BOOKING' ? 'studio bookings' : 'inquiries')} className="text-xs uppercase tracking-widest text-neutral-800 hover:text-black font-bold hover:underline transition-colors">Review</button></td>
                         </tr>
                       ))}
                     </tbody>
@@ -1914,56 +1914,56 @@ const AdminDashboard = () => {
           {activeTab === 'cms' && (
                   <div className="space-y-6">
                     {/* Settings / Analytics */}
-                    <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300 border border-blue-500/20 bg-gradient-to-br from-blue-900/10 to-transparent`}>
-                      <h3 className="text-xl text-white font-mirage tracking-[0.2em] uppercase mb-4">Tracking & Analytics Settings</h3>
+                    <div className={`${glassPanel} p-8 hover:border-black/20 transition-all duration-300 border border-black/10 bg-white shadow-xs`}>
+                      <h3 className="text-xl text-[#0f0f12] font-mirage font-bold tracking-[0.2em] uppercase mb-4">Tracking & Analytics Settings</h3>
                       <form onSubmit={handleSaveAnalytics} className="space-y-4 max-w-2xl">
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Meta Pixel ID (Facebook)</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Meta Pixel ID (Facebook)</label>
                           <input type="text" className={glassInput} placeholder="e.g. 123456789012345" value={settings.metaPixelId || ''} onChange={e => setSettings({...settings, metaPixelId: e.target.value})} />
                         </div>
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Google Analytics Measurement ID</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Google Analytics Measurement ID</label>
                           <input type="text" className={glassInput} placeholder="e.g. G-XXXXXXXXXX" value={settings.googleAnalyticsId || ''} onChange={e => setSettings({...settings, googleAnalyticsId: e.target.value})} />
                         </div>
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Tracking IDs'}</button>
+                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Tracking IDs'}</button>
                       </form>
                     </div>
 
                     {/* Contact Settings */}
-                    <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300 border border-green-500/20 bg-gradient-to-br from-green-900/10 to-transparent`}>
-                      <h3 className="text-xl text-white font-mirage tracking-[0.2em] uppercase mb-4">Contact Settings</h3>
+                    <div className={`${glassPanel} p-8 hover:border-black/20 transition-all duration-300 border border-black/10 bg-white shadow-xs`}>
+                      <h3 className="text-xl text-[#0f0f12] font-mirage font-bold tracking-[0.2em] uppercase mb-4">Contact Settings</h3>
                       <form onSubmit={handleSaveContactSettings} className="space-y-4 max-w-2xl">
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">WhatsApp Number</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">WhatsApp Number</label>
                           <input type="text" className={glassInput} placeholder="e.g. +919999999999" value={settings.whatsappNumber || ''} onChange={e => setSettings({...settings, whatsappNumber: e.target.value})} />
                         </div>
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Contact Number (Calls)</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Contact Number (Calls)</label>
                           <input type="text" className={glassInput} placeholder="e.g. +919999999999" value={settings.contactNumber || ''} onChange={e => setSettings({...settings, contactNumber: e.target.value})} />
                         </div>
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Contact Email</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Contact Email</label>
                           <input type="email" className={glassInput} placeholder="e.g. hello@example.com" value={settings.contactEmail || ''} onChange={e => setSettings({...settings, contactEmail: e.target.value})} />
                         </div>
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Team Notification Emails (comma separated)</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Team Notification Emails (comma separated)</label>
                           <textarea className={glassInput} rows="2" placeholder="e.g. member1@example.com, member2@example.com" value={settings.teamEmails ? settings.teamEmails.join(', ') : ''} onChange={e => setSettings({...settings, teamEmails: e.target.value.split(',').map(em => em.trim()).filter(em => em)})}>
                           </textarea>
-                          <p className="text-[11px] text-gray-500 mt-1 uppercase tracking-widest">These emails will receive new booking notifications.</p>
+                          <p className="text-[11px] text-neutral-500 mt-1 uppercase tracking-widest font-semibold">These emails will receive new booking notifications.</p>
                         </div>
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Contact Info'}</button>
+                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Contact Info'}</button>
                       </form>
                     </div>
                     {/* Footer Settings */}
-                    <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300 border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-transparent`}>
-                      <h3 className="text-xl text-white font-mirage tracking-[0.2em] uppercase mb-4">Footer Settings</h3>
+                    <div className={`${glassPanel} p-8 hover:border-black/20 transition-all duration-300 border border-black/10 bg-white shadow-xs`}>
+                      <h3 className="text-xl text-[#0f0f12] font-mirage font-bold tracking-[0.2em] uppercase mb-4">Footer Settings</h3>
                       <form onSubmit={handleSaveContactSettings} className="space-y-4 max-w-2xl">
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Studio Address</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Studio Address</label>
                           <textarea className={glassInput} rows="3" placeholder="e.g. 123 Cinematic Way..." value={settings.footerStudioAddress || ''} onChange={e => setSettings({...settings, footerStudioAddress: e.target.value})}></textarea>
                         </div>
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Social Links</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Social Links</label>
                           <div className="space-y-3">
                             {(settings.footerSocials || []).map((social, idx) => (
                               <div key={idx} className="flex gap-2 items-center">
@@ -1981,31 +1981,31 @@ const AdminDashboard = () => {
                                   const newSocials = [...settings.footerSocials];
                                   newSocials.splice(idx, 1);
                                   setSettings({...settings, footerSocials: newSocials});
-                                }} className="text-red-500 hover:text-red-400 p-2">&times;</button>
+                                }} className="text-red-500 hover:text-red-400 p-2 text-xl">&times;</button>
                               </div>
                             ))}
                             <button type="button" onClick={() => {
                               setSettings({...settings, footerSocials: [...(settings.footerSocials || []), { platform: '', link: '' }]});
-                            }} className="text-[11px] text-gray-400 hover:text-white uppercase tracking-widest">+ Add Social Link</button>
+                            }} className="text-[11px] text-neutral-600 hover:text-black font-bold uppercase tracking-widest">+ Add Social Link</button>
                           </div>
                         </div>
 
                         <div>
-                          <label className="block text-xs uppercase text-gray-500 mb-2">Locations (comma separated)</label>
+                          <label className="block text-xs uppercase text-neutral-500 mb-2 font-bold">Locations (comma separated)</label>
                           <input type="text" className={glassInput} placeholder="e.g. Srikakulam, Vizag, Vizianagaram" value={(settings.footerLocations || []).join(', ')} onChange={e => setSettings({...settings, footerLocations: e.target.value.split(',').map(l => l.trim()).filter(l => l)})} />
                         </div>
 
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Footer Info'}</button>
+                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Footer Info'}</button>
                       </form>
                     </div>
 
                     {/* What We Do (Home Page) Settings */}
-                    <div className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300`}>
-                      <h3 className="text-xl text-white font-mirage tracking-[0.2em] uppercase mb-4">What We Do (Home Page)</h3>
+                    <div className={`${glassPanel} p-8 hover:border-black/20 transition-all duration-300 bg-white border border-black/10 shadow-xs`}>
+                      <h3 className="text-xl text-[#0f0f12] font-mirage font-bold tracking-[0.2em] uppercase mb-4">What We Do (Home Page)</h3>
                       <form onSubmit={handleSaveWhatWeDo} className="space-y-4 max-w-4xl">
                         <div className="space-y-4">
                           {(settings.whatWeDo || []).map((item, idx) => (
-                            <div key={idx} className="flex gap-4 items-start bg-white/5 p-4 rounded-xl border border-white/10">
+                            <div key={idx} className="flex gap-4 items-start bg-neutral-50 p-4 rounded-xl border border-black/10">
                               <div className="flex-1 space-y-3">
                                 <input type="text" className={glassInput} placeholder="Title" value={item.title || ''} onChange={e => {
                                   const newArr = [...settings.whatWeDo];
@@ -2027,18 +2027,18 @@ const AdminDashboard = () => {
                           ))}
                           <button type="button" onClick={() => {
                             setSettings({...settings, whatWeDo: [...(settings.whatWeDo || []), { title: '', description: '' }]});
-                          }} className="text-[11px] text-gray-400 hover:text-white uppercase tracking-widest">+ Add Item</button>
+                          }} className="text-[11px] text-neutral-600 hover:text-black font-bold uppercase tracking-widest">+ Add Item</button>
                         </div>
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save What We Do'}</button>
+                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save What We Do'}</button>
                       </form>
                     </div>
 
                     {/* Standard Content Blocks */}
                     {content.map(c => (
-                      <div key={c._id} className={`${glassPanel} p-8 hover:border-white/20 transition-all duration-300`}>
+                      <div key={c._id} className={`${glassPanel} p-8 hover:border-black/20 transition-all duration-300 bg-white border border-black/10 shadow-xs`}>
                         <div className="flex justify-between items-center mb-6">
-                           <h3 className="text-xl text-white font-mirage tracking-[0.2em] uppercase">{c.section}</h3>
-                           <button onClick={() => setEditingContent(c)} className="px-5 py-2 rounded-lg bg-white/5 hover:bg-white text-gray-300 hover:text-black text-xs uppercase tracking-widest transition-all">Edit</button>
+                           <h3 className="text-xl text-[#0f0f12] font-mirage font-bold tracking-[0.2em] uppercase">{c.section}</h3>
+                           <button onClick={() => setEditingContent(c)} className="px-5 py-2 rounded-xl bg-black text-white hover:bg-neutral-800 text-xs font-bold uppercase tracking-widest transition-all shadow-xs">Edit</button>
                         </div>
                         {editingContent && editingContent._id === c._id ? (
                           <form onSubmit={(e) => handleSaveContent(e, editingContent)} className="space-y-5 border-t border-white/5 pt-6">
@@ -2081,12 +2081,12 @@ const AdminDashboard = () => {
                 {/* HERO SLIDES TAB */}
                 {activeTab === 'hero' && (
                   <div className="space-y-8">
-                    <div className="flex justify-between items-center bg-gradient-to-r from-blue-900/20 to-transparent p-6 rounded-2xl border border-blue-500/20">
+                    <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
                       <div>
-                        <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Hero Slider Config</h2>
-                        <p className="text-xs text-blue-300/70 tracking-wide">Manage the massive full-screen images on the homepage.</p>
+                        <h2 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Hero Slider Config</h2>
+                        <p className="text-xs text-neutral-500 font-sans tracking-wide">Manage the massive full-screen images on the homepage.</p>
                       </div>
-                      <button onClick={() => setEditingHero({ img: '', mobileImg: '', title: '', titleOutline: '', text: '', order: 0 })} className="px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                      <button onClick={() => setEditingHero({ img: '', mobileImg: '', title: '', titleOutline: '', text: '', order: 0 })} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs">
                         + Add Slide
                       </button>
                     </div>
@@ -2156,12 +2156,12 @@ const AdminDashboard = () => {
                 {/* LANDING PAGES TAB */}
                 {activeTab === 'landing pages' && (
                   <div className="space-y-8">
-                    <div className="flex justify-between items-center bg-gradient-to-r from-emerald-900/20 to-transparent p-6 rounded-2xl border border-emerald-500/20">
+                    <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
                       <div>
-                        <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Landing Pages</h2>
-                        <p className="text-xs text-emerald-300/70 tracking-wide">Manage standalone landing pages for campaigns and promotions.</p>
+                        <h2 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Landing Pages</h2>
+                        <p className="text-xs text-neutral-500 font-sans tracking-wide">Manage standalone landing pages for campaigns and promotions.</p>
                       </div>
-                      <button onClick={() => setEditingLandingPage({ name: '', slug: '', heroImage: '', cardImage: '', mobileHeroImage: '', landingAbout: { title: '', description: '', imageUrl: '' }, features: [], faqs: [], portfolioImages: [], portfolioVideos: [], callToActionLink: '', isActive: true })} className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                      <button onClick={() => setEditingLandingPage({ name: '', slug: '', heroImage: '', cardImage: '', mobileHeroImage: '', landingAbout: { title: '', description: '', imageUrl: '' }, features: [], faqs: [], portfolioImages: [], portfolioVideos: [], callToActionLink: '', isActive: true })} className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs">
                         + New Page
                       </button>
                     </div>
@@ -2188,721 +2188,7 @@ const AdminDashboard = () => {
                   </div>
                 )}
 
-                {/* EDIT LANDING PAGE MODAL */}
-                {editingLandingPage && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={`${glassPanel} p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar`}>
-                      <div className="flex justify-between items-start mb-6">
-                        <h2 className="text-xl font-mirage text-white uppercase tracking-[0.2em]">{editingLandingPage._id ? 'Edit Landing Page' : 'New Landing Page'}</h2>
-                        <button type="button" onClick={() => setEditingLandingPage(null)} className="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
-                      </div>
-                      <form onSubmit={(e) => handleSaveLandingPage(e, editingLandingPage)} className="space-y-8">
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Page Name</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.name} onChange={e => setEditingLandingPage({...editingLandingPage, name: e.target.value})} required />
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Slug (URL)</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.slug} onChange={e => setEditingLandingPage({...editingLandingPage, slug: e.target.value})} required />
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-4 mt-4">
-                            <div>
-                              <div className="flex justify-between items-center mb-2">
-                                <label className="block text-[11px] text-gray-500 uppercase tracking-widest">Desktop Hero Image</label>
-                                {editingLandingPage.heroImage && (
-                                  <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, heroImage: ''})} className="text-[9px] text-red-500 hover:text-red-400 uppercase tracking-widest">Remove</button>
-                                )}
-                              </div>
-                              <DragDropImageUploader currentImage={editingLandingPage.heroImage} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage({...editingLandingPage, heroImage: url})} />
-                            </div>
-                            <div>
-                              <div className="flex justify-between items-center mb-2">
-                                <label className="block text-[11px] text-gray-500 uppercase tracking-widest">Admin Card Image</label>
-                                {editingLandingPage.cardImage && (
-                                  <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, cardImage: ''})} className="text-[9px] text-red-500 hover:text-red-400 uppercase tracking-widest">Remove</button>
-                                )}
-                              </div>
-                              <DragDropImageUploader currentImage={editingLandingPage.cardImage} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage({...editingLandingPage, cardImage: url})} />
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <label className="block text-xs uppercase text-gray-400 mb-2 mt-4">Call to Action Link</label>
-                            <input type="text" className={glassInput} placeholder="e.g., https://wa.me/..." value={editingLandingPage.callToActionLink || ''} onChange={e => setEditingLandingPage({...editingLandingPage, callToActionLink: e.target.value})} />
-                          </div>
-                          
-                          <div className="flex flex-wrap items-center gap-6 mt-4">
-                            <div className="flex items-center gap-3">
-                              <input type="checkbox" id="isActive" checked={editingLandingPage.isActive} onChange={e => setEditingLandingPage({...editingLandingPage, isActive: e.target.checked})} className="w-5 h-5 accent-emerald-500" />
-                              <label htmlFor="isActive" className="text-xs uppercase text-gray-400">Page is Active (Published)</label>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <input type="checkbox" id="showTestimonials" checked={editingLandingPage.showTestimonials !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showTestimonials: e.target.checked})} className="w-5 h-5 accent-emerald-500" />
-                              <label htmlFor="showTestimonials" className="text-xs uppercase text-gray-400">Show Testimonials</label>
-                            </div>
-                            
-                            <div className="flex items-center gap-3">
-                              <input type="checkbox" id="showPackages" checked={editingLandingPage.showPackages || false} onChange={e => setEditingLandingPage({...editingLandingPage, showPackages: e.target.checked})} className="w-5 h-5 accent-emerald-500" />
-                              <label htmlFor="showPackages" className="text-xs uppercase text-gray-400">Show Packages</label>
-                            </div>
-                          </div>
-                          {editingLandingPage.showPackages && (
-                            <>
-                            <div className="mt-4">
-                              <label className="block text-[9px] text-gray-500 mb-1 uppercase">Packages Heading</label>
-                              <input type="text" className={glassInput + " py-2 text-sm"} placeholder="e.g. Investment" value={editingLandingPage.packagesHeading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, packagesHeading: e.target.value})} />
-                            </div>
-                            
-                            <div className="mt-4 border border-white/10 p-4 rounded-xl">
-                              <div className="flex justify-between items-center mb-4">
-                                <h4 className="text-xs uppercase text-gray-400 tracking-widest">Custom Packages</h4>
-                                <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, customPackages: [...(editingLandingPage.customPackages || []), {name: '', price: '', description: ''}]})} className="text-[11px] bg-white/10 hover:bg-white/20 px-3 py-1 rounded uppercase tracking-widest">+ Add Package</button>
-                              </div>
-                              {(editingLandingPage.customPackages || []).map((pkg, idx) => (
-                                <div key={idx} className="mb-4 bg-black/30 p-3 rounded border border-white/5 relative">
-                                  <button type="button" onClick={() => {
-                                    const newPkgs = [...editingLandingPage.customPackages];
-                                    newPkgs.splice(idx, 1);
-                                    setEditingLandingPage({...editingLandingPage, customPackages: newPkgs});
-                                  }} className="absolute top-2 right-2 text-red-500 hover:text-red-400">&times;</button>
-                                  <div className="grid grid-cols-2 gap-3 mb-2">
-                                    <input type="text" className={glassInput + " py-1 text-xs"} placeholder="Package Name (e.g. Silver)" value={pkg.name} onChange={e => {
-                                      const newPkgs = [...editingLandingPage.customPackages];
-                                      newPkgs[idx].name = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, customPackages: newPkgs});
-                                    }} />
-                                    <input type="text" className={glassInput + " py-1 text-xs"} placeholder="Price (e.g. 10000)" value={pkg.price} onChange={e => {
-                                      const newPkgs = [...editingLandingPage.customPackages];
-                                      newPkgs[idx].price = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, customPackages: newPkgs});
-                                    }} />
-                                  </div>
-                                  <textarea className={glassInput + " py-1 text-xs"} rows="2" placeholder="Features (one per line)" value={pkg.description} onChange={e => {
-                                    const newPkgs = [...editingLandingPage.customPackages];
-                                    newPkgs[idx].description = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, customPackages: newPkgs});
-                                  }}></textarea>
-                                </div>
-                              ))}
-                            </div>
-                            </>
-                          )}
-                          
-                          {/* HERO TEXT SETTINGS */}
-                          <div className="border-t border-white/5 pt-6 mt-6 mb-6">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase mb-4">Hero Section Text</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div>
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Subheading</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="e.g. Your Studio Name" value={editingLandingPage.heroSubheading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroSubheading: e.target.value})} />
-                              </div>
-                              <div>
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Heading</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="e.g. Beautiful Baby Photography" value={editingLandingPage.heroHeading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroHeading: e.target.value})} />
-                              </div>
-                              <div className="col-span-full">
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Quote</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="e.g. Your Baby's Smile..." value={editingLandingPage.heroQuote || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroQuote: e.target.value})} />
-                              </div>
-                              <div className="col-span-full">
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Description</label>
-                                <textarea className={glassInput + " py-2 text-xs"} rows="2" placeholder="Professional baby shoots..." value={editingLandingPage.heroDescription || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroDescription: e.target.value})}></textarea>
-                              </div>
-                              <div>
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Price Text</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="Packages Start From Just" value={editingLandingPage.heroPriceText || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroPriceText: e.target.value})} />
-                              </div>
-                              <div>
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Price Amount</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="₹3,999/-" value={editingLandingPage.heroPriceAmount || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroPriceAmount: e.target.value})} />
-                              </div>
-                              <div className="col-span-full">
-                                <label className="block text-[9px] text-gray-500 mb-1 uppercase">Button Text</label>
-                                <input type="text" className={glassInput + " py-2 text-xs"} placeholder="Book Your Shoot Now" value={editingLandingPage.heroButtonText || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroButtonText: e.target.value})} />
-                              </div>
-                            </div>
-                          </div>
-                          
-                        {/* HERO CAROUSEL */}
-   <div className="mb-4">
-     <label className="block text-[9px] text-gray-500 mb-1 uppercase">Hero Text Alignment</label>
-     <select className={glassInput + ' py-2 text-xs'} value={editingLandingPage.heroTextAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, heroTextAlign: e.target.value})}>
-       <option value="left" className="bg-black text-white">Left</option>
-       <option value="center" className="bg-black text-white">Center</option>
-       <option value="right" className="bg-black text-white">Right</option>
-     </select>
-   </div>
-  
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Hero Carousel</h3>
-                            <button type="button" onClick={() => {
-                              const newSlides = [...(editingLandingPage.heroSlides || []), { imageUrl: '', mobileImageUrl: '', heading: '', description: '' }];
-                              setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                            }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">+ Add Slide</button>
-                          </div>
-                          <div className="space-y-6">
-                            {(editingLandingPage.heroSlides || []).map((slide, idx) => (
-                              <div key={idx} className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-4 relative">
-                                <button type="button" onClick={() => {
-                                  const newSlides = [...editingLandingPage.heroSlides];
-                                  newSlides.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                }} className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xs uppercase">Remove</button>
-                                <div className="absolute top-2 right-16 flex gap-2">
-                                  <button type="button" onClick={() => {
-                                    if(idx > 0) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↑</button>
-                                  <button type="button" onClick={() => {
-                                    if(idx < editingLandingPage.heroSlides.length - 1) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↓</button>
-                                </div>
-  
-                                
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <div className="flex justify-between items-center mb-1">
-                                      <label className="block text-[9px] text-gray-500 uppercase">Desktop Image</label>
-                                      {slide.imageUrl && (
-                                        <button type="button" onClick={() => {
-                                          const newSlides = [...editingLandingPage.heroSlides];
-                                          newSlides[idx].imageUrl = '';
-                                          setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                        }} className="text-[9px] text-red-500 hover:text-red-400 uppercase">Remove</button>
-                                      )}
-                                    </div>
-                                    <DragDropImageUploader currentImage={slide.imageUrl} aspect={16/9} onUploadSuccess={(url) => {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      newSlides[idx].imageUrl = url;
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }} />
-                                  </div>
-                                  <div>
-                                    <div className="flex justify-between items-center mb-1">
-                                      <label className="block text-[9px] text-gray-500 uppercase">Mobile Image</label>
-                                      {slide.mobileImageUrl && (
-                                        <button type="button" onClick={() => {
-                                          const newSlides = [...editingLandingPage.heroSlides];
-                                          newSlides[idx].mobileImageUrl = '';
-                                          setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                        }} className="text-[9px] text-red-500 hover:text-red-400 uppercase">Remove</button>
-                                      )}
-                                    </div>
-                                    <DragDropImageUploader currentImage={slide.mobileImageUrl} aspect={9/16} onUploadSuccess={(url) => {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      newSlides[idx].mobileImageUrl = url;
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }} />
-                                  </div>
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Heading</label>
-                                  <input type="text" className={glassInput + ' py-2 text-xs'} value={slide.heading} onChange={e => {
-                                    const newSlides = [...editingLandingPage.heroSlides];
-                                    newSlides[idx].heading = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                  }} />
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Description</label>
-                                  <textarea className={`${glassInput} h-16 text-xs`} value={slide.description} onChange={e => {
-                                    const newSlides = [...editingLandingPage.heroSlides];
-                                    newSlides[idx].description = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                  }}></textarea>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
 
-                        {/* SERVICE CARDS (WHAT WE DO BEST) */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">What We Do Best (Service Cards)</h3>
-                            <button type="button" onClick={() => {
-                              const newCards = [...(editingLandingPage.serviceCards || []), { category: '', title: '', description: '', images: [] }];
-                              setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                            }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">+ Add Card</button>
-                          </div>
-                          <div className="mb-4">
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.serviceCardsHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, serviceCardsHeading: e.target.value})} placeholder="e.g. What We Do Best" />
-                          </div>
-                          
-                          <div className="space-y-6">
-                            {(editingLandingPage.serviceCards || []).map((card, idx) => (
-                              <div key={idx} className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-4 relative">
-                                <button type="button" onClick={() => {
-                                  const newCards = [...editingLandingPage.serviceCards];
-                                  newCards.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                }} className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xs uppercase">Remove</button>
-                                <div className="absolute top-2 right-16 flex gap-2">
-                                  <button type="button" onClick={() => {
-                                    if(idx > 0) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↑</button>
-                                  <button type="button" onClick={() => {
-                                    if(idx < editingLandingPage.heroSlides.length - 1) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↓</button>
-                                </div>
-  
-                                
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <label className="block text-[9px] text-gray-500 mb-1 uppercase">Category Label</label>
-                                    <input type="text" className={glassInput + ' py-2 text-xs'} value={card.category || ''} onChange={e => {
-                                      const newCards = [...editingLandingPage.serviceCards];
-                                      newCards[idx].category = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                    }} placeholder="e.g. 5-15 Days" />
-                                  </div>
-                                  <div>
-                                    <label className="block text-[9px] text-gray-500 mb-1 uppercase">Title</label>
-                                    <input type="text" className={glassInput + ' py-2 text-xs'} value={card.title || ''} onChange={e => {
-                                      const newCards = [...editingLandingPage.serviceCards];
-                                      newCards[idx].title = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                    }} placeholder="e.g. Newborn Shoots" />
-                                  </div>
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Description</label>
-                                  <textarea className={glassInput + ' py-2 text-xs'} value={card.description || ''} onChange={e => {
-                                    const newCards = [...editingLandingPage.serviceCards];
-                                    newCards[idx].description = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                  }} />
-                                </div>
-                                
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Card Background Images</label>
-                                  <DragDropImageUploader currentImage={''} multiple={true} disableCompression={true} onUploadSuccess={(urls) => {
-                                    const newCards = [...editingLandingPage.serviceCards];
-                                    newCards[idx].images = [...(newCards[idx].images || []), ...urls];
-                                    setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                  }} />
-                                  <div className="grid grid-cols-3 gap-2 mt-2">
-                                    {(card.images || []).map((img, i) => (
-                                      <div key={i} className="relative group">
-                                        <img src={img} className="w-full h-16 object-cover rounded" />
-                                        <button type="button" onClick={() => {
-                                          const newCards = [...editingLandingPage.serviceCards];
-                                          newCards[idx].images.splice(i, 1);
-                                          setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                        }} className="absolute top-1 right-1 bg-red-500 text-white w-4 h-4 rounded-full text-[11px] flex justify-center items-center opacity-0 group-hover:opacity-100">×</button>
-                                        <div className="absolute top-1 left-1 flex gap-1 opacity-0 group-hover:opacity-100">
-                                          <button type="button" onClick={() => {
-                                            if(i > 0) {
-                                              const newCards = [...editingLandingPage.serviceCards];
-                                              [newCards[idx].images[i-1], newCards[idx].images[i]] = [newCards[idx].images[i], newCards[idx].images[i-1]];
-                                              setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                            }
-                                          }} className="bg-black/50 text-white w-4 h-4 rounded-full text-[11px] flex justify-center items-center">↑</button>
-                                          <button type="button" onClick={() => {
-                                            if(i < card.images.length - 1) {
-                                              const newCards = [...editingLandingPage.serviceCards];
-                                              [newCards[idx].images[i+1], newCards[idx].images[i]] = [newCards[idx].images[i], newCards[idx].images[i+1]];
-                                              setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
-                                            }
-                                          }} className="bg-black/50 text-white w-4 h-4 rounded-full text-[11px] flex justify-center items-center">↓</button>
-                                        </div>
-  
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* DISPLAY VIDEO */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                           <div className="flex justify-between items-center mb-4">
-                             <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Display Video</h3>
-                             <label className="flex items-center gap-2 cursor-pointer">
-                               <input type="checkbox" className="form-checkbox text-blue-500 rounded bg-black border-white/20" checked={editingLandingPage.showDisplayVideo !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showDisplayVideo: e.target.checked})} />
-                               <span className="text-[11px] uppercase text-gray-400 tracking-widest">Show Video</span>
-                             </label>
-                           </div>
-                           <input type="text" className="bg-transparent border border-white/10 text-white font-sans outline-none focus:border-white/50 rounded transition-colors [color-scheme:dark] py-2 text-sm w-full mb-4" placeholder="Paste YouTube Link here (e.g. https://youtu.be/...)" value={editingLandingPage.displayVideoUrl || ""} onChange={e => setEditingLandingPage({...editingLandingPage, displayVideoUrl: e.target.value})} />
-                           <DragDropVideoUploader currentVideo={editingLandingPage.displayVideoUrl || editingLandingPage.localVideoUrl} onUploadSuccess={(url) => setEditingLandingPage({...editingLandingPage, displayVideoUrl: url})} />
-                        </div>
-
-                        {/* APPROACH SECTIONS */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="space-y-4 mb-6">
-                            <div>
-                              <label className="block text-[9px] text-gray-500 mb-1 uppercase">Main Heading</label>
-                              <input type="text" className="bg-transparent border border-white/10 text-white font-sans outline-none focus:border-white/50 rounded transition-colors [color-scheme:dark] py-2 text-sm" placeholder="e.g. Our Approach" value={editingLandingPage.approachHeading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, approachHeading: e.target.value})} />
-                            </div>
-                            <div>
-                              <label className="block text-[9px] text-gray-500 mb-1 uppercase">Main Description</label>
-                              <textarea className="bg-transparent border border-white/10 text-white font-sans outline-none focus:border-white/50 rounded transition-colors [color-scheme:dark] py-2 text-sm" rows="2" placeholder="e.g. Capturing the purest moments..." value={editingLandingPage.approachDescription || ""} onChange={e => setEditingLandingPage({...editingLandingPage, approachDescription: e.target.value})}></textarea>
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Our Approach Sections</h3>
-                            <button type="button" onClick={() => {
-                              const newSections = [...(editingLandingPage.approachSections || []), { heading: '', description: '', align: 'center' }];
-                              setEditingLandingPage({...editingLandingPage, approachSections: newSections});
-                            }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">+ Add Section</button>
-                          </div>
-                          <div className="space-y-6">
-                            {(editingLandingPage.approachSections || []).map((section, idx) => (
-                              <div key={idx} className="p-4 border border-white/10 rounded bg-black/40 relative">
-                                <button type="button" onClick={() => {
-                                  const newSections = [...editingLandingPage.approachSections];
-                                  newSections.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, approachSections: newSections});
-                                }} className="absolute top-2 right-2 text-red-500 hover:text-red-400">&times;</button>
-                                <div className="space-y-4">
-                                  <div>
-                                    <label className="block text-xs uppercase text-gray-400 mb-2">Heading</label>
-                                    <input type="text" className={glassInput} value={section.heading || ''} onChange={e => {
-                                      const newSections = [...editingLandingPage.approachSections];
-                                      newSections[idx].heading = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
-                                    }} />
-                                  </div>
-                                  <div>
-                                    <label className="block text-xs uppercase text-gray-400 mb-2">Description</label>
-                                    <textarea className={`${glassInput} h-32`} value={section.description || ''} onChange={e => {
-                                      const newSections = [...editingLandingPage.approachSections];
-                                      newSections[idx].description = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
-                                    }}></textarea>
-                                  </div>
-                                  <div>
-                                    <label className="block text-xs uppercase text-gray-400 mb-2">Text Alignment</label>
-                                    <select className={glassInput} value={section.align || 'center'} onChange={e => {
-                                      const newSections = [...editingLandingPage.approachSections];
-                                      newSections[idx].align = e.target.value;
-                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
-                                    }}>
-                                      <option value="left" className="bg-black text-white">Left</option>
-                                      <option value="center" className="bg-black text-white">Center</option>
-                                      <option value="right" className="bg-black text-white">Right</option>
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-{/* WHY CHOOSE US */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Why Choose Us? (Features)</h3>
-                            <button type="button" onClick={() => {
-                              const newFeatures = [...(editingLandingPage.features || []), { title: '', description: '' }];
-                              setEditingLandingPage({...editingLandingPage, features: newFeatures});
-                            }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">+ Add Feature</button>
-                          </div>
-                          <div className="mb-4">
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.whyChooseHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, whyChooseHeading: e.target.value})} placeholder="e.g. Why Choose Us?" />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-[9px] text-gray-500 mb-1 uppercase">Text Alignment</label>
-                            <select className={glassInput + ' py-2 text-xs'} value={editingLandingPage.featuresAlign || 'left'} onChange={e => setEditingLandingPage({...editingLandingPage, featuresAlign: e.target.value})}>
-                              <option value="left" className="bg-black text-white">Left</option>
-                              <option value="center" className="bg-black text-white">Center</option>
-                              <option value="right" className="bg-black text-white">Right</option>
-                            </select>
-                          </div>
-                          <div className="grid md:grid-cols-2 gap-4">
-                            {(editingLandingPage.features || []).map((feature, idx) => (
-                              <div key={idx} className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-3 relative">
-                                <button type="button" onClick={() => {
-                                  const newF = [...editingLandingPage.features];
-                                  newF.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, features: newF});
-                                }} className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xs uppercase">Remove</button>
-                                <div className="absolute top-2 right-16 flex gap-2">
-                                  <button type="button" onClick={() => {
-                                    if(idx > 0) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↑</button>
-                                  <button type="button" onClick={() => {
-                                    if(idx < editingLandingPage.heroSlides.length - 1) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↓</button>
-                                </div>
-  
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Title</label>
-                                  <input type="text" className={glassInput + ' py-2 text-xs'} value={feature.title} onChange={e => {
-                                    const newF = [...editingLandingPage.features];
-                                    newF[idx].title = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, features: newF});
-                                  }} />
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Description</label>
-                                  <textarea className={`${glassInput} h-16 text-xs`} value={feature.description} onChange={e => {
-                                    const newF = [...editingLandingPage.features];
-                                    newF[idx].description = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, features: newF});
-                                  }}></textarea>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* COMFORT SECTIONS */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Pure Comfort for Mother & Baby</h3>
-                            <button type="button" onClick={() => {
-                              const newItems = [...(editingLandingPage.comfortItems || []), { title: '', desc: '' }];
-                              setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
-                            }} className="text-xs uppercase bg-white/10 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">+ Add Item</button>
-                          </div>
-                          <div className="mb-4">
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.comfortHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, comfortHeading: e.target.value})} placeholder="e.g. Pure Comfort for Mother & Baby" />
-                          </div>
-                          <div className="grid md:grid-cols-2 gap-4">
-                            {(editingLandingPage.comfortItems || []).map((item, idx) => (
-                              <div key={idx} className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-3 relative">
-                                <button type="button" onClick={() => {
-                                  const newItems = [...editingLandingPage.comfortItems];
-                                  newItems.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
-                                }} className="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xs uppercase">Remove</button>
-                                <div className="absolute top-2 right-16 flex gap-2">
-                                  <button type="button" onClick={() => {
-                                    if(idx > 0) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↑</button>
-                                  <button type="button" onClick={() => {
-                                    if(idx < editingLandingPage.heroSlides.length - 1) {
-                                      const newSlides = [...editingLandingPage.heroSlides];
-                                      [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
-                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
-                                    }
-                                  }} className="text-gray-400 hover:text-white text-xs">↓</button>
-                                </div>
-  
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Title</label>
-                                  <input type="text" className={glassInput + ' py-2 text-xs'} value={item.title || ''} onChange={e => {
-                                    const newItems = [...editingLandingPage.comfortItems];
-                                    newItems[idx].title = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
-                                  }} />
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] text-gray-500 mb-1 uppercase">Description</label>
-                                  <textarea className={glassInput + ' py-2 text-xs'} value={item.desc || ''} onChange={e => {
-                                    const newItems = [...editingLandingPage.comfortItems];
-                                    newItems[idx].desc = e.target.value;
-                                    setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
-                                  }} />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* PORTFOLIO IMAGES */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Images Gallery</h3>
-                          </div>
-                          <div className="mb-4">
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.portfolioImagesHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioImagesHeading: e.target.value})} placeholder="e.g. Our Portfolio" />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-[9px] text-gray-500 mb-1 uppercase">Heading Alignment</label>
-                            <select className={glassInput + ' py-2 text-xs'} value={editingLandingPage.portfolioImagesAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioImagesAlign: e.target.value})}>
-                              <option value="left" className="bg-black text-white">Left</option>
-                              <option value="center" className="bg-black text-white">Center</option>
-                              <option value="right" className="bg-black text-white">Right</option>
-                            </select>
-                          </div>
-                          <DragDropImageUploader currentImage={''} multiple={true} disableCompression={true} onUploadSuccess={(urls) => {
-                            const newImgs = [...(editingLandingPage.portfolioImages || []), ...urls];
-                            setEditingLandingPage({...editingLandingPage, portfolioImages: newImgs});
-                          }} />
-                          <div className="mt-4 columns-2 sm:columns-3 gap-2 space-y-2">
-                            {(editingLandingPage.portfolioImages || []).map((img, idx) => (
-                              <div key={idx} className="relative group break-inside-avoid">
-                                <img src={img} className="w-full h-auto object-cover rounded border border-white/10" />
-                                <button type="button" onClick={() => {
-                                  const newImgs = [...editingLandingPage.portfolioImages];
-                                  newImgs.splice(idx, 1);
-                                  setEditingLandingPage({...editingLandingPage, portfolioImages: newImgs});
-                                }} className="absolute top-2 right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">×</button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        
-                        {/* PORTFOLIO VIDEOS */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                           <div className="flex justify-between items-center mb-4">
-                             <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase">Videos Gallery</h3>
-                             <label className="flex items-center gap-2 cursor-pointer">
-                               <input type="checkbox" className="form-checkbox text-emerald-500 rounded bg-black border-white/20" checked={editingLandingPage.showVideoGallery !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showVideoGallery: e.target.checked})} />
-                               <span className="text-[11px] uppercase text-gray-400 tracking-widest">Show Gallery</span>
-                             </label>
-                           </div>
-                           <div className="mb-4">
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Section Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.portfolioVideosHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioVideosHeading: e.target.value})} placeholder="e.g. Memorable Client Stories" />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-[9px] text-gray-500 mb-1 uppercase">Heading Alignment</label>
-                            <select className={glassInput + ' py-2 text-xs'} value={editingLandingPage.portfolioVideosAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioVideosAlign: e.target.value})}>
-                              <option value="left" className="bg-black text-white">Left</option>
-                              <option value="center" className="bg-black text-white">Center</option>
-                              <option value="right" className="bg-black text-white">Right</option>
-                            </select>
-                          </div>
-                           <div className="flex justify-between items-center mb-2">
-                             <label className="block text-xs uppercase text-gray-400">YouTube Links</label>
-                             <button type="button" onClick={() => {
-                               const newVids = [...(editingLandingPage.portfolioVideos || []), ''];
-                               setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
-                             }} className="text-[11px] uppercase text-emerald-400">+ Add Link</button>
-                           </div>
-                           <div className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar pr-2">
-                             {(editingLandingPage.portfolioVideos || []).map((vid, idx) => (
-                               <div key={idx} className="flex gap-2">
-                                 <input type="text" className={glassInput} placeholder="https://youtube.com/..." value={vid} onChange={e => {
-                                   const newVids = [...editingLandingPage.portfolioVideos];
-                                   newVids[idx] = e.target.value;
-                                   setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
-                                 }} />
-                                 <button type="button" onClick={() => {
-                                   const newVids = [...editingLandingPage.portfolioVideos];
-                                   newVids.splice(idx, 1);
-                                   setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
-                                 }} className="bg-red-500/20 text-red-400 px-3 rounded-xl hover:bg-red-500 hover:text-white transition-colors">×</button>
-                               </div>
-                             ))}
-                           </div>
-                        </div>
-
-                        </div>
-
-                        {/* PARALLAX FOOTER */}
-                        <div className="border-t border-white/5 pt-6 mt-6">
-                          <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase mb-4">Parallax Footer</h3>
-                          <div className="space-y-4">
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Heading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.parallaxFooter?.heading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), heading: e.target.value}})} placeholder="e.g. Ready to Begin Your Story?" />
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Subheading</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.parallaxFooter?.subheading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), subheading: e.target.value}})} placeholder="e.g. Starts From Just ₹3,999/-" />
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Button Text</label>
-                              <input type="text" className={glassInput} value={editingLandingPage.parallaxFooter?.buttonText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), buttonText: e.target.value}})} placeholder="e.g. Claim Your Spot Now" />
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Description</label>
-                              <textarea className={glassInput} value={editingLandingPage.parallaxFooter?.description || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), description: e.target.value}})} placeholder="e.g. Let us capture your beautiful moments..." rows="3"></textarea>
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Background Image</label>
-                              <DragDropImageUploader currentImage={editingLandingPage.parallaxFooter?.imageUrl || ''} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), imageUrl: url}})} />
-                            </div>
-                            <div>
-                              <label className="block text-xs uppercase text-gray-400 mb-2">Text Alignment</label>
-                              <select className={glassInput} value={editingLandingPage.parallaxFooter?.align || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), align: e.target.value}})}>
-                                <option value="left" className="bg-black text-white">Left</option>
-                                <option value="center" className="bg-black text-white">Center</option>
-                                <option value="right" className="bg-black text-white">Right</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-                        
-                        {/* 360 VIEWER IMAGES */}
-                        <div className="bg-[#1a1a1a] p-4 md:p-6 rounded-2xl border border-white/5 relative overflow-hidden group/card mb-8">
-                          <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase mb-4">360 Viewer Images</h3>
-                          <DragDropImageUploader 
-                            currentImage={''}
-                            multiple={true}
-                            disableCompression={true}
-                            onUploadSuccess={(urls) => {
-                              const newImages = Array.isArray(urls) ? urls : [urls];
-                              setEditingLandingPage({...editingLandingPage, threeSixtyImages: [...(editingLandingPage.threeSixtyImages || []), ...newImages]});
-                            }} 
-                          />
-                          <div className="grid grid-cols-2 gap-4 mt-4">
-                            {(editingLandingPage.threeSixtyImages || []).map((img, idx) => (
-                              <div key={idx} className="relative group">
-                                <img src={img} className="w-full aspect-video object-cover border border-white/20" alt="360" />
-                                <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, threeSixtyImages: editingLandingPage.threeSixtyImages.filter((_, i) => i !== idx)})} className="absolute top-2 right-2 bg-red-500/80 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center">×</button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* FLOATING BUTTONS */}
-                        <div className="border-t border-white/5 pt-6 mt-6 mb-6">
-                            <h3 className="text-sm text-gray-400 font-sans tracking-[0.2em] uppercase mb-4">Floating Buttons</h3>
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-xs uppercase text-gray-400 mb-2">Floating Bubble Text (Top)</label>
-                                    <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors text-xs" value={editingLandingPage.floatingBubbleText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, floatingBubbleText: e.target.value})} placeholder="e.g. Hurry, Limited Slots Available!" />
-                                </div>
-                                <div>
-                                    <label className="block text-xs uppercase text-gray-400 mb-2">Floating Button Text (Bottom)</label>
-                                    <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors text-xs" value={editingLandingPage.floatingButtonText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, floatingButtonText: e.target.value})} placeholder="e.g. BOOK NOW" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-end gap-3 pt-6 border-t border-white/5">
-                          <button type="button" onClick={() => setEditingLandingPage(null)} className="px-6 py-3 rounded-xl bg-white/5 text-xs uppercase hover:bg-white/10 transition-colors">Cancel</button>
-                          <button type="submit" disabled={isGlobalSubmitting} className="px-8 py-3 rounded-xl bg-emerald-500 text-white font-bold text-xs uppercase shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Landing Page'}</button>
-                        </div>
-                      </form>
-                    </motion.div>
-                  </div>
-                )}
 
                 {/* STUDIO TAB */}
                 {activeTab === 'studio' && (
@@ -2994,21 +2280,21 @@ const AdminDashboard = () => {
                 {/* SERVICES TAB */}
                 {activeTab === 'services' && (
                   <div className="space-y-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                       <div>
-                        <h2 className="text-2xl font-serif text-white tracking-wide mb-1 font-normal">Services Categories</h2>
-                        <p className="text-xs text-gray-400 tracking-wide">Manage your core services, hero banners, images, and videos.</p>
+                        <h2 className="text-2xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Services Categories</h2>
+                        <p className="text-xs text-neutral-500 tracking-wide font-sans">Manage your core services, hero banners, images, and videos.</p>
                       </div>
                       <button 
                         onClick={() => setEditingService({ title: '', name: '', slug: '', description: '', heroDescription: '', tagline: '', coverImage: '', imageUrl: '', coverImagePosition: '50% 50%', heroImages: [], heroImage: '', images: [], portfolioImages: [], videos: [], portfolioVideos: [], packages: [] })} 
-                        className="bg-white hover:bg-neutral-200 text-black font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-sm flex items-center gap-2 transition-colors shrink-0"
+                        className="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-xs shrink-0"
                       >
                         <span className="text-base leading-none">+</span> ADD SERVICE
                       </button>
                     </div>
 
                     <div className="relative max-w-xs">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                       </div>
                       <input 
@@ -3016,15 +2302,15 @@ const AdminDashboard = () => {
                         placeholder="Search services..." 
                         value={serviceSearch} 
                         onChange={(e) => setServiceSearch(e.target.value)} 
-                        className="w-full bg-[#111111] border border-white/10 rounded-md pl-9 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
+                        className="w-full bg-white border border-black/20 rounded-xl pl-9 pr-4 py-2 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs"
                       />
                     </div>
 
-                    <div className="bg-[#111111] border border-white/10 rounded-md overflow-hidden">
+                    <div className="bg-white border border-black/10 rounded-2xl shadow-xs overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                           <thead>
-                            <tr className="border-b border-white/10 bg-black/40 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                            <tr className="border-b border-black/10 bg-neutral-100/70 text-[11px] font-bold text-neutral-600 uppercase tracking-wider">
                               <th className="px-6 py-4">TITLE</th>
                               <th className="px-6 py-4">SLUG</th>
                               <th className="px-6 py-4 text-center">IMAGES</th>
@@ -3032,7 +2318,7 @@ const AdminDashboard = () => {
                               <th className="px-6 py-4 text-right">ACTIONS</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-white/5 text-xs text-gray-300">
+                          <tbody className="divide-y divide-black/5 text-xs text-[#0f0f12]">
                             {services
                               .filter(svc => {
                                 if (!serviceSearch) return true;
@@ -3043,30 +2329,30 @@ const AdminDashboard = () => {
                                 const imgCount = (svc.images && svc.images.length > 0) ? svc.images.length : (svc.portfolioImages?.length || 0);
                                 const vidCount = (svc.videos && svc.videos.length > 0) ? svc.videos.length : (svc.portfolioVideos?.length || 0);
                                 return (
-                                  <tr key={svc._id} className="hover:bg-white/[0.02] transition-colors">
-                                    <td className="px-6 py-4 font-semibold text-white">{svc.title || svc.name}</td>
-                                    <td className="px-6 py-4 font-mono text-gray-400">{svc.slug}</td>
-                                    <td className="px-6 py-4 text-center">{imgCount}</td>
-                                    <td className="px-6 py-4 text-center">{vidCount}</td>
+                                  <tr key={svc._id} className="hover:bg-neutral-50 transition-colors">
+                                    <td className="px-6 py-4 font-bold text-[#0f0f12]">{svc.title || svc.name}</td>
+                                    <td className="px-6 py-4 font-mono text-neutral-500">{svc.slug}</td>
+                                    <td className="px-6 py-4 text-center text-neutral-700 font-semibold">{imgCount}</td>
+                                    <td className="px-6 py-4 text-center text-neutral-700 font-semibold">{vidCount}</td>
                                     <td className="px-6 py-4 text-right">
                                       <div className="flex items-center justify-end gap-2">
                                         <button 
                                           onClick={() => { setMediaModalService(svc); setMediaModalTab('images'); }} 
-                                          className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                          className="p-1.5 text-neutral-500 hover:text-black transition-colors"
                                           title="Gallery / Media"
                                         >
                                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                         </button>
                                         <button 
                                           onClick={() => setEditingService(svc)} 
-                                          className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                          className="p-1.5 text-neutral-500 hover:text-black transition-colors"
                                           title="Edit Service"
                                         >
                                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                         </button>
                                         <button 
                                           onClick={() => handleDeleteService(svc._id)} 
-                                          className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+                                          className="p-1.5 text-neutral-400 hover:text-red-600 transition-colors"
                                           title="Delete Service"
                                         >
                                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -3078,7 +2364,7 @@ const AdminDashboard = () => {
                               })}
                             {services.length === 0 && (
                               <tr>
-                                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">No services found. Click "+ ADD SERVICE" to create one.</td>
+                                <td colSpan="5" className="px-6 py-8 text-center text-neutral-500">No services found. Click "+ ADD SERVICE" to create one.</td>
                               </tr>
                             )}
                           </tbody>
@@ -3090,29 +2376,29 @@ const AdminDashboard = () => {
 
                 {/* MEDIA MODAL */}
                 {mediaModalService && (
-                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+                  <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white border border-black/10 rounded-2xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl text-[#0f0f12]">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h2 className="text-2xl font-serif text-white tracking-wide">Media: {mediaModalService.title || mediaModalService.name}</h2>
-                          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">
+                          <h2 className="text-2xl font-mirage text-[#0f0f12] font-bold tracking-wide">Media: {mediaModalService.title || mediaModalService.name}</h2>
+                          <p className="text-[10px] text-neutral-500 tracking-widest uppercase mt-0.5 font-bold">
                             {((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images.length : (mediaModalService.portfolioImages?.length || 0))} IMAGES · {((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos.length : (mediaModalService.portfolioVideos?.length || 0))} VIDEOS
                           </p>
                         </div>
-                        <button type="button" onClick={() => setMediaModalService(null)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                        <button type="button" onClick={() => setMediaModalService(null)} className="text-neutral-400 hover:text-black text-2xl leading-none">&times;</button>
                       </div>
 
-                      <div className="flex border-b border-white/10 mb-6">
+                      <div className="flex border-b border-black/10 mb-6">
                         <button 
                           onClick={() => setMediaModalTab('images')}
-                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'images' ? 'border-white text-white' : 'border-transparent text-gray-400 hover:text-white'}`}
+                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'images' ? 'border-black text-black' : 'border-transparent text-neutral-400 hover:text-black'}`}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                           IMAGES ({((mediaModalService.images && mediaModalService.images.length > 0) ? mediaModalService.images.length : (mediaModalService.portfolioImages?.length || 0))})
                         </button>
                         <button 
                           onClick={() => setMediaModalTab('videos')}
-                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'videos' ? 'border-white text-white' : 'border-transparent text-gray-400 hover:text-white'}`}
+                          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${mediaModalTab === 'videos' ? 'border-black text-black' : 'border-transparent text-neutral-400 hover:text-black'}`}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                           VIDEOS ({((mediaModalService.videos && mediaModalService.videos.length > 0) ? mediaModalService.videos.length : (mediaModalService.portfolioVideos?.length || 0))})
@@ -3204,31 +2490,31 @@ const AdminDashboard = () => {
 
                 {/* EDIT SERVICE MODAL */}
                 {editingService && (
-                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-serif text-white tracking-wide">Edit Service</h2>
-                        <button type="button" onClick={() => setEditingService(null)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                  <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white border border-black/10 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl text-[#0f0f12]">
+                      <div className="flex justify-between items-center mb-6 border-b border-black/10 pb-4">
+                        <h2 className="text-xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">Edit Service</h2>
+                        <button type="button" onClick={() => setEditingService(null)} className="text-neutral-400 hover:text-black text-2xl leading-none">&times;</button>
                       </div>
 
                       <form onSubmit={(e) => handleSaveService(e, editingService)} className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">TITLE *</label>
+                            <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-1.5 tracking-wider">TITLE *</label>
                             <input 
                               type="text" 
                               required 
-                              className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                              className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] focus:outline-none focus:border-black [color-scheme:light] shadow-xs" 
                               value={editingService.title || editingService.name || ''} 
                               onChange={e => setEditingService({...editingService, title: e.target.value, name: e.target.value})} 
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">SLUG *</label>
+                            <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-1.5 tracking-wider">SLUG *</label>
                             <input 
                               type="text" 
                               required 
-                              className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                              className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] focus:outline-none focus:border-black [color-scheme:light] shadow-xs" 
                               value={editingService.slug || ''} 
                               onChange={e => setEditingService({...editingService, slug: e.target.value})} 
                             />
@@ -3236,33 +2522,33 @@ const AdminDashboard = () => {
                         </div>
 
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">DESCRIPTION *</label>
+                          <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-1.5 tracking-wider">DESCRIPTION *</label>
                           <textarea 
                             rows="3" 
                             required 
-                            className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                            className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] focus:outline-none focus:border-black [color-scheme:light] shadow-xs" 
                             value={editingService.description || ''} 
                             onChange={e => setEditingService({...editingService, description: e.target.value})}
                           ></textarea>
                         </div>
 
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-1.5">HERO PAGE TAGLINE (SHOWN ON SERVICE PAGE PARALLAX BANNER)</label>
+                          <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-1.5 tracking-wider">HERO PAGE TAGLINE (SHOWN ON SERVICE PAGE PARALLAX BANNER)</label>
                           <input 
                             type="text" 
                             placeholder='"Capturing Moments That Last Forever"' 
-                            className="w-full bg-[#161616] border border-white/10 rounded-md px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/30" 
+                            className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs" 
                             value={editingService.heroDescription || editingService.tagline || ''} 
                             onChange={e => setEditingService({...editingService, heroDescription: e.target.value, tagline: e.target.value})} 
                           />
                         </div>
 
                         {/* COVER IMAGE */}
-                        <div className="border border-white/10 rounded-md p-4 bg-[#161616]">
-                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-3">COVER IMAGE (SHOWN ON HOME / SERVICES LISTING)</label>
+                        <div className="border border-black/10 rounded-2xl p-4 bg-neutral-50">
+                          <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-3 tracking-wider">COVER IMAGE (SHOWN ON HOME / SERVICES LISTING)</label>
                           {(editingService.coverImage || editingService.imageUrl) ? (
                             <div className="space-y-2">
-                              <div className="relative w-48 mx-auto aspect-[3/4] rounded overflow-hidden border border-white/10 bg-black/40">
+                              <div className="relative w-48 mx-auto aspect-[3/4] rounded-xl overflow-hidden border border-black/10 bg-white shadow-xs">
                                 <img src={editingService.coverImage || editingService.imageUrl} className="w-full h-full object-cover" alt="Cover" />
                                 <button 
                                   type="button" 
@@ -3272,12 +2558,12 @@ const AdminDashboard = () => {
                                   &times;
                                 </button>
                               </div>
-                              <div className="flex justify-between items-center text-[11px] text-gray-400 px-1 pt-1">
+                              <div className="flex justify-between items-center text-[11px] text-neutral-500 font-medium px-1 pt-1">
                                 <span>POSITION: {editingService.coverImagePosition || '50% 50%'}</span>
                                 <button 
                                   type="button" 
                                   onClick={() => setEditingService({...editingService, coverImagePosition: '50% 50%'})} 
-                                  className="text-white hover:underline"
+                                  className="text-black font-bold hover:underline"
                                 >
                                   Reset to Center
                                 </button>
@@ -3292,8 +2578,8 @@ const AdminDashboard = () => {
                         </div>
 
                         {/* HERO BANNER IMAGES */}
-                        <div className="border border-white/10 rounded-md p-4 bg-[#161616]">
-                          <label className="block text-[11px] font-semibold uppercase text-gray-400 mb-3">HERO PARALLAX BANNER IMAGES (SELECT MULTIPLE IMAGES FOR SLIDESHOW)</label>
+                        <div className="border border-black/10 rounded-2xl p-4 bg-neutral-50">
+                          <label className="block text-[11px] font-bold uppercase text-neutral-500 mb-3 tracking-wider">HERO PARALLAX BANNER IMAGES (SELECT MULTIPLE IMAGES FOR SLIDESHOW)</label>
                           
                           <DragDropImageUploader 
                             currentImage="" 
@@ -3306,17 +2592,17 @@ const AdminDashboard = () => {
                             }} 
                             customLabel={
                               <div className="flex flex-col items-center justify-center py-6 text-center">
-                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-2 text-white/70">
+                                <div className="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center mb-2 text-neutral-700 shadow-xs">
                                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                 </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">ADD HERO BANNER IMAGES</span>
-                                <span className="text-[11px] text-gray-400 mt-1">Drag and drop or click to select</span>
+                                <span className="text-xs font-bold text-[#0f0f12] uppercase tracking-wider">ADD HERO BANNER IMAGES</span>
+                                <span className="text-[11px] text-neutral-400 mt-1">Drag and drop or click to select</span>
                               </div>
                             }
                           />
 
-                          <div className="bg-emerald-950/30 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold tracking-wider uppercase px-4 py-2.5 rounded-md flex items-center gap-2 mt-3">
-                            <span className="w-3.5 h-3.5 rounded-full border border-emerald-400 flex items-center justify-center text-[9px] font-bold">i</span>
+                          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold tracking-wider uppercase px-4 py-2.5 rounded-xl flex items-center gap-2 mt-3">
+                            <span className="w-3.5 h-3.5 rounded-full border border-emerald-800 flex items-center justify-center text-[9px] font-bold">i</span>
                             FILES ARE UPLOADED TO CLOUDINARY. THIS SAVES SPACE AND KEEPS YOUR SITE FAST!
                           </div>
 
@@ -3325,12 +2611,12 @@ const AdminDashboard = () => {
                               {(editingService.heroImages || (editingService.heroImage ? [editingService.heroImage] : [])).map((slideUrl, idx) => {
                                 const displayUrl = typeof slideUrl === 'string' ? slideUrl : (slideUrl?.url || '');
                                 return (
-                                <div key={idx} className="bg-[#111111] border border-white/10 p-2.5 rounded-md flex items-center justify-between gap-3">
+                                <div key={idx} className="bg-white border border-black/10 p-2.5 rounded-xl flex items-center justify-between gap-3 shadow-xs">
                                   <div className="flex items-center gap-3">
-                                    <img src={displayUrl} className="w-20 h-12 object-cover rounded border border-white/10" alt="Slide" />
+                                    <img src={displayUrl} className="w-20 h-12 object-cover rounded-lg border border-black/10" alt="Slide" />
                                     <div>
-                                      <div className="font-bold text-white text-xs uppercase tracking-wider">HERO SLIDE {idx + 1}</div>
-                                      <div className="text-[10px] text-gray-400">POSITION: 50% 29%</div>
+                                      <div className="font-bold text-[#0f0f12] text-xs uppercase tracking-wider">HERO SLIDE {idx + 1}</div>
+                                      <div className="text-[10px] text-neutral-400">POSITION: 50% 29%</div>
                                     </div>
                                   </div>
 
@@ -3340,7 +2626,7 @@ const AdminDashboard = () => {
                                       onClick={() => {
                                         // Reset slide position
                                       }} 
-                                      className="text-white hover:underline text-[11px]"
+                                      className="text-black font-bold hover:underline text-[11px]"
                                     >
                                       Reset to Center
                                     </button>
@@ -3351,7 +2637,7 @@ const AdminDashboard = () => {
                                         slides.splice(idx, 1);
                                         setEditingService({...editingService, heroImages: slides, heroImage: slides[0] || ''});
                                       }} 
-                                      className="text-gray-400 hover:text-red-400 p-1"
+                                      className="text-neutral-400 hover:text-red-600 p-1"
                                     >
                                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                     </button>
@@ -3367,7 +2653,7 @@ const AdminDashboard = () => {
                         <button 
                           type="submit" 
                           disabled={isGlobalSubmitting} 
-                          className="w-full bg-white hover:bg-neutral-200 text-black font-bold text-xs uppercase tracking-widest py-4 rounded-md transition-all disabled:opacity-50 mt-4"
+                          className="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest py-4 rounded-xl transition-all shadow-xs disabled:opacity-50 mt-4"
                         >
                           {isGlobalSubmitting ? 'SAVING...' : 'SAVE SERVICE'}
                         </button>
@@ -4754,21 +4040,21 @@ const AdminDashboard = () => {
                 {/* INQUIRIES TAB */}
                 {activeTab === 'inquiries' && (
                   <div className="space-y-6">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-orange-900/20 to-transparent p-6 rounded-2xl border border-orange-500/20">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
                       <div>
-                        <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Contact Inquiries</h2>
-                        <p className="text-xs text-orange-300/70 tracking-wide">Manage leads and messages from the contact page.</p>
+                        <h2 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Contact Inquiries</h2>
+                        <p className="text-xs text-neutral-500 font-sans tracking-wide">Manage leads and messages from the contact page.</p>
                       </div>
                       <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                         <input 
                           type="text" 
                           placeholder="Search Name, Email, Phone..." 
-                          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-white w-full md:w-64"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-xs text-[#0f0f12] outline-none focus:border-black w-full md:w-64 [color-scheme:light] shadow-xs"
                           value={inquirySearch}
                           onChange={e => setInquirySearch(e.target.value)}
                         />
                         <select 
-                          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none w-full md:w-auto uppercase tracking-widest"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-xs text-[#0f0f12] outline-none w-full md:w-auto uppercase tracking-widest focus:border-black [color-scheme:light] shadow-xs font-semibold"
                           value={inquiryFilter}
                           onChange={e => setInquiryFilter(e.target.value)}
                         >
@@ -4786,29 +4072,29 @@ const AdminDashboard = () => {
 
                     {/* STATS ROW */}
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-                      <div className="bg-black/40 border border-white/5 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Total Inquiries</p>
-                        <p className="text-2xl font-bold font-mirage text-white">{inquiries.length}</p>
+                      <div className="bg-white border border-black/10 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Total Inquiries</p>
+                        <p className="text-2xl font-bold font-mirage text-[#0f0f12]">{inquiries.length}</p>
                       </div>
-                      <div className="bg-black/40 border border-yellow-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Pending</p>
-                        <p className="text-2xl font-bold font-mirage text-yellow-500">{inquiries.filter(i => (i.status || '').toLowerCase() === 'pending').length}</p>
+                      <div className="bg-white border border-amber-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Pending</p>
+                        <p className="text-2xl font-bold font-mirage text-amber-600">{inquiries.filter(i => (i.status || '').toLowerCase() === 'pending').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-blue-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Contacted</p>
-                        <p className="text-2xl font-bold font-mirage text-blue-500">{inquiries.filter(i => (i.status || '').toLowerCase() === 'contacted').length}</p>
+                      <div className="bg-white border border-blue-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Contacted</p>
+                        <p className="text-2xl font-bold font-mirage text-blue-600">{inquiries.filter(i => (i.status || '').toLowerCase() === 'contacted').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-orange-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Negotiation</p>
-                        <p className="text-2xl font-bold font-mirage text-orange-500">{inquiries.filter(i => (i.status || '').toLowerCase() === 'negotiation').length}</p>
+                      <div className="bg-white border border-orange-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Negotiation</p>
+                        <p className="text-2xl font-bold font-mirage text-orange-600">{inquiries.filter(i => (i.status || '').toLowerCase() === 'negotiation').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-green-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Confirmed</p>
-                        <p className="text-2xl font-bold font-mirage text-green-500">{inquiries.filter(i => ['confirmed', 'converted'].includes((i.status || '').toLowerCase())).length}</p>
+                      <div className="bg-white border border-emerald-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Confirmed</p>
+                        <p className="text-2xl font-bold font-mirage text-emerald-600">{inquiries.filter(i => ['confirmed', 'converted'].includes((i.status || '').toLowerCase())).length}</p>
                       </div>
-                      <div className="bg-black/40 border border-red-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Cancelled / Lost</p>
-                        <p className="text-2xl font-bold font-mirage text-red-500">{inquiries.filter(i => ['cancelled', 'lost'].includes((i.status || '').toLowerCase())).length}</p>
+                      <div className="bg-white border border-rose-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Cancelled / Lost</p>
+                        <p className="text-2xl font-bold font-mirage text-rose-600">{inquiries.filter(i => ['cancelled', 'lost'].includes((i.status || '').toLowerCase())).length}</p>
                       </div>
                     </div>
 
@@ -4821,7 +4107,7 @@ const AdminDashboard = () => {
                     ) : (
                       <div className="flex flex-col gap-3">
                         {/* Header Row */}
-                        <div className="hidden md:flex items-center px-6 py-3 border-b border-white/5 text-[11px] text-gray-500 uppercase tracking-widest font-bold">
+                        <div className="hidden md:flex items-center px-6 py-3 border-b border-black/10 text-[11px] text-neutral-500 uppercase tracking-widest font-bold">
                           <div className="w-24">Lead ID</div>
                           <div className="flex-1">Client Info</div>
                           <div className="flex-[1.5]">Subject</div>
@@ -4832,27 +4118,27 @@ const AdminDashboard = () => {
 
                         {/* Data Rows */}
                         {filteredInquiries.map(inq => (
-                          <div id={`row-${inq._id}`} key={inq._id} className={`${glassPanel} p-4 md:px-6 flex flex-col md:flex-row md:items-center gap-4 transition-all duration-1000 ${highlightedItemId === inq._id ? '!bg-emerald-900/40 !border-emerald-500 !shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'hover:bg-white/5'}`}>
+                          <div id={`row-${inq._id}`} key={inq._id} className={`bg-white border border-black/10 rounded-2xl p-4 md:px-6 flex flex-col md:flex-row md:items-center gap-4 shadow-xs transition-all duration-1000 ${highlightedItemId === inq._id ? '!bg-emerald-50 !border-emerald-500 !shadow-md ring-2 ring-emerald-500/20' : 'hover:border-black/20'}`}>
                             {/* Lead ID */}
-                            <div className="w-24 text-xs font-sans text-gray-500 tracking-widest hidden md:block">
+                            <div className="w-24 text-xs font-sans font-bold text-neutral-500 tracking-widest hidden md:block">
                               #{inq._id.substring(inq._id.length - 6).toUpperCase()}
                             </div>
 
                             {/* Client Info */}
                             <div className="flex-1">
-                              <h3 className="text-sm text-white font-mirage uppercase tracking-widest truncate">{inq.name}</h3>
-                              <p className="text-[11px] text-gray-400 font-sans tracking-wider truncate">{inq.email}</p>
-                              <p className="text-[11px] text-gray-400 font-sans tracking-wider">{inq.phone}</p>
-                              {inq.createdAt && <p className="text-[10px] text-gray-600 font-sans tracking-wider mt-0.5">Submitted: {new Date(inq.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>}
+                              <h3 className="text-sm text-[#0f0f12] font-mirage uppercase tracking-widest truncate font-bold">{inq.name}</h3>
+                              <p className="text-[11px] text-neutral-600 font-sans tracking-wider truncate font-medium">{inq.email}</p>
+                              <p className="text-[11px] text-neutral-600 font-sans tracking-wider font-medium">{inq.phone}</p>
+                              {inq.createdAt && <p className="text-[10px] text-neutral-400 font-sans tracking-wider mt-0.5 font-semibold">Submitted: {new Date(inq.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>}
                             </div>
 
                             {/* Subject */}
                             <div className="flex-[1.5]">
-                              <p className="text-xs text-white font-bold tracking-wider truncate">{inq.subject}</p>
+                              <p className="text-xs text-[#0f0f12] font-bold tracking-wider truncate">{inq.subject}</p>
                             </div>
 
                             {/* Message */}
-                            <div className="flex-[2] text-xs text-gray-400 italic line-clamp-2 pr-4">
+                            <div className="flex-[2] text-xs text-neutral-700 italic font-medium line-clamp-2 pr-4">
                               {inq.message}
                             </div>
 
@@ -4907,18 +4193,18 @@ const AdminDashboard = () => {
                 {/* LEADS TAB */}
                 {activeTab === 'leads' && (
                   <div className="space-y-8">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-black/40 p-6 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-md gap-4">
-                      <h2 className="text-xl font-mirage text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 uppercase tracking-widest">Landing Page Leads</h2>
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl border border-black/10 shadow-sm gap-4">
+                      <h2 className="text-xl font-mirage text-[#0f0f12] uppercase tracking-widest font-bold">Landing Page Leads</h2>
                       <div className="flex flex-wrap items-center gap-2 md:gap-4 w-full md:w-auto">
                         <input 
                           type="text" 
                           placeholder="Search Name, Email, Phone..."
-                          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none w-full md:w-64"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-xs text-[#0f0f12] outline-none focus:border-black w-full md:w-64 [color-scheme:light] shadow-xs"
                           value={leadSearch}
                           onChange={(e) => setLeadSearch(e.target.value)}
                         />
                         <select 
-                          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none w-full md:w-auto uppercase tracking-widest"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-xs text-[#0f0f12] outline-none w-full md:w-auto uppercase tracking-widest focus:border-black [color-scheme:light] shadow-xs font-semibold"
                           value={leadFilter}
                           onChange={e => setLeadFilter(e.target.value)}
                         >
@@ -4936,29 +4222,29 @@ const AdminDashboard = () => {
 
                     {/* STATS ROW */}
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-                      <div className="bg-black/40 border border-white/5 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Total Leads</p>
-                        <p className="text-2xl font-bold font-mirage text-white">{leads.length}</p>
+                      <div className="bg-white border border-black/10 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Total Leads</p>
+                        <p className="text-2xl font-bold font-mirage text-[#0f0f12]">{leads.length}</p>
                       </div>
-                      <div className="bg-black/40 border border-emerald-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">New</p>
-                        <p className="text-2xl font-bold font-mirage text-emerald-500">{leads.filter(l => (l.status || '').toLowerCase() === 'new').length}</p>
+                      <div className="bg-white border border-emerald-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">New</p>
+                        <p className="text-2xl font-bold font-mirage text-emerald-600">{leads.filter(l => (l.status || '').toLowerCase() === 'new').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-blue-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Contacted</p>
-                        <p className="text-2xl font-bold font-mirage text-blue-500">{leads.filter(l => (l.status || '').toLowerCase() === 'contacted').length}</p>
+                      <div className="bg-white border border-blue-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Contacted</p>
+                        <p className="text-2xl font-bold font-mirage text-blue-600">{leads.filter(l => (l.status || '').toLowerCase() === 'contacted').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-yellow-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Pending</p>
-                        <p className="text-2xl font-bold font-mirage text-yellow-500">{leads.filter(l => (l.status || '').toLowerCase() === 'pending').length}</p>
+                      <div className="bg-white border border-amber-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Pending</p>
+                        <p className="text-2xl font-bold font-mirage text-amber-600">{leads.filter(l => (l.status || '').toLowerCase() === 'pending').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-orange-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Negotiation</p>
-                        <p className="text-2xl font-bold font-mirage text-orange-500">{leads.filter(l => (l.status || '').toLowerCase() === 'negotiation').length}</p>
+                      <div className="bg-white border border-orange-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Negotiation</p>
+                        <p className="text-2xl font-bold font-mirage text-orange-600">{leads.filter(l => (l.status || '').toLowerCase() === 'negotiation').length}</p>
                       </div>
-                      <div className="bg-black/40 border border-purple-500/20 p-4 rounded-xl">
-                        <p className="text-[11px] text-gray-500 uppercase tracking-widest mb-2">Confirmed</p>
-                        <p className="text-2xl font-bold font-mirage text-purple-500">{leads.filter(l => (l.status || '').toLowerCase() === 'confirmed').length}</p>
+                      <div className="bg-white border border-purple-500/30 p-4 rounded-xl shadow-xs">
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mb-2 font-bold">Confirmed</p>
+                        <p className="text-2xl font-bold font-mirage text-purple-600">{leads.filter(l => (l.status || '').toLowerCase() === 'confirmed').length}</p>
                       </div>
                     </div>
                     {leads.filter(l => {
@@ -5078,22 +4364,22 @@ const AdminDashboard = () => {
 
                 {activeTab === 'customers' && (
                   <div className="space-y-6">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-teal-900/20 to-transparent p-6 rounded-2xl border border-teal-500/20">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
                       <div>
-                        <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Customer Database</h2>
-                        <p className="text-xs text-teal-300/70 tracking-wide">Aggregated view of all clients from bookings and inquiries.</p>
+                        <h2 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Customer Database</h2>
+                        <p className="text-xs text-neutral-500 font-sans tracking-wide">Aggregated view of all clients from bookings and inquiries.</p>
                       </div>
                       <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                         <input 
                           type="text" 
                           placeholder="Search Customers..." 
-                          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-white w-full md:w-64"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-xs text-[#0f0f12] outline-none focus:border-black w-full md:w-64 [color-scheme:light] shadow-xs"
                           value={customersSearch}
                           onChange={e => setCustomersSearch(e.target.value)}
                         />
                         <button 
                           onClick={exportCustomersCSV}
-                          className="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(20,184,166,0.3)] whitespace-nowrap"
+                          className="px-4 py-2 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs whitespace-nowrap"
                         >
                           Export CSV
                         </button>
@@ -5131,23 +4417,23 @@ const AdminDashboard = () => {
                       return (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                           {customersList.length === 0 ? (
-                            <div className="col-span-full text-center py-20 text-gray-500 uppercase tracking-widest">No customers found.</div>
+                            <div className="col-span-full text-center py-20 text-neutral-400 font-sans uppercase tracking-widest font-bold">No customers found.</div>
                           ) : (
                             customersList.map((c, i) => (
                               <div key={i} className={`${glassPanel} p-6`}>
-                                <div className="mb-4 pb-4 border-b border-white/5">
-                                  <h3 className="text-xl text-white font-mirage uppercase tracking-widest">{c.name}</h3>
-                                  <p className="text-xs text-gray-400 font-sans mt-1">📞 {c.phone || 'No phone'}</p>
-                                  <p className="text-xs text-gray-400 font-sans mt-1">✉️ {c.email}</p>
+                                <div className="mb-4 pb-4 border-b border-black/10">
+                                  <h3 className="text-xl text-[#0f0f12] font-mirage uppercase tracking-widest font-bold">{c.name}</h3>
+                                  <p className="text-xs text-neutral-600 font-sans mt-1">📞 {c.phone || 'No phone'}</p>
+                                  <p className="text-xs text-neutral-600 font-sans mt-1">✉️ {c.email}</p>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                  <div className="bg-black/20 p-3 rounded-xl border border-white/5">
-                                    <p className="text-[9px] uppercase text-gray-500 mb-1">Bookings</p>
-                                    <p className="text-lg font-bold font-mirage text-white">{c.bookings.length}</p>
+                                  <div className="bg-neutral-50 p-3 rounded-xl border border-black/10">
+                                    <p className="text-[9px] uppercase text-neutral-500 mb-1 font-bold">Bookings</p>
+                                    <p className="text-lg font-bold font-mirage text-[#0f0f12]">{c.bookings.length}</p>
                                   </div>
-                                  <div className="bg-black/20 p-3 rounded-xl border border-white/5">
-                                    <p className="text-[9px] uppercase text-gray-500 mb-1">Inquiries</p>
-                                    <p className="text-lg font-bold font-mirage text-white">{c.inquiries.length}</p>
+                                  <div className="bg-neutral-50 p-3 rounded-xl border border-black/10">
+                                    <p className="text-[9px] uppercase text-neutral-500 mb-1 font-bold">Inquiries</p>
+                                    <p className="text-lg font-bold font-mirage text-[#0f0f12]">{c.inquiries.length}</p>
                                   </div>
                                 </div>
                               </div>
@@ -5249,30 +4535,30 @@ const AdminDashboard = () => {
           )}
           {activeTab === 'testimonials' && (
             <div className="space-y-6">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-amber-900/20 to-transparent p-6 rounded-2xl border border-amber-500/20">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
                 <div>
-                  <h2 className="text-lg font-mirage text-white uppercase tracking-widest mb-1">Testimonials Manager</h2>
-                  <p className="text-xs text-amber-300/70 tracking-wide">Manage client reviews shown on the Home Page.</p>
+                  <h2 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-1">Testimonials Manager</h2>
+                  <p className="text-xs text-neutral-500 font-sans tracking-wide">Manage client reviews shown on the Home Page.</p>
                 </div>
                 <button 
                   onClick={() => setEditingTestimonial({ authorName: '', reviewText: '', rating: 5, googleReviewUrl: '', isActive: true })} 
-                  className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] whitespace-nowrap"
+                  className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs whitespace-nowrap"
                 >
                   + Add Testimonial
                 </button>
               </div>
 
               {editingTestimonial && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                  <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={`${glassPanel} p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar border-amber-500/30`}>
-                    <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                      <h3 className="text-xl font-mirage text-white uppercase tracking-[0.2em]">{editingTestimonial._id ? 'Edit Testimonial' : 'Add New Testimonial'}</h3>
-                      <button onClick={() => setEditingTestimonial(null)} className="text-gray-400 hover:text-white text-2xl">&times;</button>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                  <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={`${glassPanel} p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar border-black/10 shadow-2xl`}>
+                    <div className="flex justify-between items-center mb-8 border-b border-black/10 pb-4">
+                      <h3 className="text-xl font-mirage text-[#0f0f12] font-bold uppercase tracking-[0.2em]">{editingTestimonial._id ? 'Edit Testimonial' : 'Add New Testimonial'}</h3>
+                      <button onClick={() => setEditingTestimonial(null)} className="text-neutral-400 hover:text-black text-2xl">&times;</button>
                     </div>
                   
                     <form onSubmit={(e) => handleSaveTestimonial(e, editingTestimonial)} className="space-y-6">
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Client Name(s)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Client Name(s)</label>
                         <input 
                           type="text" 
                           className={glassInput} 
@@ -5283,7 +4569,7 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Review Text</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Review Text</label>
                         <textarea 
                           className={`${glassInput} min-h-[120px]`} 
                           placeholder="Enter client quote..."
@@ -5293,7 +4579,7 @@ const AdminDashboard = () => {
                         ></textarea>
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Google Review URL (Optional)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Google Review URL (Optional)</label>
                         <input 
                           type="url" 
                           className={glassInput} 
@@ -5301,29 +4587,29 @@ const AdminDashboard = () => {
                           value={editingTestimonial.googleReviewUrl || ''} 
                           onChange={e => setEditingTestimonial({...editingTestimonial, googleReviewUrl: e.target.value})} 
                         />
-                        <p className="text-[11px] text-gray-600 uppercase tracking-widest mt-1">Paste the specific Google Review link to show a verified review link badge.</p>
+                        <p className="text-[11px] text-neutral-500 uppercase tracking-widest mt-1">Paste the specific Google Review link to show a verified review link badge.</p>
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Rating (1 to 5 Stars)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Rating (1 to 5 Stars)</label>
                         <select 
                           className={`${glassInput} appearance-none`}
                           value={editingTestimonial.rating || 5} 
                           onChange={e => setEditingTestimonial({...editingTestimonial, rating: parseInt(e.target.value)})}
                         >
-                          <option value="5" className="bg-black">5 Stars</option>
-                          <option value="4" className="bg-black">4 Stars</option>
-                          <option value="3" className="bg-black">3 Stars</option>
-                          <option value="2" className="bg-black">2 Stars</option>
-                          <option value="1" className="bg-black">1 Star</option>
+                          <option value="5" className="bg-white text-[#0f0f12]">5 Stars</option>
+                          <option value="4" className="bg-white text-[#0f0f12]">4 Stars</option>
+                          <option value="3" className="bg-white text-[#0f0f12]">3 Stars</option>
+                          <option value="2" className="bg-white text-[#0f0f12]">2 Stars</option>
+                          <option value="1" className="bg-white text-[#0f0f12]">1 Star</option>
                         </select>
                       </div>
                       <div className="flex items-center gap-2">
                         <input type="checkbox" id="isActive" checked={editingTestimonial.isActive !== false} onChange={e => setEditingTestimonial({...editingTestimonial, isActive: e.target.checked})} />
-                        <label htmlFor="isActive" className="text-xs uppercase text-gray-400 tracking-widest cursor-pointer">Visible on Home Page</label>
+                        <label htmlFor="isActive" className="text-xs uppercase text-neutral-600 tracking-widest cursor-pointer font-bold">Visible on Home Page</label>
                       </div>
-                      <div className="flex justify-end gap-3 pt-6 border-t border-white/5">
-                        <button type="button" onClick={() => setEditingTestimonial(null)} className="px-6 py-3 rounded-xl bg-white/5 text-xs uppercase hover:bg-white/10 transition-colors">Cancel</button>
-                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-amber-500 text-white font-bold text-xs uppercase hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                      <div className="flex justify-end gap-3 pt-6 border-t border-black/10">
+                        <button type="button" onClick={() => setEditingTestimonial(null)} className="px-6 py-3 rounded-xl bg-neutral-100 text-neutral-700 text-xs uppercase font-bold hover:bg-neutral-200 transition-colors">Cancel</button>
+                        <button type="submit" disabled={isGlobalSubmitting} className="px-6 py-3 rounded-xl bg-black text-white font-bold text-xs uppercase hover:bg-neutral-800 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                           {isGlobalSubmitting ? 'Saving...' : 'Save Testimonial'}
                         </button>
                       </div>
@@ -5339,27 +4625,27 @@ const AdminDashboard = () => {
                       <div className="flex justify-between items-start mb-6">
                         <div className="text-amber-500/60 text-5xl font-serif leading-none">"</div>
                         <div className="flex gap-2">
-                           <button onClick={() => setEditingTestimonial(t)} className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-amber-500 hover:scale-110 shadow-lg transition-all">
+                           <button onClick={() => setEditingTestimonial(t)} className="w-8 h-8 rounded-full bg-neutral-100 text-neutral-800 flex items-center justify-center hover:bg-neutral-900 hover:text-white transition-all shadow-xs">
                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                            </button>
-                           <button onClick={() => handleDeleteTestimonial(t._id)} className="w-8 h-8 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white hover:scale-110 shadow-lg transition-all">
+                           <button onClick={() => handleDeleteTestimonial(t._id)} className="w-8 h-8 rounded-full bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-xs">
                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                            </button>
                         </div>
                       </div>
                       
                       {t.googleReviewUrl && (
-                        <a href={t.googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-amber-500/30 text-amber-400 text-[11px] uppercase tracking-widest hover:bg-amber-500/10 transition-colors mb-6">
+                        <a href={t.googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-amber-500/40 text-amber-700 text-[11px] uppercase tracking-widest font-bold hover:bg-amber-50 transition-colors mb-6">
                           <span>G</span> GOOGLE REVIEW &#8599;
                         </a>
                       )}
 
-                      <div className="text-amber-400 text-sm mb-4">{'★'.repeat(t.rating || 5)}</div>
-                      <p className="text-sm text-gray-300 font-sans italic mb-8 leading-relaxed">"{t.reviewText}"</p>
+                      <div className="text-amber-500 text-sm mb-4">{'★'.repeat(t.rating || 5)}</div>
+                      <p className="text-sm text-neutral-700 font-sans italic mb-8 leading-relaxed">"{t.reviewText}"</p>
                     </div>
                     
-                    <div className="flex justify-between items-end border-t border-white/10 pt-6">
-                      <h4 className="text-amber-400 text-sm font-sans uppercase tracking-widest">{t.authorName}</h4>
+                    <div className="flex justify-between items-end border-t border-black/10 pt-6">
+                      <h4 className="text-[#0f0f12] text-sm font-sans font-bold uppercase tracking-widest">{t.authorName}</h4>
                     </div>
                   </div>
                 ))}
@@ -5369,65 +4655,65 @@ const AdminDashboard = () => {
 
           {/* TEAM MEMBERS TAB */}
           {activeTab === 'team' && (
-            <div className="p-10">
-              <div className="flex justify-between items-center mb-10">
-                <h2 className="text-2xl font-mirage text-white uppercase tracking-widest">Manage Team</h2>
-                <button onClick={() => setEditingTeamMember({ name: '', title: '', subtitle: '', imageUrl: '', order: 0 })} className="px-6 py-2 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-colors">
+            <div className="space-y-6">
+              <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-black/10 shadow-sm">
+                <h2 className="text-xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">Manage Team</h2>
+                <button onClick={() => setEditingTeamMember({ name: '', title: '', subtitle: '', imageUrl: '', order: 0 })} className="px-6 py-3 bg-black text-white font-bold uppercase tracking-widest text-xs hover:bg-neutral-800 transition-colors rounded-xl shadow-xs">
                   + Add Member
                 </button>
               </div>
 
               {editingTeamMember && (
-                <div className="bg-[#111] border border-white/10 p-8 mb-10">
-                  <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                    <h3 className="text-lg font-mirage text-white uppercase tracking-widest">{editingTeamMember._id ? 'Edit Team Member' : 'New Team Member'}</h3>
-                    <button onClick={() => setEditingTeamMember(null)} className="text-white hover:text-red-500 text-xl leading-none">&times;</button>
+                <div className="bg-white border border-black/10 rounded-2xl p-8 shadow-sm text-[#0f0f12]">
+                  <div className="flex justify-between items-center mb-8 border-b border-black/10 pb-4">
+                    <h3 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">{editingTeamMember._id ? 'Edit Team Member' : 'New Team Member'}</h3>
+                    <button onClick={() => setEditingTeamMember(null)} className="text-neutral-400 hover:text-black text-xl leading-none">&times;</button>
                   </div>
                   
                   <form onSubmit={(e) => handleSaveTeamMember(e, editingTeamMember)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Name</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Name</label>
                         <input 
                           type="text" 
                           required 
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className={glassInput} 
                           value={editingTeamMember.name || ''} 
                           onChange={e => setEditingTeamMember({...editingTeamMember, name: e.target.value})} 
                         />
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Title (e.g. Lead Artist)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Title (e.g. Lead Artist)</label>
                         <input 
                           type="text" 
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className={glassInput} 
                           value={editingTeamMember.title || ''} 
                           onChange={e => setEditingTeamMember({...editingTeamMember, title: e.target.value})} 
                         />
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Subtitle (e.g. Specialist)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Subtitle (e.g. Specialist)</label>
                         <input 
                           type="text" 
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className={glassInput} 
                           value={editingTeamMember.subtitle || ''} 
                           onChange={e => setEditingTeamMember({...editingTeamMember, subtitle: e.target.value})} 
                         />
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Display Order</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Display Order</label>
                         <input 
                           type="number" 
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className={glassInput} 
                           value={editingTeamMember.order || 0} 
                           onChange={e => setEditingTeamMember({...editingTeamMember, order: Number(e.target.value)})} 
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Email (For Assignment Notifications)</label>
+                        <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Email (For Assignment Notifications)</label>
                         <input 
                           type="email" 
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className={glassInput} 
                           value={editingTeamMember.email || ''} 
                           onChange={e => setEditingTeamMember({...editingTeamMember, email: e.target.value})} 
                         />
@@ -5435,7 +4721,7 @@ const AdminDashboard = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Profile Image</label>
+                      <label className="block text-xs uppercase text-neutral-500 mb-2 tracking-widest font-bold">Profile Image</label>
                       <DragDropImageUploader 
                         currentImage={editingTeamMember.imageUrl} 
                         onUploadSuccess={(url) => setEditingTeamMember({...editingTeamMember, imageUrl: url})} 
@@ -5472,12 +4758,14 @@ const AdminDashboard = () => {
                           <div>
                             <label className="block text-xs uppercase text-emerald-500/70 mb-3 tracking-widest">Select Permissions</label>
                             <div className="flex flex-col gap-4">
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-black/60 p-6 rounded border border-white/5">
-                                {['dashboard', 'leads', 'inquiries', 'follow ups', 'studio bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'developer options', 'add partner'].map(perm => (
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-neutral-50 p-6 rounded-2xl border border-black/10">
+                                {['dashboard', 'leads', 'quotes', 'inquiries', 'follow ups', 'studio bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options', 'add partner']
+                                  .filter(perm => perm === 'add partner' || featureEnabledTabs.includes(perm))
+                                  .map(perm => (
                                   <label key={perm} className="flex items-center gap-2 cursor-pointer group">
                                     <input 
                                       type="checkbox" 
-                                      className="accent-emerald-500"
+                                      className="accent-black rounded"
                                       checked={(editingTeamMember.permissions || []).includes(perm)}
                                       onChange={(e) => {
                                         const perms = new Set(editingTeamMember.permissions || []);
@@ -5486,18 +4774,24 @@ const AdminDashboard = () => {
                                         setEditingTeamMember({...editingTeamMember, permissions: Array.from(perms)});
                                       }}
                                     />
-                                    <span className="text-xs text-white uppercase">{perm}</span>
+                                    <span className="text-xs text-[#0f0f12] font-semibold uppercase">{perm}</span>
                                   </label>
                                 ))}
                               </div>
-                              <div className="bg-purple-500/5 border border-purple-500/20 p-6 rounded">
-                                <label className="block text-[10px] uppercase text-purple-400 mb-3 tracking-widest font-bold">Business Module</label>
+                              <div className="bg-purple-50/80 border border-purple-200 p-6 rounded-2xl">
+                                <label className="block text-[10px] uppercase text-purple-800 mb-3 tracking-widest font-bold">Business Module</label>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                  {['business', 'overview', 'studio shoots', 'props rentals', 'events'].map(perm => (
+                                  {['business', 'overview', 'studio shoots', 'props rentals', 'events']
+                                    .filter(perm => {
+                                      if (perm === 'props rentals' && siteConfig.features.rentals === false) return false;
+                                      if (perm === 'events' && siteConfig.features.events === false) return false;
+                                      return true;
+                                    })
+                                    .map(perm => (
                                     <label key={perm} className="flex items-center gap-2 cursor-pointer group">
                                       <input 
                                         type="checkbox" 
-                                        className="accent-purple-500"
+                                        className="accent-purple-700 rounded"
                                         checked={(editingTeamMember.permissions || []).includes(perm)}
                                         onChange={(e) => {
                                           const perms = new Set(editingTeamMember.permissions || []);
@@ -5506,7 +4800,7 @@ const AdminDashboard = () => {
                                           setEditingTeamMember({...editingTeamMember, permissions: Array.from(perms)});
                                         }}
                                       />
-                                      <span className="text-xs text-white uppercase">{perm}</span>
+                                      <span className="text-xs text-purple-950 font-semibold uppercase">{perm}</span>
                                     </label>
                                   ))}
                                 </div>
@@ -5517,11 +4811,11 @@ const AdminDashboard = () => {
                       )}
                     </div>
                     
-                    <div className="flex gap-4 pt-4 border-t border-white/10 mt-6">
-                      <button type="submit" disabled={isGlobalSubmitting} className="px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <div className="flex gap-4 pt-4 border-t border-black/10 mt-6">
+                      <button type="submit" disabled={isGlobalSubmitting} className="px-8 py-3 bg-black text-white font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-neutral-800 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         {isGlobalSubmitting ? 'Saving...' : 'Save Team Member'}
                       </button>
-                      <button type="button" onClick={() => setEditingTeamMember(null)} className="px-8 py-3 border border-white/20 text-white uppercase tracking-widest text-xs hover:bg-white/5">CANCEL</button>
+                      <button type="button" onClick={() => setEditingTeamMember(null)} className="px-8 py-3 border border-black/20 text-neutral-700 uppercase tracking-widest text-xs font-bold rounded-xl hover:bg-neutral-100 transition-colors">CANCEL</button>
                     </div>
                   </form>
                 </div>
@@ -5529,23 +4823,23 @@ const AdminDashboard = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {teamMembers.sort((a,b) => a.order - b.order).map(member => (
-                  <div key={member._id} className="bg-[#111] border border-white/10 p-4 group">
-                    <div className="aspect-[3/4] relative overflow-hidden mb-4 bg-black">
+                  <div key={member._id} className="bg-white border border-black/10 rounded-2xl p-4 shadow-sm group">
+                    <div className="aspect-[3/4] relative overflow-hidden mb-4 bg-neutral-100 rounded-xl">
                       {member.imageUrl && (
-                        <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover filter grayscale group-hover:scale-105 transition-transform duration-[2s]" />
+                        <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
                       )}
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                        <button onClick={() => setEditingTeamMember(member)} className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
+                        <button onClick={() => setEditingTeamMember(member)} className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform shadow-md">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                         </button>
-                        <button onClick={() => handleDeleteTeamMember(member._id)} className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition-transform">
+                        <button onClick={() => handleDeleteTeamMember(member._id)} className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-md">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                       </div>
                     </div>
-                    <h4 className="text-white font-mirage uppercase tracking-widest text-lg mb-1">{member.name}</h4>
-                    <p className="text-xs font-sans tracking-[0.3em] text-emerald-400 uppercase">{member.title}</p>
-                    <p className="text-[11px] text-gray-400 mt-2 font-light leading-relaxed">{member.subtitle}</p>
+                    <h4 className="text-[#0f0f12] font-mirage font-bold uppercase tracking-widest text-lg mb-1">{member.name}</h4>
+                    <p className="text-xs font-sans tracking-[0.2em] text-emerald-600 uppercase font-bold">{member.title}</p>
+                    <p className="text-[11px] text-neutral-500 mt-2 font-light leading-relaxed">{member.subtitle}</p>
                   </div>
                 ))}
               </div>
@@ -5555,24 +4849,24 @@ const AdminDashboard = () => {
           
           {/* PERMISSIONS TAB */}
           {activeTab === 'permissions' && (
-            <div className="p-10 max-w-5xl">
-              <div className="flex justify-between items-center mb-10">
-                <h2 className="text-2xl font-mirage text-white uppercase tracking-widest">Admin Permissions</h2>
-                <div className="flex justify-end gap-4">
-                  <button onClick={() => setEditingPartner({name: '', sharePercentage: 0})} className="px-6 py-2 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-colors">
+            <div className="p-6 md:p-10 max-w-5xl">
+              <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-xs flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">Admin Permissions</h2>
+                <div className="flex justify-end gap-3">
+                  <button onClick={() => setEditingPartner({name: '', sharePercentage: 0})} className="px-5 py-2.5 bg-black hover:bg-neutral-800 text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all shadow-xs">
                     + Add Partner
                   </button>
-                  <button onClick={() => setEditingAdminUser({ email: '', password: '', permissions: [] })} className="px-6 py-2 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-colors">
+                  <button onClick={() => setEditingAdminUser({ email: '', password: '', permissions: [] })} className="px-5 py-2.5 bg-black hover:bg-neutral-800 text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all shadow-xs">
                     + Add Admin User
                   </button>
                 </div>
               </div>
 
               {editingAdminUser && (
-                <div className="bg-[#111] border border-white/10 p-8 mb-10">
-                  <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                    <h3 className="text-lg font-mirage text-white uppercase tracking-widest">{editingAdminUser._id ? 'Edit Admin User' : 'New Admin User'}</h3>
-                    <button onClick={() => setEditingAdminUser(null)} className="text-white hover:text-red-500 text-xl leading-none">&times;</button>
+                <div className="bg-white border border-black/10 rounded-2xl shadow-sm p-8 mb-10 text-[#0f0f12]">
+                  <div className="flex justify-between items-center mb-8 border-b border-black/10 pb-4">
+                    <h3 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">{editingAdminUser._id ? 'Edit Admin User' : 'New Admin User'}</h3>
+                    <button onClick={() => setEditingAdminUser(null)} className="text-neutral-400 hover:text-red-600 text-xl leading-none">&times;</button>
                   </div>
                   
                   <form onSubmit={async (e) => {
@@ -5595,22 +4889,22 @@ const AdminDashboard = () => {
                   }} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Admin Email</label>
+                        <label className="block text-xs uppercase text-neutral-500 font-bold mb-2 tracking-widest">Admin Email</label>
                         <input 
                           type="email" 
                           required
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className="w-full bg-white border border-black/20 rounded-xl p-3.5 text-[#0f0f12] text-xs outline-none focus:border-black transition-colors [color-scheme:light] shadow-xs" 
                           value={editingAdminUser.email || ''} 
                           onChange={e => setEditingAdminUser({...editingAdminUser, email: e.target.value})} 
                           placeholder="admin@example.com"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs uppercase text-gray-500 mb-2 tracking-widest">Password</label>
+                        <label className="block text-xs uppercase text-neutral-500 font-bold mb-2 tracking-widest">Password</label>
                         <input 
                           type="password" 
                           required={!editingAdminUser._id}
-                          className="w-full bg-black border border-white/10 p-4 text-white outline-none focus:border-white/50 transition-colors" 
+                          className="w-full bg-white border border-black/20 rounded-xl p-3.5 text-[#0f0f12] text-xs outline-none focus:border-black transition-colors [color-scheme:light] shadow-xs" 
                           value={editingAdminUser.password || ''} 
                           onChange={e => setEditingAdminUser({...editingAdminUser, password: e.target.value})} 
                           placeholder={editingAdminUser._id ? "Leave blank to keep existing" : "Required"}
@@ -5619,17 +4913,18 @@ const AdminDashboard = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-xs uppercase text-gray-500 mb-4 tracking-widest">Assign Permissions</label>
+                      <label className="block text-xs uppercase text-neutral-500 font-bold mb-4 tracking-widest">Assign Permissions</label>
                       <div className="flex flex-col gap-4">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white/5 border border-white/10 rounded">
-                          {['dashboard', 'leads', 'inquiries', 'follow ups', 'studio bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options', 'add partner']
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-neutral-50 border border-black/10 rounded-2xl">
+                          {['dashboard', 'leads', 'quotes', 'inquiries', 'follow ups', 'studio bookings', 'calendar', 'slots', 'customers', 'testimonials', 'team', 'cms', 'hero', 'landing pages', 'studio', 'services', 'themes', 'gallery', 'client gallery', 'permissions', 'developer options', 'add partner']
+                            .filter(perm => perm === 'add partner' || featureEnabledTabs.includes(perm))
                             .filter(perm => isSuperAdmin || userPermissions.includes(perm))
                             .map(perm => (
                             <label key={perm} className={`flex items-center gap-3 ${storedUser.email === editingAdminUser.email ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}>
                               <input 
                                 type="checkbox" 
                                 disabled={storedUser.email === editingAdminUser.email}
-                                className="w-4 h-4 accent-white disabled:opacity-50"
+                                className="w-4 h-4 accent-black disabled:opacity-50 rounded"
                                 checked={(editingAdminUser.permissions || []).includes(perm)}
                                 onChange={(e) => {
                                   const perms = new Set(editingAdminUser.permissions || []);
@@ -5638,21 +4933,26 @@ const AdminDashboard = () => {
                                   setEditingAdminUser({...editingAdminUser, permissions: Array.from(perms)});
                                 }}
                               />
-                              <span className="text-xs text-white uppercase tracking-widest">{perm}</span>
+                              <span className="text-xs text-[#0f0f12] font-semibold uppercase tracking-widest">{perm}</span>
                             </label>
                           ))}
                         </div>
-                        <div className="p-6 bg-purple-500/5 border border-purple-500/30 rounded">
-                          <label className="block text-[10px] uppercase text-purple-400 mb-4 tracking-widest font-bold">Business Module</label>
+                        <div className="p-6 bg-purple-50/80 border border-purple-200 rounded-2xl">
+                          <label className="block text-[10px] uppercase text-purple-800 mb-4 tracking-widest font-bold">Business Module</label>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {['business', 'overview', 'studio shoots', 'props rentals', 'events']
+                              .filter(perm => {
+                                if (perm === 'props rentals' && siteConfig.features.rentals === false) return false;
+                                if (perm === 'events' && siteConfig.features.events === false) return false;
+                                return true;
+                              })
                               .filter(perm => isSuperAdmin || userPermissions.includes(perm))
                               .map(perm => (
                               <label key={perm} className={`flex items-center gap-3 ${storedUser.email === editingAdminUser.email ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}>
                                 <input 
                                   type="checkbox" 
                                   disabled={storedUser.email === editingAdminUser.email}
-                                  className="w-4 h-4 accent-purple-500 disabled:opacity-50"
+                                  className="w-4 h-4 accent-purple-700 disabled:opacity-50 rounded"
                                   checked={(editingAdminUser.permissions || []).includes(perm)}
                                   onChange={(e) => {
                                     const perms = new Set(editingAdminUser.permissions || []);
@@ -5661,7 +4961,7 @@ const AdminDashboard = () => {
                                     setEditingAdminUser({...editingAdminUser, permissions: Array.from(perms)});
                                   }}
                                 />
-                                <span className="text-xs text-white uppercase tracking-widest">{perm}</span>
+                                <span className="text-xs text-purple-950 font-semibold uppercase tracking-widest">{perm}</span>
                               </label>
                             ))}
                           </div>
@@ -5669,37 +4969,37 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     
-                    <div className="flex gap-4 pt-4 border-t border-white/10 mt-6">
-                      <button type="submit" className="px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-gray-200">
+                    <div className="flex gap-4 pt-4 border-t border-black/10 mt-6">
+                      <button type="submit" className="px-8 py-3 bg-black hover:bg-neutral-800 text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all shadow-xs">
                         Save Admin User
                       </button>
-                      <button type="button" onClick={() => setEditingAdminUser(null)} className="px-8 py-3 border border-white/20 text-white uppercase tracking-widest text-xs hover:bg-white/5">CANCEL</button>
+                      <button type="button" onClick={() => setEditingAdminUser(null)} className="px-8 py-3 border border-black/20 text-neutral-700 uppercase tracking-widest text-xs rounded-xl hover:bg-neutral-100 transition-all">CANCEL</button>
                     </div>
                   </form>
                 </div>
               )}
 
-              <div className="bg-[#111] border border-white/10 overflow-hidden">
-                <table className="w-full text-left font-sans text-sm">
-                  <thead className="bg-white/5 text-xs uppercase font-mirage tracking-[0.1em] text-gray-400">
+              <div className="bg-white border border-black/10 rounded-2xl shadow-xs overflow-hidden">
+                <table className="w-full text-left font-sans text-xs">
+                  <thead className="bg-neutral-100/70 text-xs uppercase font-mirage tracking-[0.1em] text-neutral-600 font-bold border-b border-black/10">
                     <tr>
                       <th className="px-6 py-4">Admin Email</th>
                       <th className="px-6 py-4">Permissions</th>
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-black/5 text-[#0f0f12]">
                     {adminUsers.map(user => (
-                      <tr key={user._id} className="hover:bg-white/5 transition-colors">
-                        <td className="px-6 py-4 text-white font-bold">{user.email}</td>
+                      <tr key={user._id} className="hover:bg-neutral-50 transition-colors">
+                        <td className="px-6 py-4 text-[#0f0f12] font-bold">{user.email}</td>
                         <td className="px-6 py-4">
                           <div className="flex flex-wrap gap-2">
                             {user.isSuperAdmin ? (
-                              <span className="px-2 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[9px] uppercase tracking-widest rounded">Super Admin</span>
+                              <span className="px-2.5 py-1 bg-purple-100 text-purple-800 border border-purple-200 text-[9px] font-bold uppercase tracking-widest rounded-md">Super Admin</span>
                             ) : (
                               user.permissions?.length > 0 ? user.permissions.map(p => (
-                                <span key={p} className="px-2 py-1 bg-white/10 text-gray-300 border border-white/10 text-[9px] uppercase tracking-widest rounded">{p}</span>
-                              )) : <span className="text-gray-500 italic text-xs">No permissions</span>
+                                <span key={p} className="px-2.5 py-1 bg-neutral-100 text-neutral-800 border border-black/10 text-[9px] font-semibold uppercase tracking-widest rounded-md">{p}</span>
+                              )) : <span className="text-neutral-400 italic text-xs">No permissions</span>
                             )}
                           </div>
                         </td>
@@ -5707,7 +5007,7 @@ const AdminDashboard = () => {
                           <div className="flex justify-end gap-3">
                             {!user.isSuperAdmin && (
                               <>
-                                <button onClick={() => setEditingAdminUser(user)} className="text-gray-400 hover:text-white uppercase text-xs tracking-widest transition-colors">Edit</button>
+                                <button onClick={() => setEditingAdminUser(user)} className="text-neutral-500 hover:text-black uppercase text-xs font-bold tracking-widest transition-colors">Edit</button>
                                 <button 
                                   onClick={async () => {
                                     if(window.confirm('Are you sure you want to delete this admin user?')) {
@@ -5721,7 +5021,7 @@ const AdminDashboard = () => {
                                       }
                                     }
                                   }} 
-                                  className="text-red-500 hover:text-red-400 uppercase text-xs tracking-widest transition-colors"
+                                  className="text-red-600 hover:text-red-700 uppercase text-xs font-bold tracking-widest transition-colors"
                                 >Delete</button>
                               </>
                             )}
@@ -5731,7 +5031,7 @@ const AdminDashboard = () => {
                     ))}
                     {adminUsers.length === 0 && (
                       <tr>
-                        <td colSpan="3" className="px-6 py-8 text-center text-gray-500 italic">No admin users found.</td>
+                        <td colSpan="3" className="px-6 py-8 text-center text-neutral-400 italic">No admin users found.</td>
                       </tr>
                     )}
                   </tbody>
@@ -5742,35 +5042,37 @@ const AdminDashboard = () => {
 
           {/* DEVELOPER OPTIONS TAB */}
           {activeTab === 'developer options' && (
-            <div className="p-10 max-w-4xl">
-              <h2 className="text-2xl font-mirage text-white uppercase tracking-widest mb-10 border-b border-white/10 pb-4">
-                Developer Options
-              </h2>
+            <div className="p-6 md:p-10 max-w-4xl">
+              <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-xs mb-8">
+                <h2 className="text-2xl font-mirage text-[#0f0f12] uppercase tracking-widest font-bold">
+                  Developer Options
+                </h2>
+              </div>
               
               <div className={`${glassPanel} p-8 mb-8`}>
-                  <h3 className="text-xl font-mirage text-white uppercase tracking-widest mb-2">
+                  <h3 className="text-xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-2">
                     Portfolio Mode Settings
                   </h3>
-                  <p className="text-sm font-sans text-gray-400 tracking-wider leading-relaxed mb-6">
+                  <p className="text-sm font-sans text-neutral-600 tracking-wider leading-relaxed mb-6">
                     Add website domains (e.g., your portfolio, linkedin.com) that will trigger read-only mode for visitors. When active, forms and booking submissions will be disabled, and a disclaimer will be shown.
                   </p>
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 mb-2">Allowed Referrers (comma separated)</label>
+                    <label className="block text-xs uppercase text-neutral-500 font-bold mb-2 tracking-widest">Allowed Referrers (comma separated)</label>
                     <textarea 
-                      className={`${glassInput} mb-6`} 
+                      className="w-full bg-white border border-black/20 rounded-xl p-4 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs mb-6" 
                       rows="2" 
                       placeholder="e.g. saiprasanth.com, linkedin.com" 
                       value={settings.portfolioReferrers ? settings.portfolioReferrers.join(', ') : ''} 
                       onChange={e => setSettings({...settings, portfolioReferrers: e.target.value.split(',').map(r => r.trim()).filter(r => r)})}
                     />
 
-                    <label className="block text-[10px] uppercase text-gray-500 mb-3 tracking-widest">Displays</label>
+                    <label className="block text-[10px] uppercase text-neutral-500 font-bold mb-3 tracking-widest">Displays</label>
                     <div className="space-y-4 mb-6">
                       {(settings.displays || []).map((disp, idx) => (
                         <div key={idx} className="flex gap-4 items-center">
                           <input 
                             type="text" 
-                            className="w-full bg-[#111] border border-white/10 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-white/30"
+                            className="w-full bg-white border border-black/20 rounded-xl px-4 py-3 text-[#0f0f12] text-xs focus:outline-none focus:border-black [color-scheme:light] shadow-xs"
                             placeholder="Website Link"
                             value={disp.websiteLink}
                             onChange={e => {
@@ -5781,7 +5083,7 @@ const AdminDashboard = () => {
                           />
                           <input 
                             type="text" 
-                            className="w-full bg-[#111] border border-white/10 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-white/30"
+                            className="w-full bg-white border border-black/20 rounded-xl px-4 py-3 text-[#0f0f12] text-xs focus:outline-none focus:border-black [color-scheme:light] shadow-xs"
                             placeholder="Description"
                             value={disp.description}
                             onChange={e => {
@@ -5796,7 +5098,7 @@ const AdminDashboard = () => {
                               const newDisplays = (settings.displays || []).filter((_, i) => i !== idx);
                               setSettings({...settings, displays: newDisplays});
                             }}
-                            className="text-red-500 hover:text-red-400 p-2 text-lg"
+                            className="text-red-500 hover:text-red-700 p-2 text-lg font-bold"
                           >
                             ✕
                           </button>
@@ -5810,7 +5112,7 @@ const AdminDashboard = () => {
                           const newDisplays = [...(settings.displays || []), { websiteLink: '', description: '' }];
                           setSettings({...settings, displays: newDisplays});
                         }}
-                        className="px-6 py-3 border border-white/10 bg-[#111] text-white text-xs uppercase tracking-widest hover:bg-white/5 rounded"
+                        className="px-6 py-3 border border-black/20 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
                       >
                         + Add Display
                       </button>
@@ -5834,7 +5136,7 @@ const AdminDashboard = () => {
                           alert('Failed to save settings');
                         }
                       }}
-                      className="px-6 py-3 rounded bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-gray-200 transition-all"
+                      className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xs"
                     >
                       Save Referrers
                     </button>
@@ -5842,11 +5144,11 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className={`${glassPanel} p-8 mb-8`}>
-                <h3 className="text-xl font-mirage text-white uppercase tracking-widest mb-2 flex items-center gap-3">
-                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                <h3 className="text-xl font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-2 flex items-center gap-3">
+                  <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></span>
                   Maintenance Mode
                 </h3>
-                <p className="text-sm font-sans text-gray-400 tracking-wider leading-relaxed mb-8">
+                <p className="text-sm font-sans text-neutral-600 tracking-wider leading-relaxed mb-8">
                   When enabled, all public pages will be intercepted by a Maintenance screen. Only the `/admin` portal will remain accessible. Use this when performing critical updates.
                 </p>
 
@@ -5871,20 +5173,20 @@ const AdminDashboard = () => {
                           }
                         }}
                       />
-                      <div className="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
+                      <div className="w-14 h-7 bg-neutral-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
                     </label>
-                    <span className={`text-sm font-bold uppercase tracking-widest ${settings.maintenanceMode ? 'text-red-500' : 'text-gray-500'}`}>
+                    <span className={`text-sm font-bold uppercase tracking-widest ${settings.maintenanceMode ? 'text-red-600' : 'text-neutral-500'}`}>
                       {settings.maintenanceMode ? 'ACTIVE' : 'INACTIVE'}
                     </span>
                   </div>
 
                   {settings.maintenanceMode && (
-                    <div className="bg-black/30 p-6 rounded-xl border border-white/5">
-                      <label className="block text-xs uppercase text-gray-400 tracking-widest mb-3">Expected End Time (Optional)</label>
+                    <div className="bg-neutral-50 p-6 rounded-2xl border border-black/10">
+                      <label className="block text-xs uppercase text-neutral-500 font-bold tracking-widest mb-3">Expected End Time (Optional)</label>
                       <div className="flex items-center gap-4">
                         <input 
                           type="datetime-local" 
-                          className="bg-black/50 border border-white/10 rounded px-4 py-2 text-white text-sm outline-none focus:border-white/30 [&::-webkit-calendar-picker-indicator]:invert"
+                          className="bg-white border border-black/20 rounded-xl px-4 py-2 text-[#0f0f12] text-xs outline-none focus:border-black [color-scheme:light] shadow-xs"
                           value={settings.maintenanceEndTime ? new Date(new Date(settings.maintenanceEndTime).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0,16) : ''}
                           onChange={async (e) => {
                             const dateVal = e.target.value ? new Date(e.target.value).toISOString() : null;
@@ -5912,12 +5214,12 @@ const AdminDashboard = () => {
                               console.error(error);
                             }
                           }}
-                          className="text-xs text-red-400 uppercase tracking-widest hover:text-red-300"
+                          className="text-xs text-red-600 font-bold uppercase tracking-widest hover:text-red-700"
                         >
                           Clear
                         </button>
                       </div>
-                      <p className="text-[11px] text-gray-500 mt-2 italic">If set, a countdown timer will appear on the maintenance screen.</p>
+                      <p className="text-[11px] text-neutral-500 mt-2 italic">If set, a countdown timer will appear on the maintenance screen.</p>
                     </div>
                   )}
                 </div>
@@ -5925,8 +5227,8 @@ const AdminDashboard = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className={`${glassPanel} p-8 flex flex-col items-start`}>
-                  <h3 className="text-lg font-mirage text-white uppercase tracking-widest mb-2">Admin Bypass</h3>
-                  <p className="text-xs text-gray-400 mb-6 font-sans">
+                  <h3 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-2">Admin Bypass</h3>
+                  <p className="text-xs text-neutral-600 mb-6 font-sans">
                     Enable bypass to view the public website while Maintenance Mode is active.
                   </p>
                   <button 
@@ -5934,15 +5236,15 @@ const AdminDashboard = () => {
                       localStorage.setItem('adminBypass', 'true');
                       window.open('/', '_blank');
                     }}
-                    className="px-6 py-3 bg-white text-black text-xs font-bold uppercase tracking-widest rounded hover:bg-gray-200 transition-colors"
+                    className="px-6 py-3 bg-black hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-xs"
                   >
                     Preview Website
                   </button>
                 </div>
 
                 <div className={`${glassPanel} p-8 flex flex-col items-start`}>
-                  <h3 className="text-lg font-mirage text-white uppercase tracking-widest mb-2">System Cache</h3>
-                  <p className="text-xs text-gray-400 mb-6 font-sans">
+                  <h3 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-2">System Cache</h3>
+                  <p className="text-xs text-neutral-600 mb-6 font-sans">
                     Clear local browser cache, saved preferences, and admin bypass flags.
                   </p>
                   <button 
@@ -5951,16 +5253,16 @@ const AdminDashboard = () => {
                       alert('System cache cleared successfully. You may need to log in again if auth relies on it.');
                       window.location.reload();
                     }}
-                    className="px-6 py-3 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white text-xs font-bold uppercase tracking-widest rounded transition-colors"
+                    className="px-6 py-3 border border-red-500/50 text-red-600 hover:bg-red-600 hover:text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-colors"
                   >
                     Clear Cache
                   </button>
                 </div>
                 <div className={`${glassPanel} p-8 flex flex-col items-start col-span-1 md:col-span-2 mt-4`}>
-                  <h3 className="text-lg font-mirage text-white uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <h3 className="text-lg font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
                     ✉️ Email Delivery Tester
                   </h3>
-                  <p className="text-xs text-gray-400 mb-6 font-sans">
+                  <p className="text-xs text-neutral-600 mb-6 font-sans">
                     Send a test email to verify that your Nodemailer setup (EMAIL_USER and EMAIL_PASS) is working correctly.
                   </p>
                   
@@ -5968,7 +5270,7 @@ const AdminDashboard = () => {
                     <input 
                       type="email" 
                       placeholder="Enter email address..." 
-                      className="w-full md:flex-1 bg-black/40 border border-white/20 rounded px-4 py-2 text-white text-sm outline-none focus:border-white/50"
+                      className="w-full md:flex-1 bg-white border border-black/20 rounded-xl px-4 py-2.5 text-[#0f0f12] text-xs outline-none focus:border-black [color-scheme:light] shadow-xs"
                       value={testEmailAddress}
                       onChange={(e) => setTestEmailAddress(e.target.value)}
                     />
@@ -5990,18 +5292,17 @@ const AdminDashboard = () => {
                           setTestEmailStatus(`❌ Error: ${err.response?.data?.error || err.message}`);
                         }
                       }}
-                      className="w-full md:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-widest rounded transition-colors"
+                      className="w-full md:w-auto px-6 py-3 bg-black hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-xs"
                     >
                       Send Test Email
                     </button>
                   </div>
                   {testEmailStatus && (
-                    <p className={`mt-4 text-xs font-sans tracking-wider ${testEmailStatus.includes('✅') ? 'text-green-400' : testEmailStatus.includes('❌') ? 'text-red-400' : 'text-gray-400'}`}>
+                    <p className={`mt-4 text-xs font-sans tracking-wider ${testEmailStatus.includes('✅') ? 'text-green-600 font-bold' : testEmailStatus.includes('❌') ? 'text-red-600 font-bold' : 'text-neutral-600'}`}>
                       {testEmailStatus}
                     </p>
                   )}
                 </div>
-
               </div>
             </div>
           )}
@@ -6648,37 +5949,39 @@ const AdminDashboard = () => {
           {/* ─── CLIENT GALLERY TAB ─── */}
           {activeTab === 'client gallery' && (
             <motion.div key="client-gallery" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="p-6 md:p-10 max-w-5xl">
-              <h2 className="text-2xl font-mirage text-white uppercase tracking-widest mb-2 border-b border-white/10 pb-4">
-                Client Image Galleries
-              </h2>
-              <p className="text-xs text-gray-500 tracking-wider mb-8">
-                Share a Google Drive folder link and assign it to a client email. Clients visit <span className="text-white/70">/my-gallery</span> and enter their email to browse and select images. You receive the selections as a CSV.
-              </p>
+              <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-xs mb-8">
+                <h2 className="text-2xl font-mirage text-[#0f0f12] uppercase tracking-widest font-bold mb-2">
+                  Client Image Galleries
+                </h2>
+                <p className="text-xs text-neutral-500 tracking-wide font-sans">
+                  Share a Google Drive folder link and assign it to a client email. Clients visit <span className="font-bold text-neutral-800">/my-gallery</span> and enter their email to browse and select images. You receive the selections as a CSV.
+                </p>
+              </div>
 
               {/* CREATE GALLERY FORM */}
               <div className={`${glassPanel} p-6 mb-8`}>
-                <h3 className="text-sm font-mirage text-white uppercase tracking-widest mb-6">Add New Client Gallery</h3>
+                <h3 className="text-sm font-mirage text-[#0f0f12] font-bold uppercase tracking-widest mb-6">Add New Client Gallery</h3>
                 <form onSubmit={handleCreateGallery} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase text-gray-500 mb-2 tracking-widest">Client Name</label>
-                    <input className={glassInput} placeholder="e.g. Ravi &amp; Priya" value={newGalleryForm.clientName} onChange={e => setNewGalleryForm({...newGalleryForm, clientName: e.target.value})} required />
+                    <label className="block text-[10px] uppercase text-neutral-500 font-bold mb-2 tracking-widest">Client Name</label>
+                    <input className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs" placeholder="e.g. Ravi &amp; Priya" value={newGalleryForm.clientName} onChange={e => setNewGalleryForm({...newGalleryForm, clientName: e.target.value})} required />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase text-gray-500 mb-2 tracking-widest">Client Email *</label>
-                    <input className={glassInput} type="email" placeholder="client@example.com" value={newGalleryForm.clientEmail} onChange={e => setNewGalleryForm({...newGalleryForm, clientEmail: e.target.value})} required />
+                    <label className="block text-[10px] uppercase text-neutral-500 font-bold mb-2 tracking-widest">Client Email *</label>
+                    <input className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs" type="email" placeholder="client@example.com" value={newGalleryForm.clientEmail} onChange={e => setNewGalleryForm({...newGalleryForm, clientEmail: e.target.value})} required />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase text-gray-500 mb-2 tracking-widest">Event Name *</label>
-                    <input className={glassInput} placeholder="e.g. Wedding Reception" value={newGalleryForm.eventName} onChange={e => setNewGalleryForm({...newGalleryForm, eventName: e.target.value})} required />
+                    <label className="block text-[10px] uppercase text-neutral-500 font-bold mb-2 tracking-widest">Event Name *</label>
+                    <input className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs" placeholder="e.g. Wedding Reception" value={newGalleryForm.eventName} onChange={e => setNewGalleryForm({...newGalleryForm, eventName: e.target.value})} required />
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase text-gray-500 mb-2 tracking-widest">Google Drive Folder Link *</label>
-                    <input className={glassInput} placeholder="https://drive.google.com/drive/folders/..." value={newGalleryForm.folderLink} onChange={e => setNewGalleryForm({...newGalleryForm, folderLink: e.target.value})} required />
+                    <label className="block text-[10px] uppercase text-neutral-500 font-bold mb-2 tracking-widest">Google Drive Folder Link *</label>
+                    <input className="w-full bg-white border border-black/20 rounded-xl px-4 py-2.5 text-xs text-[#0f0f12] placeholder-neutral-400 focus:outline-none focus:border-black [color-scheme:light] shadow-xs" placeholder="https://drive.google.com/drive/folders/..." value={newGalleryForm.folderLink} onChange={e => setNewGalleryForm({...newGalleryForm, folderLink: e.target.value})} required />
                   </div>
                   <div className="md:col-span-2 flex flex-col gap-2">
-                    {galleryCreateError && <p className="text-red-400 text-xs tracking-wider">{galleryCreateError}</p>}
-                    {galleryCreateSuccess && <p className="text-emerald-400 text-xs tracking-wider">{galleryCreateSuccess}</p>}
-                    <button type="submit" disabled={isCreatingGallery} className="px-6 py-3 bg-white text-black text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 w-fit">
+                    {galleryCreateError && <p className="text-red-600 text-xs tracking-wider">{galleryCreateError}</p>}
+                    {galleryCreateSuccess && <p className="text-emerald-600 text-xs tracking-wider font-semibold">{galleryCreateSuccess}</p>}
+                    <button type="submit" disabled={isCreatingGallery} className="px-6 py-3 bg-black hover:bg-neutral-800 text-white text-xs uppercase tracking-widest font-bold rounded-xl transition-all shadow-xs disabled:opacity-50 w-fit">
                       {isCreatingGallery ? 'Creating...' : '+ Create Gallery'}
                     </button>
                   </div>
@@ -6688,16 +5991,16 @@ const AdminDashboard = () => {
               {/* GALLERIES LIST */}
               <div className={`${glassPanel} p-6`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-mirage text-white uppercase tracking-widest">All Client Galleries</h3>
+                  <h3 className="text-sm font-mirage text-[#0f0f12] font-bold uppercase tracking-widest">All Client Galleries</h3>
                   <div className="flex gap-2">
-                    <button onClick={() => window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/client-gallery/download-all-selections`, '_blank')} className="text-[10px] uppercase bg-white text-black hover:bg-gray-200 font-bold tracking-widest px-4 py-2 rounded-lg transition-all">Download All Selections (ZIP)</button>
-                    <button onClick={fetchClientGalleries} className="text-[10px] uppercase text-gray-400 hover:text-white tracking-widest border border-white/10 px-3 py-2 rounded-lg transition-all">Refresh</button>
+                    <button onClick={() => window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/client-gallery/download-all-selections`, '_blank')} className="text-[10px] uppercase bg-black hover:bg-neutral-800 text-white font-bold tracking-widest px-4 py-2 rounded-xl transition-all shadow-xs">Download All Selections (ZIP)</button>
+                    <button onClick={fetchClientGalleries} className="text-[10px] uppercase text-neutral-700 hover:text-black font-bold tracking-widest border border-black/20 hover:border-black px-3 py-2 rounded-xl transition-all">Refresh</button>
                   </div>
                 </div>
                 {isLoadingClientGalleries ? (
-                  <p className="text-gray-500 text-xs tracking-wider py-6">Loading galleries...</p>
+                  <p className="text-neutral-500 text-xs tracking-wider py-6">Loading galleries...</p>
                 ) : clientGalleries.length === 0 ? (
-                  <p className="text-gray-500 text-xs tracking-wider py-6">No galleries created yet.</p>
+                  <p className="text-neutral-500 text-xs tracking-wider py-6">No galleries created yet.</p>
                 ) : (
                   <div className="space-y-4">
                     {Object.entries(
@@ -6713,19 +6016,19 @@ const AdminDashboard = () => {
                       const selectedImages = allImages.filter(i => i.isSelected);
                       
                       return (
-                        <div key={email} className="border border-white/10 rounded-xl overflow-hidden">
+                        <div key={email} className="border border-black/10 rounded-2xl overflow-hidden bg-white shadow-xs">
                           {/* Email Group Header */}
                           <div 
-                            className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 bg-white/5 hover:bg-white/[0.08] transition-all cursor-pointer"
+                            className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 bg-neutral-50 hover:bg-neutral-100 transition-all cursor-pointer border-b border-black/10"
                             onClick={() => setExpandedEmail(expandedEmail === email ? null : email)}
                           >
                             <div className="flex flex-col">
-                              <span className="text-[11px] font-bold text-white uppercase tracking-wider">{data.clientName || '—'}</span>
-                              <span className="text-[10px] text-gray-500 mt-0.5">{email}</span>
+                              <span className="text-[11px] font-bold text-[#0f0f12] uppercase tracking-wider">{data.clientName || email}</span>
+                              <span className="text-[10px] text-neutral-500 font-semibold mt-0.5">{email}</span>
                             </div>
                             <div className="flex items-center gap-3 flex-wrap">
-                              <span className="text-[9px] text-gray-400">{data.galleries.length} Events</span>
-                              <span className="text-[9px] text-gray-400">
+                              <span className="text-[10px] text-neutral-700 font-semibold bg-white border border-black/15 px-2.5 py-1 rounded-lg shadow-xs">{data.galleries.length} Events</span>
+                              <span className="text-[10px] text-neutral-700 font-semibold bg-white border border-black/15 px-2.5 py-1 rounded-lg shadow-xs">
                                 {allImages.length} images {selectedImages.length > 0 && `(${selectedImages.length} selected)`}
                               </span>
                               
@@ -6736,7 +6039,7 @@ const AdminDashboard = () => {
                                   navigator.clipboard.writeText(link);
                                   alert(`Client link copied to clipboard!\n\n${link}`);
                                 }}
-                                className="text-[10px] px-3 py-1 bg-white/10 text-white hover:bg-white/20 border border-white/20 rounded-lg uppercase tracking-widest transition-all"
+                                className="text-[10px] px-3 py-1 bg-white text-[#0f0f12] hover:bg-neutral-100 border border-black/20 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                 title="Copy direct shareable link for this client"
                               >
                                 📋 Copy Link
@@ -6748,36 +6051,36 @@ const AdminDashboard = () => {
                                     e.stopPropagation();
                                     window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/client-gallery/download-email/${encodeURIComponent(email)}`, '_blank');
                                   }}
-                                  className="text-[10px] px-4 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 border border-emerald-500/30 rounded-lg uppercase tracking-widest transition-all font-bold"
+                                  className="text-[10px] px-4 py-1 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                 >
                                   Download ZIP
                                 </button>
                               )}
                               
-                              <span className="text-gray-500 text-xs">{expandedEmail === email ? '▲' : '▼'}</span>
+                              <span className="text-neutral-500 text-xs font-bold">{expandedEmail === email ? '▲' : '▼'}</span>
                             </div>
                           </div>
                           
                           {/* Individual Galleries in this Email Group */}
-                          <div className="p-4 space-y-3">
+                          <div className="p-4 space-y-3 bg-white">
                             {data.galleries.map(gallery => (
-                              <div key={gallery._id} className="border border-white/10 rounded-xl overflow-hidden">
-                                <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 bg-white/5 hover:bg-white/[0.08] transition-all cursor-pointer" onClick={() => setExpandedEmail(expandedEmail === gallery._id ? null : gallery._id)}>
+                              <div key={gallery._id} className="border border-black/10 rounded-xl overflow-hidden bg-neutral-50/50">
+                                <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 bg-white hover:bg-neutral-50 transition-all cursor-pointer border-b border-black/5" onClick={() => setExpandedEmail(expandedEmail === gallery._id ? null : gallery._id)}>
                                   <div className="flex flex-col">
-                                    <span className="text-[11px] font-bold text-white uppercase tracking-wider">{gallery.clientName || '—'} — {gallery.eventName}</span>
-                                    <span className="text-[10px] text-gray-500 mt-0.5">{gallery.clientEmail}</span>
+                                    <span className="text-[11px] font-bold text-[#0f0f12] uppercase tracking-wider">{gallery.clientName || 'Client'} — {gallery.eventName}</span>
+                                    <span className="text-[10px] text-neutral-500 font-semibold mt-0.5">{gallery.clientEmail}</span>
                                   </div>
                                   <div className="flex items-center gap-3 flex-wrap">
-                                    <span className={`text-[9px] px-2 py-1 rounded-full uppercase tracking-widest font-bold border ${gallery.status === 'Submitted' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}`}>
+                                    <span className={`text-[9px] px-2.5 py-1 rounded-full uppercase tracking-widest font-bold border ${gallery.status === 'Submitted' ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-amber-50 text-amber-800 border-amber-300'}`}>
                                       {gallery.status}
                                     </span>
-                                    <span className="text-[9px] text-gray-400">
+                                    <span className="text-[10px] text-neutral-700 font-semibold bg-neutral-100 border border-black/10 px-2 py-1 rounded-lg">
                                       {gallery.images.length} images {gallery.images.filter(i => i.isSelected).length > 0 && `(${gallery.images.filter(i => i.isSelected).length} selected)`}
                                     </span>
                                     <button
                                       onClick={e => { e.stopPropagation(); handleSyncGallery(gallery._id); }}
                                       disabled={syncingGalleryId === gallery._id}
-                                      className="text-[10px] px-3 py-1 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/30 rounded-lg uppercase tracking-widest transition-all disabled:opacity-50"
+                                      className="text-[10px] px-3 py-1 bg-blue-50 text-blue-800 hover:bg-blue-100 border border-blue-300 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs disabled:opacity-50"
                                       title="Re-read photos from Google Drive folder"
                                     >
                                       {syncingGalleryId === gallery._id ? 'Syncing...' : '↻ Sync Drive'}
@@ -6789,7 +6092,7 @@ const AdminDashboard = () => {
                                         navigator.clipboard.writeText(link);
                                         alert(`Client link copied to clipboard!\n\n${link}`);
                                       }}
-                                      className="text-[10px] px-3 py-1 bg-white/10 text-white hover:bg-white/20 border border-white/20 rounded-lg uppercase tracking-widest transition-all"
+                                      className="text-[10px] px-3 py-1 bg-white text-[#0f0f12] hover:bg-neutral-100 border border-black/20 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                       title="Copy direct shareable link for this client"
                                     >
                                       📋 Copy Link
@@ -6801,7 +6104,7 @@ const AdminDashboard = () => {
                                           e.stopPropagation();
                                           window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/client-gallery/${gallery._id}/download-selections`, '_blank');
                                         }}
-                                        className="text-[10px] px-3 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 border border-emerald-500/30 rounded-lg uppercase tracking-widest transition-all"
+                                        className="text-[10px] px-3 py-1 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                       >
                                         Download ZIP
                                       </button>
@@ -6810,7 +6113,7 @@ const AdminDashboard = () => {
                                     {gallery.status === 'Submitted' && (
                                       <button
                                         onClick={e => { e.stopPropagation(); handleExportGalleryCSV(gallery._id, gallery.clientName, gallery.eventName); }}
-                                        className="text-[10px] px-3 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 border border-emerald-500/30 rounded-lg uppercase tracking-widest transition-all"
+                                        className="text-[10px] px-3 py-1 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                       >
                                         Export CSV
                                       </button>
@@ -6823,37 +6126,37 @@ const AdminDashboard = () => {
                                             handleUnlockGallery(gallery._id);
                                           }
                                         }}
-                                        className="text-[10px] px-3 py-1 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/30 rounded-lg uppercase tracking-widest transition-all"
+                                        className="text-[10px] px-3 py-1 bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-300 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                       >
                                         Unlock for Edit
                                       </button>
                                     )}
                                     <button
                                       onClick={e => { e.stopPropagation(); handleDeleteGallery(gallery._id); }}
-                                      className="text-[10px] px-3 py-1 bg-red-500/10 text-red-400 hover:bg-red-500/30 border border-red-500/20 rounded-lg uppercase tracking-widest transition-all"
+                                      className="text-[10px] px-3 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 rounded-lg uppercase tracking-widest transition-all font-bold shadow-xs"
                                     >
                                       Delete
                                     </button>
-                                    <span className="text-gray-500 text-xs">{expandedEmail === gallery._id ? '▲' : '▼'}</span>
+                                    <span className="text-neutral-500 text-xs font-bold">{expandedEmail === gallery._id ? '▲' : '▼'}</span>
                                   </div>
                                 </div>
                                 {expandedEmail === gallery._id && (
-                                  <div className="px-5 py-4 bg-black/20 border-t border-white/5">
+                                  <div className="px-5 py-4 bg-neutral-100/70 border-t border-black/10">
                                     <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                                      <p className="text-[10px] uppercase text-gray-500 tracking-widest">
-                                        Drive Folder: <a href={gallery.folderLink} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline normal-case">{gallery.folderLink.length > 55 ? gallery.folderLink.substring(0, 55) + '...' : gallery.folderLink}</a>
+                                      <p className="text-[10px] uppercase text-neutral-500 font-bold tracking-widest">
+                                        Drive Folder: <a href={gallery.folderLink} target="_blank" rel="noreferrer" className="text-blue-700 font-bold hover:underline normal-case">{gallery.folderLink.length > 55 ? gallery.folderLink.substring(0, 55) + '...' : gallery.folderLink}</a>
                                       </p>
-                                      <span className="text-[10px] text-gray-400 tracking-wider">
+                                      <span className="text-[10px] text-neutral-600 font-bold tracking-wider">
                                         {gallery.images.filter(i => i.isSelected).length} of {gallery.images.length} selected by client
                                       </span>
                                     </div>
                                     {gallery.images.length === 0 ? (
-                                      <p className="text-gray-600 text-xs">No images found.</p>
+                                      <p className="text-neutral-500 text-xs italic">No images found.</p>
                                     ) : (
                                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-72 overflow-y-auto custom-scrollbar pr-1">
                                         {gallery.images.map((img, idx) => (
-                                          <div key={idx} className={`relative rounded-lg overflow-hidden border p-1 transition-all ${img.isSelected ? 'bg-emerald-950/30 border-emerald-500/50' : 'bg-white/5 border-white/5'}`}>
-                                            <div className="aspect-square rounded overflow-hidden mb-1 bg-black/40">
+                                          <div key={idx} className={`relative rounded-xl overflow-hidden border p-1.5 transition-all shadow-xs ${img.isSelected ? 'bg-emerald-50 border-emerald-400 ring-2 ring-emerald-400/20' : 'bg-white border-black/10'}`}>
+                                            <div className="aspect-square rounded-lg overflow-hidden mb-1 bg-neutral-100">
                                               <img
                                                 src={`https://drive.google.com/thumbnail?id=${img.driveId}&sz=w200`}
                                                 alt={img.name}
@@ -6868,7 +6171,7 @@ const AdminDashboard = () => {
                                                 }}
                                               />
                                             </div>
-                                            <p className={`text-[9px] truncate font-mono ${img.isSelected ? 'text-emerald-300 font-bold' : 'text-gray-400'}`}>
+                                            <p className={`text-[9px] truncate font-mono ${img.isSelected ? 'text-emerald-800 font-bold' : 'text-neutral-700 font-medium'}`}>
                                               {img.isSelected ? '✓ ' : ''}{img.name}
                                             </p>
                                           </div>
@@ -6876,7 +6179,7 @@ const AdminDashboard = () => {
                                       </div>
                                     )}
                                     {gallery.submittedAt && (
-                                      <p className="text-[10px] text-gray-500 mt-3">Submitted: {new Date(gallery.submittedAt).toLocaleString()}</p>
+                                      <p className="text-[10px] text-neutral-500 font-semibold mt-3">Submitted: {new Date(gallery.submittedAt).toLocaleString()}</p>
                                     )}
                                   </div>
                                 )}
@@ -6890,15 +6193,21 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              <div className="mt-6 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                <p className="text-[10px] uppercase tracking-widest text-blue-400 font-bold mb-2">How it works for clients</p>
-                <ol className="text-xs text-gray-400 space-y-1 list-decimal list-inside leading-relaxed">
-                  <li>Share the link <span className="text-white/70">yourdomain.com/my-gallery</span> with your client</li>
+              <div className="mt-6 p-6 rounded-2xl bg-blue-50/90 border border-blue-200 shadow-xs">
+                <p className="text-xs uppercase tracking-widest text-blue-950 font-bold mb-3 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                  How it works for clients
+                </p>
+                <ol className="text-xs text-slate-900 space-y-2.5 list-decimal list-inside leading-relaxed font-semibold">
+                  <li>Share the link <span className="font-mono bg-white px-2.5 py-1 rounded-lg text-blue-950 border border-blue-300 text-xs font-bold shadow-xs">yourdomain.com/my-gallery</span> with your client</li>
                   <li>Client enters their email address to access their assigned galleries</li>
                   <li>Client views all images, clicks to select, then submits</li>
-                  <li>Gallery status changes to "Submitted" — click <strong className="text-white">Export CSV</strong> above to download their choices</li>
+                  <li>Gallery status changes to "Submitted" — click <strong className="text-slate-900 font-bold bg-white px-2 py-0.5 rounded border border-blue-300 text-[11px] shadow-xs">Export CSV</strong> above to download their choices</li>
                 </ol>
-                <p className="text-[10px] text-yellow-400/70 mt-3 tracking-wider">⚠️ Make sure you have shared the Google Drive folder with your Service Account email as a Viewer.</p>
+                <div className="mt-4 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 text-xs font-semibold flex items-center gap-2 shadow-xs">
+                  <span className="text-base">⚠️</span>
+                  <span>Make sure you have shared the Google Drive folder with your Service Account email as a <strong>Viewer</strong>.</span>
+                </div>
               </div>
             </motion.div>
           )}
@@ -6906,6 +6215,692 @@ const AdminDashboard = () => {
           </AnimatePresence>
 
         </main>
+
+        {/* EDIT LANDING PAGE MODAL (HOISTED TO ROOT TO PREVENT TOP HEADER BLEED) */}
+        {editingLandingPage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-md">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white border border-black/15 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden text-[#0f0f12] relative z-50">
+              {/* STICKY MODAL HEADER */}
+              <div className="flex justify-between items-center px-6 md:px-8 py-5 border-b border-black/10 bg-white/95 backdrop-blur-md shrink-0 z-10">
+                <div>
+                  <h2 className="text-lg font-mirage text-[#0f0f12] uppercase tracking-[0.2em] font-bold">
+                    {editingLandingPage._id ? 'Edit Landing Page' : 'New Landing Page'}
+                  </h2>
+                  <p className="text-[11px] text-neutral-500 font-sans mt-0.5">Customize section headings, hero text, cards, galleries, and floating buttons.</p>
+                </div>
+                <button type="button" onClick={() => setEditingLandingPage(null)} className="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 hover:text-[#0f0f12] text-xl font-bold transition-all" aria-label="Close modal">&times;</button>
+              </div>
+
+              {/* STICKY SECTION NAVIGATION TABS */}
+              <div className="flex items-center gap-2 px-6 md:px-8 py-3 border-b border-black/10 bg-neutral-50 shrink-0 overflow-x-auto custom-scrollbar z-10">
+                <span className="text-[10px] uppercase font-bold text-neutral-500 tracking-wider shrink-0 mr-1">Section:</span>
+                {[
+                  { id: 'all', label: 'All Sections' },
+                  { id: 'basic', label: '1. Basic & Hero' },
+                  { id: 'hero_slides', label: '2. Hero Slides' },
+                  { id: 'services', label: '3. Services & Video' },
+                  { id: 'approach', label: '4. Approach & Features' },
+                  { id: 'galleries', label: '5. Galleries (Images & Videos)' },
+                  { id: 'footer', label: '6. Footer & Floating' },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setLandingPageTab(tab.id)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${landingPageTab === tab.id ? 'bg-[#0f0f12] text-white shadow-xs scale-[1.02]' : 'bg-white text-neutral-700 hover:bg-neutral-200 border border-black/10'}`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* MODAL FORM BODY */}
+              <form onSubmit={(e) => handleSaveLandingPage(e, editingLandingPage)} className="flex flex-col flex-1 overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
+                  
+                  {/* GROUP 1: BASIC CONFIG & HERO TEXT */}
+                  {(landingPageTab === 'all' || landingPageTab === 'basic') && (
+                    <>
+                      {/* PAGE BASIC INFO */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Basic Configuration</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Page Name</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs transition-all" value={editingLandingPage.name} onChange={e => setEditingLandingPage({...editingLandingPage, name: e.target.value})} required placeholder="e.g. Baby Shoots" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Slug (URL)</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs transition-all" value={editingLandingPage.slug} onChange={e => setEditingLandingPage({...editingLandingPage, slug: e.target.value})} required placeholder="e.g. babyshoots" />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                          <div>
+                            <div className="flex justify-between items-center mb-1.5">
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold">Desktop Hero Image</label>
+                              {editingLandingPage.heroImage && (
+                                <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, heroImage: ''})} className="text-[10px] text-red-600 hover:text-red-700 font-bold uppercase tracking-wider">Remove</button>
+                              )}
+                            </div>
+                            <DragDropImageUploader currentImage={editingLandingPage.heroImage} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage(prev => ({ ...prev, heroImage: url }))} />
+                          </div>
+                          <div>
+                            <div className="flex justify-between items-center mb-1.5">
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold">Admin Card Image</label>
+                              {editingLandingPage.cardImage && (
+                                <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, cardImage: ''})} className="text-[10px] text-red-600 hover:text-red-700 font-bold uppercase tracking-wider">Remove</button>
+                              )}
+                            </div>
+                            <DragDropImageUploader currentImage={editingLandingPage.cardImage} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage(prev => ({ ...prev, cardImage: url }))} />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5 mt-2">Call to Action Link</label>
+                          <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs transition-all placeholder:text-neutral-400" placeholder="e.g., https://wa.me/..." value={editingLandingPage.callToActionLink || ''} onChange={e => setEditingLandingPage({...editingLandingPage, callToActionLink: e.target.value})} />
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-6 pt-2">
+                          <label className="flex items-center gap-2.5 cursor-pointer">
+                            <input type="checkbox" id="isActive" checked={editingLandingPage.isActive} onChange={e => setEditingLandingPage({...editingLandingPage, isActive: e.target.checked})} className="w-4 h-4 accent-emerald-600 rounded cursor-pointer" />
+                            <span className="text-xs uppercase tracking-wider text-neutral-800 font-bold">Page is Active (Published)</span>
+                          </label>
+                          <label className="flex items-center gap-2.5 cursor-pointer">
+                            <input type="checkbox" id="showTestimonials" checked={editingLandingPage.showTestimonials !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showTestimonials: e.target.checked})} className="w-4 h-4 accent-emerald-600 rounded cursor-pointer" />
+                            <span className="text-xs uppercase tracking-wider text-neutral-800 font-bold">Show Testimonials</span>
+                          </label>
+                        </div>
+                      </div>
+                      
+                      {/* HERO SECTION TEXT */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Hero Section Text</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Hero Subheading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="e.g. Your Studio Name" value={editingLandingPage.heroSubheading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroSubheading: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Hero Heading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="e.g. Beautiful Baby Photography" value={editingLandingPage.heroHeading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroHeading: e.target.value})} />
+                          </div>
+                          <div className="col-span-full">
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Hero Quote</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="e.g. Your Baby's Smile..." value={editingLandingPage.heroQuote || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroQuote: e.target.value})} />
+                          </div>
+                          <div className="col-span-full">
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Hero Description</label>
+                            <textarea className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" rows="2" placeholder="Professional baby shoots..." value={editingLandingPage.heroDescription || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroDescription: e.target.value})}></textarea>
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Price Text</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="Packages Start From Just" value={editingLandingPage.heroPriceText || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroPriceText: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Price Amount</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="₹3,999/-" value={editingLandingPage.heroPriceAmount || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroPriceAmount: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Button Text</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="Book Your Shoot Now" value={editingLandingPage.heroButtonText || ""} onChange={e => setEditingLandingPage({...editingLandingPage, heroButtonText: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Hero Text Alignment</label>
+                            <select className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.heroTextAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, heroTextAlign: e.target.value})}>
+                              <option value="left">Left</option>
+                              <option value="center">Center</option>
+                              <option value="right">Right</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* GROUP 2: HERO CAROUSEL */}
+                  {(landingPageTab === 'all' || landingPageTab === 'hero_slides') && (
+                    <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Hero Carousel</h3>
+                        <button type="button" onClick={() => {
+                          const newSlides = [...(editingLandingPage.heroSlides || []), { imageUrl: '', mobileImageUrl: '', heading: '', description: '' }];
+                          setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                        }} className="text-xs font-bold uppercase bg-neutral-100 hover:bg-neutral-200 border border-black/10 text-[#0f0f12] px-3.5 py-1.5 rounded-lg transition-colors">+ Add Slide</button>
+                      </div>
+                      <div className="space-y-4">
+                        {(editingLandingPage.heroSlides || []).map((slide, idx) => (
+                          <div key={idx} className="bg-white border border-black/10 p-4 rounded-xl space-y-4 relative shadow-xs">
+                            <button type="button" onClick={() => {
+                              const newSlides = [...editingLandingPage.heroSlides];
+                              newSlides.splice(idx, 1);
+                              setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                            }} className="absolute top-3 right-3 text-red-600 hover:text-red-700 text-xs font-bold uppercase tracking-wider">Remove</button>
+                            <div className="absolute top-3 right-20 flex gap-2">
+                              <button type="button" onClick={() => {
+                                if(idx > 0) {
+                                  const newSlides = [...editingLandingPage.heroSlides];
+                                  [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
+                                  setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                                }
+                              }} className="text-neutral-600 hover:text-black font-bold text-xs">↑</button>
+                              <button type="button" onClick={() => {
+                                if(idx < editingLandingPage.heroSlides.length - 1) {
+                                  const newSlides = [...editingLandingPage.heroSlides];
+                                  [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
+                                  setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                                }
+                              }} className="text-neutral-600 hover:text-black font-bold text-xs">↓</button>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                              <div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold">Desktop Image</label>
+                                  {slide.imageUrl && (
+                                    <button type="button" onClick={() => {
+                                      const newSlides = [...editingLandingPage.heroSlides];
+                                      newSlides[idx].imageUrl = '';
+                                      setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                                    }} className="text-[10px] text-red-600 font-bold uppercase tracking-wider">Remove</button>
+                                  )}
+                                </div>
+                                <DragDropImageUploader currentImage={slide.imageUrl} aspect={16/9} onUploadSuccess={(url) => {
+                                  setEditingLandingPage(prev => {
+                                    const newSlides = [...(prev?.heroSlides || [])];
+                                    if (newSlides[idx]) {
+                                      newSlides[idx] = { ...newSlides[idx], imageUrl: url };
+                                    }
+                                    return { ...prev, heroSlides: newSlides };
+                                  });
+                                }} />
+                              </div>
+                              <div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold">Mobile Image</label>
+                                  {slide.mobileImageUrl && (
+                                    <button type="button" onClick={() => {
+                                      setEditingLandingPage(prev => {
+                                        const newSlides = [...(prev?.heroSlides || [])];
+                                        if (newSlides[idx]) newSlides[idx].mobileImageUrl = '';
+                                        return { ...prev, heroSlides: newSlides };
+                                      });
+                                    }} className="text-[10px] text-red-600 font-bold uppercase tracking-wider">Remove</button>
+                                  )}
+                                </div>
+                                <DragDropImageUploader currentImage={slide.mobileImageUrl} aspect={9/16} onUploadSuccess={(url) => {
+                                  setEditingLandingPage(prev => {
+                                    const newSlides = [...(prev?.heroSlides || [])];
+                                    if (newSlides[idx]) {
+                                      newSlides[idx] = { ...newSlides[idx], mobileImageUrl: url };
+                                    }
+                                    return { ...prev, heroSlides: newSlides };
+                                  });
+                                }} />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Heading</label>
+                              <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={slide.heading || ''} onChange={e => {
+                                const newSlides = [...editingLandingPage.heroSlides];
+                                newSlides[idx].heading = e.target.value;
+                                setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                              }} />
+                            </div>
+                            <div>
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Description</label>
+                              <textarea className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none h-16" value={slide.description || ''} onChange={e => {
+                                const newSlides = [...editingLandingPage.heroSlides];
+                                newSlides[idx].description = e.target.value;
+                                setEditingLandingPage({...editingLandingPage, heroSlides: newSlides});
+                              }}></textarea>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* GROUP 3: SERVICE CARDS & VIDEO */}
+                  {(landingPageTab === 'all' || landingPageTab === 'services') && (
+                    <>
+                      {/* SERVICE CARDS (WHAT WE DO BEST) */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">What We Do Best (Service Cards)</h3>
+                          <button type="button" onClick={() => {
+                            const newCards = [...(editingLandingPage.serviceCards || []), { category: '', title: '', description: '', images: [] }];
+                            setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                          }} className="text-xs font-bold uppercase bg-neutral-100 hover:bg-neutral-200 border border-black/10 text-[#0f0f12] px-3.5 py-1.5 rounded-lg transition-colors">+ Add Card</button>
+                        </div>
+                        <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Section Heading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.serviceCardsHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, serviceCardsHeading: e.target.value})} placeholder="e.g. What We Do Best" />
+                        </div>
+                        
+                        <div className="space-y-4">
+                          {(editingLandingPage.serviceCards || []).map((card, idx) => (
+                            <div key={idx} className="bg-white border border-black/10 p-4 rounded-xl space-y-3 relative shadow-xs">
+                              <button type="button" onClick={() => {
+                                const newCards = [...editingLandingPage.serviceCards];
+                                newCards.splice(idx, 1);
+                                setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                              }} className="absolute top-3 right-3 text-red-600 hover:text-red-700 text-xs font-bold uppercase tracking-wider">Remove</button>
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 pr-16">
+                                <div>
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Category Label</label>
+                                  <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={card.category || ''} onChange={e => {
+                                    const newCards = [...editingLandingPage.serviceCards];
+                                    newCards[idx].category = e.target.value;
+                                    setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                                  }} placeholder="e.g. 5-15 Days" />
+                                </div>
+                                <div>
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Title</label>
+                                  <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={card.title || ''} onChange={e => {
+                                    const newCards = [...editingLandingPage.serviceCards];
+                                    newCards[idx].title = e.target.value;
+                                    setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                                  }} placeholder="e.g. Newborn Shoots" />
+                                </div>
+                              </div>
+                              <div>
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Description</label>
+                                <textarea className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none h-16" value={card.description || ''} onChange={e => {
+                                  const newCards = [...editingLandingPage.serviceCards];
+                                  newCards[idx].description = e.target.value;
+                                  setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                                }} />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Card Background Images</label>
+                                <DragDropImageUploader currentImage={''} multiple={true} disableCompression={true} onUploadSuccess={(urls) => {
+                                  setEditingLandingPage(prev => {
+                                    const newCards = [...(prev?.serviceCards || [])];
+                                    if (newCards[idx]) {
+                                      newCards[idx] = { ...newCards[idx], images: [...(newCards[idx].images || []), ...urls] };
+                                    }
+                                    return { ...prev, serviceCards: newCards };
+                                  });
+                                }} />
+                                <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
+                                  {(card.images || []).map((img, i) => (
+                                    <div key={i} className="relative group rounded-lg overflow-hidden border border-black/10">
+                                      <img src={img} className="w-full h-16 object-cover" />
+                                      <button type="button" onClick={() => {
+                                        const newCards = [...editingLandingPage.serviceCards];
+                                        newCards[idx].images.splice(i, 1);
+                                        setEditingLandingPage({...editingLandingPage, serviceCards: newCards});
+                                      }} className="absolute top-1 right-1 bg-red-600 text-white w-5 h-5 rounded-full text-xs font-bold flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* DISPLAY VIDEO */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                         <div className="flex justify-between items-center">
+                           <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Display Video</h3>
+                           <label className="flex items-center gap-2 cursor-pointer">
+                             <input type="checkbox" className="w-4 h-4 accent-emerald-600 rounded cursor-pointer" checked={editingLandingPage.showDisplayVideo !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showDisplayVideo: e.target.checked})} />
+                             <span className="text-xs uppercase tracking-wider text-neutral-800 font-bold">Show Video</span>
+                           </label>
+                         </div>
+                         <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs placeholder:text-neutral-400" placeholder="Paste YouTube Link here (e.g. https://youtu.be/...)" value={editingLandingPage.displayVideoUrl || ""} onChange={e => setEditingLandingPage({...editingLandingPage, displayVideoUrl: e.target.value})} />
+                         <DragDropVideoUploader currentVideo={editingLandingPage.displayVideoUrl || editingLandingPage.localVideoUrl} onUploadSuccess={(url) => setEditingLandingPage({...editingLandingPage, displayVideoUrl: url})} />
+                      </div>
+                    </>
+                  )}
+
+                  {/* GROUP 4: APPROACH, FEATURES & COMFORT */}
+                  {(landingPageTab === 'all' || landingPageTab === 'approach') && (
+                    <>
+                      {/* APPROACH SECTIONS */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <div className="space-y-3">
+                          <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Our Approach Section Settings</h3>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Main Heading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs placeholder:text-neutral-400" placeholder="e.g. Our Approach" value={editingLandingPage.approachHeading || ""} onChange={e => setEditingLandingPage({...editingLandingPage, approachHeading: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Main Description</label>
+                            <textarea className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs placeholder:text-neutral-400" rows="2" placeholder="e.g. Capturing the purest moments..." value={editingLandingPage.approachDescription || ""} onChange={e => setEditingLandingPage({...editingLandingPage, approachDescription: e.target.value})}></textarea>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-2 border-t border-black/10">
+                          <div className="flex justify-between items-center mb-3">
+                            <h4 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Approach Sub-Sections</h4>
+                            <button type="button" onClick={() => {
+                              const newSections = [...(editingLandingPage.approachSections || []), { heading: '', description: '', align: 'center' }];
+                              setEditingLandingPage({...editingLandingPage, approachSections: newSections});
+                            }} className="text-xs font-bold uppercase bg-neutral-100 hover:bg-neutral-200 border border-black/10 text-[#0f0f12] px-3.5 py-1.5 rounded-lg transition-colors">+ Add Section</button>
+                          </div>
+                          <div className="space-y-4">
+                            {(editingLandingPage.approachSections || []).map((section, idx) => (
+                              <div key={idx} className="p-4 border border-black/10 rounded-xl bg-white space-y-3 relative shadow-xs">
+                                <button type="button" onClick={() => {
+                                  const newSections = [...editingLandingPage.approachSections];
+                                  newSections.splice(idx, 1);
+                                  setEditingLandingPage({...editingLandingPage, approachSections: newSections});
+                                }} className="absolute top-3 right-3 text-red-600 hover:text-red-700 font-bold text-base leading-none">&times;</button>
+                                <div className="space-y-3 pr-6">
+                                  <div>
+                                    <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Heading</label>
+                                    <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={section.heading || ''} onChange={e => {
+                                      const newSections = [...editingLandingPage.approachSections];
+                                      newSections[idx].heading = e.target.value;
+                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
+                                    }} placeholder="e.g. Professional Styling" />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Description</label>
+                                    <textarea className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none h-24" value={section.description || ''} onChange={e => {
+                                      const newSections = [...editingLandingPage.approachSections];
+                                      newSections[idx].description = e.target.value;
+                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
+                                    }} placeholder="Detail your process or approach..."></textarea>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Text Alignment</label>
+                                    <select className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={section.align || 'center'} onChange={e => {
+                                      const newSections = [...editingLandingPage.approachSections];
+                                      newSections[idx].align = e.target.value;
+                                      setEditingLandingPage({...editingLandingPage, approachSections: newSections});
+                                    }}>
+                                      <option value="left">Left</option>
+                                      <option value="center">Center</option>
+                                      <option value="right">Right</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* WHY CHOOSE US */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Why Choose Us? (Features)</h3>
+                          <button type="button" onClick={() => {
+                            const newFeatures = [...(editingLandingPage.features || []), { title: '', description: '' }];
+                            setEditingLandingPage({...editingLandingPage, features: newFeatures});
+                          }} className="text-xs font-bold uppercase bg-neutral-100 hover:bg-neutral-200 border border-black/10 text-[#0f0f12] px-3.5 py-1.5 rounded-lg transition-colors">+ Add Feature</button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Section Heading</label>
+                              <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.whyChooseHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, whyChooseHeading: e.target.value})} placeholder="e.g. Why Choose Us?" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Text Alignment</label>
+                            <select className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.featuresAlign || 'left'} onChange={e => setEditingLandingPage({...editingLandingPage, featuresAlign: e.target.value})}>
+                              <option value="left">Left</option>
+                              <option value="center">Center</option>
+                              <option value="right">Right</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {(editingLandingPage.features || []).map((feature, idx) => (
+                            <div key={idx} className="bg-white border border-black/10 p-4 rounded-xl space-y-3 relative shadow-xs">
+                              <button type="button" onClick={() => {
+                                const newF = [...editingLandingPage.features];
+                                newF.splice(idx, 1);
+                                setEditingLandingPage({...editingLandingPage, features: newF});
+                              }} className="absolute top-3 right-3 text-red-600 hover:text-red-700 text-xs font-bold uppercase tracking-wider">Remove</button>
+                              
+                              <div className="pr-12">
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Title</label>
+                                <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={feature.title || ''} onChange={e => {
+                                  const newF = [...editingLandingPage.features];
+                                  newF[idx].title = e.target.value;
+                                  setEditingLandingPage({...editingLandingPage, features: newF});
+                                }} placeholder="Feature Title" />
+                              </div>
+                              <div>
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Description</label>
+                                <textarea className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none h-16" value={feature.description || ''} onChange={e => {
+                                  const newF = [...editingLandingPage.features];
+                                  newF[idx].description = e.target.value;
+                                  setEditingLandingPage({...editingLandingPage, features: newF});
+                                }} placeholder="Feature Description"></textarea>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* COMFORT SECTIONS */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Pure Comfort for Mother & Baby</h3>
+                          <button type="button" onClick={() => {
+                            const newItems = [...(editingLandingPage.comfortItems || []), { title: '', desc: '' }];
+                            setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
+                          }} className="text-xs font-bold uppercase bg-neutral-100 hover:bg-neutral-200 border border-black/10 text-[#0f0f12] px-3.5 py-1.5 rounded-lg transition-colors">+ Add Item</button>
+                        </div>
+                        <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Section Heading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.comfortHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, comfortHeading: e.target.value})} placeholder="e.g. Pure Comfort for Mother & Baby" />
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {(editingLandingPage.comfortItems || []).map((item, idx) => (
+                            <div key={idx} className="bg-white border border-black/10 p-4 rounded-xl space-y-3 relative shadow-xs">
+                              <button type="button" onClick={() => {
+                                const newItems = [...editingLandingPage.comfortItems];
+                                newItems.splice(idx, 1);
+                                setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
+                              }} className="absolute top-3 right-3 text-red-600 hover:text-red-700 text-xs font-bold uppercase tracking-wider">Remove</button>
+                              
+                              <div className="pr-12">
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Title</label>
+                                <input type="text" className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none" value={item.title || ''} onChange={e => {
+                                  const newItems = [...editingLandingPage.comfortItems];
+                                  newItems[idx].title = e.target.value;
+                                  setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
+                                }} placeholder="Item Title" />
+                              </div>
+                              <div>
+                                <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1">Description</label>
+                                <textarea className="w-full bg-neutral-50 border border-black/15 rounded-lg px-3 py-1.5 text-[#0f0f12] text-xs font-semibold focus:bg-white focus:border-black outline-none h-16" value={item.desc || ''} onChange={e => {
+                                  const newItems = [...editingLandingPage.comfortItems];
+                                  newItems[idx].desc = e.target.value;
+                                  setEditingLandingPage({...editingLandingPage, comfortItems: newItems});
+                                }} placeholder="Item Description" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* GROUP 5: GALLERIES */}
+                  {(landingPageTab === 'all' || landingPageTab === 'galleries') && (
+                    <>
+                      {/* PORTFOLIO IMAGES */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Images Gallery</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                              <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Section Heading</label>
+                              <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.portfolioImagesHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioImagesHeading: e.target.value})} placeholder="e.g. Our Portfolio" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Heading Alignment</label>
+                            <select className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.portfolioImagesAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioImagesAlign: e.target.value})}>
+                              <option value="left">Left</option>
+                              <option value="center">Center</option>
+                              <option value="right">Right</option>
+                            </select>
+                          </div>
+                        </div>
+                        <DragDropImageUploader currentImage={''} multiple={true} disableCompression={true} onUploadSuccess={(urls) => {
+                          setEditingLandingPage(prev => ({ ...prev, portfolioImages: [...(prev?.portfolioImages || []), ...urls] }));
+                        }} />
+                        <div className="columns-2 sm:columns-3 gap-3 space-y-3 pt-2">
+                          {(editingLandingPage.portfolioImages || []).map((img, idx) => (
+                            <div key={idx} className="relative group break-inside-avoid rounded-xl overflow-hidden border border-black/10 shadow-xs">
+                              <img src={img} className="w-full h-auto object-cover" />
+                              <button type="button" onClick={() => {
+                                const newImgs = [...editingLandingPage.portfolioImages];
+                                newImgs.splice(idx, 1);
+                                setEditingLandingPage({...editingLandingPage, portfolioImages: newImgs});
+                              }} className="absolute top-2 right-2 bg-red-600 text-white w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">&times;</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* PORTFOLIO VIDEOS */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                         <div className="flex justify-between items-center">
+                           <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Videos Gallery</h3>
+                           <label className="flex items-center gap-2 cursor-pointer">
+                             <input type="checkbox" className="w-4 h-4 accent-emerald-600 rounded cursor-pointer" checked={editingLandingPage.showVideoGallery !== false} onChange={e => setEditingLandingPage({...editingLandingPage, showVideoGallery: e.target.checked})} />
+                             <span className="text-xs uppercase tracking-wider text-neutral-800 font-bold">Show Gallery</span>
+                           </label>
+                         </div>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div>
+                               <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Section Heading</label>
+                               <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.portfolioVideosHeading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioVideosHeading: e.target.value})} placeholder="e.g. Memorable Client Stories" />
+                           </div>
+                           <div>
+                             <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Heading Alignment</label>
+                             <select className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.portfolioVideosAlign || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, portfolioVideosAlign: e.target.value})}>
+                               <option value="left">Left</option>
+                               <option value="center">Center</option>
+                               <option value="right">Right</option>
+                             </select>
+                           </div>
+                         </div>
+                         <div className="flex justify-between items-center">
+                           <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold">YouTube Links</label>
+                           <button type="button" onClick={() => {
+                             const newVids = [...(editingLandingPage.portfolioVideos || []), ''];
+                             setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
+                           }} className="text-xs font-bold uppercase text-emerald-700 hover:text-emerald-800 tracking-wider">+ Add Link</button>
+                         </div>
+                         <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                           {(editingLandingPage.portfolioVideos || []).map((vid, idx) => (
+                             <div key={idx} className="flex gap-2">
+                               <input type="text" className="flex-1 bg-white border border-black/15 rounded-xl px-3.5 py-2 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" placeholder="https://youtube.com/..." value={vid} onChange={e => {
+                                 const newVids = [...editingLandingPage.portfolioVideos];
+                                 newVids[idx] = e.target.value;
+                                 setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
+                               }} />
+                               <button type="button" onClick={() => {
+                                 const newVids = [...editingLandingPage.portfolioVideos];
+                                 newVids.splice(idx, 1);
+                                 setEditingLandingPage({...editingLandingPage, portfolioVideos: newVids});
+                               }} className="bg-red-100 hover:bg-red-200 text-red-700 font-bold px-3 rounded-xl transition-colors">&times;</button>
+                             </div>
+                           ))}
+                         </div>
+                      </div>
+
+                      {/* 360 VIEWER IMAGES */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">360 Viewer Images</h3>
+                        <DragDropImageUploader 
+                          currentImage={''}
+                          multiple={true}
+                          disableCompression={true}
+                          onUploadSuccess={(urls) => {
+                            const newImages = Array.isArray(urls) ? urls : [urls];
+                            setEditingLandingPage(prev => ({ ...prev, threeSixtyImages: [...(prev?.threeSixtyImages || []), ...newImages] }));
+                          }} 
+                        />
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {(editingLandingPage.threeSixtyImages || []).map((img, idx) => (
+                            <div key={idx} className="relative group rounded-xl overflow-hidden border border-black/10">
+                              <img src={img} className="w-full aspect-video object-cover" alt="360 preview" />
+                              <button type="button" onClick={() => setEditingLandingPage({...editingLandingPage, threeSixtyImages: editingLandingPage.threeSixtyImages.filter((_, i) => i !== idx)})} className="absolute top-2 right-2 bg-red-600 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center font-bold text-xs transition-opacity">&times;</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* GROUP 6: FOOTER & FLOATING */}
+                  {(landingPageTab === 'all' || landingPageTab === 'footer') && (
+                    <>
+                      {/* PARALLAX FOOTER */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                        <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Parallax Footer</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Heading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.parallaxFooter?.heading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), heading: e.target.value}})} placeholder="e.g. Ready to Begin Your Story?" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Subheading</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.parallaxFooter?.subheading || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), subheading: e.target.value}})} placeholder="e.g. Starts From Just ₹3,999/-" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Button Text</label>
+                            <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.parallaxFooter?.buttonText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), buttonText: e.target.value}})} placeholder="e.g. Claim Your Spot Now" />
+                          </div>
+                          <div>
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Text Alignment</label>
+                            <select className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.parallaxFooter?.align || 'center'} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), align: e.target.value}})}>
+                              <option value="left">Left</option>
+                              <option value="center">Center</option>
+                              <option value="right">Right</option>
+                            </select>
+                          </div>
+                          <div className="col-span-full">
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Description</label>
+                            <textarea className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs" value={editingLandingPage.parallaxFooter?.description || ''} onChange={e => setEditingLandingPage({...editingLandingPage, parallaxFooter: {...(editingLandingPage.parallaxFooter || {}), description: e.target.value}})} placeholder="e.g. Let us capture your beautiful moments..." rows="3"></textarea>
+                          </div>
+                          <div className="col-span-full">
+                            <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Background Image</label>
+                            <DragDropImageUploader currentImage={editingLandingPage.parallaxFooter?.imageUrl || ''} aspect={16/9} onUploadSuccess={(url) => setEditingLandingPage(prev => ({ ...prev, parallaxFooter: { ...(prev?.parallaxFooter || {}), imageUrl: url } }))} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* FLOATING BUTTONS */}
+                      <div className="bg-neutral-50 border border-black/10 p-5 rounded-2xl space-y-4 shadow-xs">
+                          <h3 className="text-xs font-bold font-sans tracking-[0.15em] text-[#0f0f12] uppercase">Floating Buttons Config</h3>
+                          <div className="grid md:grid-cols-2 gap-4">
+                              <div>
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Floating Bubble Text (Top)</label>
+                                  <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs transition-all placeholder:text-neutral-400" value={editingLandingPage.floatingBubbleText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, floatingBubbleText: e.target.value})} placeholder="e.g. Hurry, Limited Slots Available!" />
+                              </div>
+                              <div>
+                                  <label className="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1.5">Floating Button Text (Bottom)</label>
+                                  <input type="text" className="w-full bg-white border border-black/15 rounded-xl px-3.5 py-2.5 text-[#0f0f12] text-xs font-semibold focus:border-black outline-none shadow-xs transition-all placeholder:text-neutral-400" value={editingLandingPage.floatingButtonText || ''} onChange={e => setEditingLandingPage({...editingLandingPage, floatingButtonText: e.target.value})} placeholder="e.g. BOOK NOW" />
+                              </div>
+                          </div>
+                      </div>
+                    </>
+                  )}
+
+                </div>
+
+                {/* STICKY MODAL FOOTER */}
+                <div className="flex justify-end items-center gap-3 px-6 md:px-8 py-4 border-t border-black/10 bg-white shrink-0 z-10">
+                  <button type="button" onClick={() => setEditingLandingPage(null)} className="px-6 py-2.5 rounded-xl border border-black/15 bg-neutral-100 text-[#0f0f12] font-semibold text-xs uppercase hover:bg-neutral-200 transition-colors">Cancel</button>
+                  <button type="submit" disabled={isGlobalSubmitting} className="px-8 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed">{isGlobalSubmitting ? 'Saving...' : 'Save Landing Page'}</button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
       </div>
     </div>
   );

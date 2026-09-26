@@ -76,7 +76,7 @@ const Themes = () => {
   }, [lightboxTheme, currentIndex, filteredThemes]);
 
   return (
-    <div className="bg-[#050505] min-h-screen text-white pt-32 pb-24 relative selection:bg-white/20">
+    <div className="bg-white min-h-screen text-[#0f0f12] pt-32 pb-24 relative selection:bg-black/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -84,16 +84,16 @@ const Themes = () => {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <h2 className="font-mirage text-xs text-gray-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
-          <h3 className="font-mirage font-bold text-5xl md:text-7xl text-white uppercase tracking-widest leading-none">
+          <h2 className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4">Curated Setups</h2>
+          <h3 className="font-mirage font-bold text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-widest leading-none">
             {selectedCategory ? selectedCategory : 'Theme Catalog'}
           </h3>
-          <div className="w-12 h-[1px] bg-white mx-auto mt-8"></div>
+          <div className="w-12 h-[1px] bg-black/20 mx-auto mt-8"></div>
         </motion.div>
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="w-12 h-12 border-4 border-white/10 border-t-white rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-black/10 border-t-black rounded-full animate-spin"></div>
           </div>
         ) : (
           <AnimatePresence mode="wait">
@@ -114,18 +114,18 @@ const Themes = () => {
                     <div 
                       key={idx}
                       onClick={() => handleSelectCategory(cat.name)}
-                      className="relative group h-80 cursor-pointer overflow-hidden border border-white/10 rounded-2xl shadow-2xl bg-black"
+                      className="relative group h-80 cursor-pointer overflow-hidden border border-black/10 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 bg-neutral-900"
                     >
                       <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] group-hover:scale-110 opacity-60 group-hover:opacity-40"
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] group-hover:scale-110 opacity-70 group-hover:opacity-50"
                         style={{ backgroundImage: `url(${optimizeCloudinaryUrl(cat.coverImage)})` }}
                       ></div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-8 text-center">
                         <h4 className="font-mirage text-3xl text-white uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-700 drop-shadow-2xl">
                           {cat.name}
                         </h4>
-                        <span className="mt-4 text-[10px] font-sans text-gray-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <span className="mt-4 text-[10px] font-sans text-gray-300 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                           {count} {count === 1 ? 'Theme' : 'Themes'} Available
                         </span>
                       </div>
@@ -133,7 +133,7 @@ const Themes = () => {
                   );
                 })}
                 {themeCategories.length === 0 && (
-                  <div className="col-span-full py-20 text-gray-500 uppercase tracking-widest">
+                  <div className="col-span-full py-20 text-neutral-500 uppercase tracking-widest">
                     No categories found. Add Theme Categories in the Admin Dashboard.
                   </div>
                 )}
@@ -150,7 +150,7 @@ const Themes = () => {
                 <div className="text-left w-full mb-12">
                   <button 
                     onClick={() => handleSelectCategory(null)}
-                    className="font-sans text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors border-b border-transparent hover:border-white pb-1"
+                    className="font-sans text-xs uppercase tracking-widest text-neutral-600 hover:text-black transition-colors border-b border-transparent hover:border-black pb-1"
                   >
                     ← Back to Categories
                   </button>
@@ -164,7 +164,7 @@ const Themes = () => {
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       key={theme._id || index}
                       onClick={() => setLightboxTheme(theme)}
-                      className="relative group h-[500px] overflow-hidden cursor-pointer rounded-2xl border border-white/5 bg-black"
+                      className="relative group h-[500px] overflow-hidden cursor-pointer rounded-2xl border border-black/10 bg-neutral-900 shadow-sm hover:shadow-2xl transition-all duration-500"
                     >
                       <div 
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] group-hover:scale-105"
@@ -175,7 +175,7 @@ const Themes = () => {
                       <div className="absolute inset-0 flex flex-col justify-end p-8 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent">
                         <h3 className="font-mirage text-3xl text-white uppercase tracking-widest leading-none mb-4 group-hover:text-gray-200 transition-colors">{theme.name}</h3>
                         <div className="h-[1px] w-12 bg-white/30 mb-4 group-hover:w-full transition-all duration-700 ease-in-out"></div>
-                        <div className="flex justify-between items-center text-[10px] font-sans text-gray-400 tracking-widest uppercase opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <div className="flex justify-between items-center text-[10px] font-sans text-gray-300 tracking-widest uppercase opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                           <span>{theme.age}</span>
                           <span>{theme.costume}</span>
                         </div>
@@ -183,7 +183,7 @@ const Themes = () => {
                     </motion.div>
                   ))}
                   {filteredThemes.length === 0 && (
-                    <div className="col-span-full py-32 text-gray-500 uppercase tracking-widest">
+                    <div className="col-span-full py-32 text-neutral-500 uppercase tracking-widest">
                       No themes found for this category.
                     </div>
                   )}
