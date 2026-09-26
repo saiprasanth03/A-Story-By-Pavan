@@ -43,7 +43,7 @@ const Packages = () => {
           className="mb-20 text-center"
         >
           <span className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 block font-bold">EXCELLENCE IN CAPTURE</span>
-          <h1 className="font-mirage font-bold text-5xl md:text-7xl lg:text-8xl text-[#0f0f12] uppercase tracking-widest leading-none">
+          <h1 className="font-mirage font-bold text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-[#0f0f12] uppercase tracking-wider sm:tracking-widest leading-tight max-w-full px-2">
             OUR SERVICES
           </h1>
           <div className="w-16 h-[2px] bg-black/40 mx-auto mt-6 mb-8"></div>
@@ -105,7 +105,7 @@ const Packages = () => {
                       Service Category
                     </span>
                     
-                    <h2 className="font-mirage font-bold text-4xl lg:text-5xl text-[#0f0f12] uppercase tracking-widest mb-4 leading-tight">
+                    <h2 className="font-mirage font-bold text-2xl sm:text-4xl lg:text-5xl text-[#0f0f12] uppercase tracking-wider sm:tracking-widest mb-4 leading-tight max-w-full px-2">
                       {svc.title || svc.name}
                     </h2>
 

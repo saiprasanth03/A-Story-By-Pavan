@@ -73,8 +73,8 @@ const WhatWeOffer = () => {
             <span className="font-mirage text-xs text-neutral-500 uppercase tracking-[0.5em] mb-4 block">
               Curated Offerings
             </span>
-            <h2 className="font-mirage font-bold text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-widest leading-none mb-6">
-              Signature<br className="hidden md:block" /> Experiences
+            <h2 className="font-mirage font-bold text-3xl sm:text-5xl md:text-7xl text-[#0f0f12] uppercase tracking-wider sm:tracking-widest leading-tight mb-6 max-w-full px-2 break-words">
+              Signature<br className="hidden sm:block" /> Experiences
             </h2>
             <div className="w-16 h-[2px] bg-black/40 mx-auto mt-6"></div>
           </div>
