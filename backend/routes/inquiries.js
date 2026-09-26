@@ -29,39 +29,42 @@ router.post('/', async (req, res) => {
 
     // Send thank you email
     try {
-      if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      if (process.env.RESEND_API_KEY || (process.env.EMAIL_USER && process.env.EMAIL_PASS) || process.env.SMTP_USER) {
         const settings = await Settings.findOne().catch(() => null) || {};
-        const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+        const businessName = settings.businessName || process.env.APP_NAME || 'A Story By Pavan';
+        const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'onboarding@resend.dev';
         const logoHtml = settings.logoUrl
           ? `<img src="${settings.logoUrl}" alt="${businessName}" style="max-width: 150px; height: auto;" />`
           : `<h2 style="color: #ffffff; margin: 0; letter-spacing: 2px;">${businessName}</h2>`;
 
-        await getTransporter().sendMail({
-          from: `"${businessName}" <${process.env.EMAIL_USER}>`,
-          to: inquiry.email,
-          subject: `Thank you for contacting ${businessName}!`,
-          html: `
-            <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
-              <div style="text-align: center; margin-bottom: 20px;">
-                ${logoHtml}
+        if (inquiry.email) {
+          await getTransporter().sendMail({
+            from: `"${businessName}" <${fromAddress}>`,
+            to: inquiry.email,
+            subject: `Thank you for contacting ${businessName}!`,
+            html: `
+              <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                  ${logoHtml}
+                </div>
+                <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${inquiry.name}!</h2>
+                <p>We have successfully received your inquiry regarding <strong>"${inquiry.subject}"</strong>.</p>
+                <p>Our team at ${businessName} is currently reviewing your message and will get back to you shortly.</p>
+                <br/>
+                <p><strong>Your Message:</strong></p>
+                <blockquote style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffffff; font-style: italic; color: #ffffff;">
+                  ${inquiry.message}
+                </blockquote>
+                <br/>
+                <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
+                <p style="font-size: 12px; color: #999;">
+                  ${businessName}<br/>
+                  This is an automated message.
+                </p>
               </div>
-              <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${inquiry.name}!</h2>
-              <p>We have successfully received your inquiry regarding <strong>"${inquiry.subject}"</strong>.</p>
-              <p>Our team at ${businessName} is currently reviewing your message and will get back to you shortly.</p>
-              <br/>
-              <p><strong>Your Message:</strong></p>
-              <blockquote style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffffff; font-style: italic; color: #ffffff;">
-                ${inquiry.message}
-              </blockquote>
-              <br/>
-              <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
-              <p style="font-size: 12px; color: #999;">
-                ${businessName}<br/>
-                This is an automated message.
-              </p>
-            </div>
-          `
-        });
+            `
+          });
+        }
       }
     } catch (emailError) {
       console.error('Error sending email:', emailError);

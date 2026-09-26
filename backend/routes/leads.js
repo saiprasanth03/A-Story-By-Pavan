@@ -30,62 +30,69 @@ router.post('/', async (req, res) => {
     // Send emails asynchronously in the background so it doesn't block the response
     const sendEmailsAsync = async () => {
       try {
-        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        if (process.env.RESEND_API_KEY || (process.env.EMAIL_USER && process.env.EMAIL_PASS) || process.env.SMTP_USER) {
           const mailer = getTransporter();
           const settings = await Settings.findOne().catch(() => null) || {};
-          const businessName = settings.businessName || process.env.APP_NAME || 'Studio';
+          const businessName = settings.businessName || process.env.APP_NAME || 'A Story By Pavan';
+          const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'onboarding@resend.dev';
+          const adminEmail = settings.contactEmail || process.env.ADMIN_EMAIL || process.env.EMAIL_USER || 'ssaiprasanth333@gmail.com';
+          
           const logoHtml = settings.logoUrl
             ? `<img src="${settings.logoUrl}" alt="${businessName}" style="max-width: 150px; height: auto;" />`
             : `<h2 style="color: #ffffff; margin: 0; letter-spacing: 2px;">${businessName}</h2>`;
           
           // 1. Email to Client
-          await mailer.sendMail({
-            from: `"${businessName}" <${process.env.EMAIL_USER}>`,
-            to: lead.email,
-            subject: `Thank you for your interest in ${businessName}!`,
-            html: `
-              <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                  ${logoHtml}
+          if (lead.email) {
+            await mailer.sendMail({
+              from: `"${businessName}" <${fromAddress}>`,
+              to: lead.email,
+              subject: `Thank you for your interest in ${businessName}!`,
+              html: `
+                <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
+                  <div style="text-align: center; margin-bottom: 20px;">
+                    ${logoHtml}
+                  </div>
+                  <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${lead.name}!</h2>
+                  <p>We have successfully received your inquiry ${lead.interestedIn ? `for <strong>${lead.interestedIn}</strong>` : ''}${lead.eventDate ? ` for the date: <strong>${new Date(lead.eventDate).toLocaleDateString()}</strong>` : ''}.</p>
+                  <p>Our team at ${businessName} is reviewing your details and will get back to you shortly to discuss your vision.</p>
+                  <br/>
+                  <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
+                  <p style="font-size: 12px; color: #999;">
+                    ${businessName}<br/>
+                    This is an automated message.
+                  </p>
                 </div>
-                <h2 style="color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">Thank you, ${lead.name}!</h2>
-                <p>We have successfully received your inquiry ${lead.interestedIn ? `for <strong>${lead.interestedIn}</strong>` : ''}${lead.eventDate ? ` for the date: <strong>${new Date(lead.eventDate).toLocaleDateString()}</strong>` : ''}.</p>
-                <p>Our team at ${businessName} is reviewing your details and will get back to you shortly to discuss your vision.</p>
-                <br/>
-                <hr style="border: none; border-top: 1px solid #333333; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #999;">
-                  ${businessName}<br/>
-                  This is an automated message.
-                </p>
-              </div>
-            `
-          });
+              `
+            });
+          }
 
           // 2. Email to Admin Team
-          await mailer.sendMail({
-            from: `"${businessName} Website" <${process.env.EMAIL_USER}>`,
-            to: process.env.EMAIL_USER, // Sending to the admin email
-            subject: `New Lead: ${lead.name} via ${lead.landingPageSource}`,
-            html: `
-              <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                  ${logoHtml}
+          if (adminEmail) {
+            await mailer.sendMail({
+              from: `"${businessName} Website" <${fromAddress}>`,
+              to: adminEmail,
+              subject: `New Lead: ${lead.name} via ${lead.landingPageSource || 'Website'}`,
+              html: `
+                <div style="background-color: #000000; font-family: Arial, sans-serif; color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
+                  <div style="text-align: center; margin-bottom: 20px;">
+                    ${logoHtml}
+                  </div>
+                  <h2 style="color: #d4af37; text-transform: uppercase;">New Landing Page Lead</h2>
+                  <p><strong>Name:</strong> ${lead.name}</p>
+                  <p><strong>Email:</strong> ${lead.email}</p>
+                  <p><strong>Phone:</strong> ${lead.phone}</p>
+                  ${lead.interestedIn ? `<p><strong>Interested In:</strong> ${lead.interestedIn}</p>` : ''}
+                  ${lead.eventDate ? `<p><strong>Event Date:</strong> ${new Date(lead.eventDate).toLocaleDateString()}</p>` : ''}
+                  <p><strong>Source:</strong> ${lead.landingPageSource || 'Website'}</p>
+                  <br/>
+                  <p>Please log in to the admin dashboard to manage this lead.</p>
                 </div>
-                <h2 style="color: #d4af37; text-transform: uppercase;">New Landing Page Lead</h2>
-                <p><strong>Name:</strong> ${lead.name}</p>
-                <p><strong>Email:</strong> ${lead.email}</p>
-                <p><strong>Phone:</strong> ${lead.phone}</p>
-                ${lead.interestedIn ? `<p><strong>Interested In:</strong> ${lead.interestedIn}</p>` : ''}
-                ${lead.eventDate ? `<p><strong>Event Date:</strong> ${new Date(lead.eventDate).toLocaleDateString()}</p>` : ''}
-                <p><strong>Source:</strong> ${lead.landingPageSource}</p>
-                <br/>
-                <p>Please log in to the admin dashboard to manage this lead.</p>
-              </div>
-            `
-          });
+              `
+            });
+          }
         }
       } catch (emailError) {
-        console.error('Error sending emails:', emailError);
+        console.error('Error sending lead emails:', emailError);
       }
     };
     sendEmailsAsync(); // Do not await

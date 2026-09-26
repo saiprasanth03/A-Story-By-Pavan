@@ -230,15 +230,21 @@ const LandingPage = () => {
               exit={{ opacity: 0, y: 20 }}
               className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-1.5 sm:gap-2.5"
             >
-              <div className="bg-white text-[#0f0f12] border border-black/15 text-[9px] sm:text-[10px] font-lato font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-lg whitespace-nowrap">
+              <motion.div 
+                animate={{ scale: [1, 1.05, 1], y: [0, -3, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                className="bg-white text-[#0f0f12] border border-black/15 text-[9px] sm:text-[10px] font-lato font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-lg whitespace-nowrap"
+              >
                 {pageData?.floatingBubbleText || 'Hurry, Limited Slots Available!'}
-              </div>
-              <button 
+              </motion.div>
+              <motion.button 
+                animate={{ scale: [1, 1.06, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 onClick={() => setIsModalOpen(true)}
-                className="bg-[#0f0f12] hover:bg-neutral-800 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-mirage uppercase tracking-[0.2em] text-xs font-bold shadow-2xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95"
+                className="bg-[#0f0f12] hover:bg-neutral-800 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-mirage uppercase tracking-[0.2em] text-xs font-bold shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex items-center gap-2 transition-all transform hover:scale-110 active:scale-95 border border-white/20 cursor-pointer"
               >
                 {pageData?.floatingButtonText || 'Book Now'}
-              </button>
+              </motion.button>
             </motion.div>
 
             <motion.button 
