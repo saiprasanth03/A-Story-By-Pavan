@@ -228,14 +228,14 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-2 sm:gap-3"
+              className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-1.5 sm:gap-2.5"
             >
-              <div className="hidden sm:block bg-white text-[#0f0f12] border border-black/15 text-[10px] font-lato font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-lg">
+              <div className="bg-white text-[#0f0f12] border border-black/15 text-[9px] sm:text-[10px] font-lato font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-lg whitespace-nowrap">
                 {pageData?.floatingBubbleText || 'Hurry, Limited Slots Available!'}
               </div>
               <button 
                 onClick={() => setIsModalOpen(true)}
-                className="bg-[#0f0f12] hover:bg-neutral-800 text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-full font-mirage uppercase tracking-[0.2em] text-[11px] sm:text-xs font-bold shadow-2xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95"
+                className="bg-[#0f0f12] hover:bg-neutral-800 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-mirage uppercase tracking-[0.2em] text-xs font-bold shadow-2xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95"
               >
                 {pageData?.floatingButtonText || 'Book Now'}
               </button>
@@ -255,13 +255,13 @@ const LandingPage = () => {
       </AnimatePresence>
 
       {/* HEADER - BLACK NAVBAR */}
-      <header className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-3.5 sm:py-4 flex justify-between items-center bg-[#050505]/90 backdrop-blur-md border-b border-white/10 shadow-lg">
+      <header className="fixed top-0 left-0 w-full z-50 px-5 sm:px-8 py-3.5 sm:py-4 flex justify-between items-center bg-[#050505]/95 backdrop-blur-md border-b border-white/10 shadow-lg">
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src={pageData?.logoUrl || "/images/logo.png"} alt={pageData?.heroSubheading || siteConfig.brand.name} className="h-8 sm:h-11 w-auto object-contain" fetchpriority="high" />
+          <img src={pageData?.logoUrl || "/images/logo.png"} alt={pageData?.heroSubheading || siteConfig.brand.name} className="h-10 sm:h-12 w-auto object-contain" fetchpriority="high" />
         </button>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white/10 hover:bg-white text-white hover:text-black border border-white/30 rounded-full font-lato uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold transition-all duration-300 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 flex items-center gap-2"
+          className="px-5 sm:px-6 py-2.5 bg-white/10 hover:bg-white text-white hover:text-black border border-white/30 rounded-full font-lato uppercase tracking-[0.2em] text-xs font-bold transition-all duration-300 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 flex items-center gap-2"
         >
           {pageData?.floatingButtonText || 'Book Now'}
         </button>
