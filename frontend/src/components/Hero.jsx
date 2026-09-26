@@ -55,10 +55,14 @@ const Hero = () => {
       .catch(console.error);
   }, []);
 
+  const displaySlides = (slides.length > 1 && slides.length < 4)
+    ? [...slides, ...slides]
+    : slides;
+
   return (
     <section id="home" className="relative h-screen w-full bg-black overflow-hidden">
       {/* Loading State or Swiper */}
-      {slides.length === 0 ? (
+      {displaySlides.length === 0 ? (
         <div className="absolute inset-0 bg-black"></div>
       ) : (
         <Swiper
@@ -83,12 +87,12 @@ const Hero = () => {
             delay: 5000,
             disableOnInteraction: false,
           }}
-          loop={true}
+          loop={displaySlides.length > 1}
           className="w-full h-full"
         >
           <div slot="container-start" className="parallax-bg absolute inset-0 z-0 bg-black" data-swiper-parallax="-23%"></div>
           
-          {slides.map((slide, i) => (
+          {displaySlides.map((slide, i) => (
             <SwiperSlide key={i} className="relative w-full h-full flex items-center justify-center overflow-hidden">
               {/* Desktop Image */}
               <img 

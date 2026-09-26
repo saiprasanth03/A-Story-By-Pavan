@@ -19,6 +19,10 @@ const Testimonials = () => {
 
   if (testimonials.length === 0) return null;
 
+  const displayTestimonials = (testimonials.length > 1 && testimonials.length < 4)
+    ? [...testimonials, ...testimonials]
+    : testimonials;
+
   return (
     <section id="testimonials" className="relative w-full py-28 bg-[#f9fafb] text-[#0f0f12] border-t border-black/10 flex flex-col items-center overflow-hidden">
       <div className="text-center mb-16">
@@ -37,7 +41,7 @@ const Testimonials = () => {
           modules={[Autoplay, Navigation, Pagination]}
           slidesPerView={1}
           spaceBetween={30}
-          loop={testimonials.length > 1}
+          loop={displayTestimonials.length > 1}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           navigation={{
             prevEl: '.swiper-button-prev-testimonial',
@@ -46,7 +50,7 @@ const Testimonials = () => {
           pagination={{ clickable: true, el: '.swiper-pagination-testimonial' }}
           className="w-full min-h-[260px]"
         >
-          {testimonials.map((current, i) => (
+          {displayTestimonials.map((current, i) => (
             <SwiperSlide key={i} className="flex flex-col items-center justify-center text-center p-6 bg-white border border-black/10 rounded-3xl shadow-lg">
               <div className="text-3xl text-neutral-400 font-serif mb-2">“</div>
               <p className="font-sans text-base md:text-lg text-neutral-800 mb-6 leading-relaxed font-light max-w-2xl mx-auto">
