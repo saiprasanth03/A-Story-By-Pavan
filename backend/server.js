@@ -36,13 +36,22 @@ import quotesRoutes from './routes/quotes.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Middleware - Always enable CORS for Vercel and all origins
 const corsOrigin = process.env.CORS_ORIGIN;
 app.use(cors({
-  origin: corsOrigin ? (corsOrigin.includes(',') ? corsOrigin.split(',').map(s => s.trim()) : corsOrigin) : true,
+  origin: corsOrigin && corsOrigin !== '*' ? (corsOrigin.includes(',') ? corsOrigin.split(',').map(s => s.trim()) : corsOrigin) : true,
   credentials: true
 }));
 app.use(express.json());
+
+// Root & Health Check Routes for Render
+app.get('/', (req, res) => {
+  res.json({ status: 'online', message: 'A Story By Pavan API Server is running' });
+});
+
+app.get('/api', (req, res) => {
+  res.json({ status: 'online', message: 'A Story By Pavan API endpoints active' });
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -68,21 +77,19 @@ app.use('/api/business', businessRoutes);
 app.use('/api/client-gallery', clientGalleryRoutes);
 app.use('/api/quotes', quotesRoutes);
 
-// Database connection & Server Startup
+// Server Startup & Async Database Connection
 const startServer = async () => {
-  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 
-  // Create super admin if configured and does not exist
-  const createSuperAdmin = async () => {
-    try {
-      const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
-      const adminPassword = process.env.ADMIN_PASSWORD;
+  try {
+    await connectDB();
 
-      if (!adminPassword) {
-        console.log('ADMIN_PASSWORD not set in environment. Skipping automatic super admin creation.');
-        return;
-      }
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
+    if (adminPassword) {
       const existingAdmin = await AdminUser.findOne({ email: adminEmail });
       if (!existingAdmin) {
         const salt = await bcrypt.genSalt(10);
@@ -96,16 +103,10 @@ const startServer = async () => {
         await newAdmin.save();
         console.log(`Super Admin "${adminEmail}" initialized successfully.`);
       }
-    } catch (err) {
-      console.error('Error bootstrapping super admin:', err.message);
     }
-  };
-
-  await createSuperAdmin();
-
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  } catch (err) {
+    console.error('Error during database/admin initialization:', err.message);
+  }
 };
 
 startServer();
